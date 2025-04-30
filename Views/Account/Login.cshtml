@@ -1,0 +1,143 @@
+@model HostelMS.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userType = Context.Request.Query["userType"].ToString() ?? "student";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header text-center p-4 bg-primary text-white">
+                    <img src="~/images/bugema-university-logo.png" alt="Bugema University" class="img-fluid mb-3" style="max-height: 80px;">
+                    <h4 class="mb-0">Hostel Management System</h4>
+                </div>
+                
+                <!-- User Type Tabs -->
+                <ul class="nav nav-tabs nav-fill" id="loginTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link @(userType == "student" ? "active" : "")" 
+                                id="student-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#student-login" 
+                                type="button" 
+                                role="tab" 
+                                aria-controls="student-login" 
+                                aria-selected="@(userType == "student" ? "true" : "false")">
+                            <i class="fas fa-user-graduate me-2"></i> Student Login
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link @(userType == "staff" ? "active" : "")" 
+                                id="staff-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#staff-login" 
+                                type="button" 
+                                role="tab" 
+                                aria-controls="staff-login" 
+                                aria-selected="@(userType == "staff" ? "true" : "false")">
+                            <i class="fas fa-user-tie me-2"></i> Staff Login
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="card-body p-4">
+                    <div class="tab-content" id="loginTabsContent">
+                        <!-- Student Login Content -->
+                        <div class="tab-pane fade @(userType == "student" ? "show active" : "")" id="student-login" role="tabpanel" aria-labelledby="student-tab">
+                            <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-route-userType="student" method="post">
+                                <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Email" class="form-control" id="studentEmail" placeholder="name@example.com" />
+                                    <label asp-for="Email" for="studentEmail">Email Address</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Password" class="form-control" id="studentPassword" placeholder="Password" />
+                                    <label asp-for="Password" for="studentPassword">Password</label>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input asp-for="RememberMe" class="form-check-input" id="studentRememberMe" />
+                                    <label asp-for="RememberMe" for="studentRememberMe" class="form-check-label">Remember me</label>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <p class="mb-0">New student? <a asp-action="Register" class="fw-bold">Register here</a></p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Staff Login Content -->
+                        <div class="tab-pane fade @(userType == "staff" ? "show active" : "")" id="staff-login" role="tabpanel" aria-labelledby="staff-tab">
+                            <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-route-userType="staff" method="post">
+                                <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Email" class="form-control" id="staffEmail" placeholder="name@example.com" />
+                                    <label asp-for="Email" for="staffEmail">Email Address</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Password" class="form-control" id="staffPassword" placeholder="Password" />
+                                    <label asp-for="Password" for="staffPassword">Password</label>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input asp-for="RememberMe" class="form-check-input" id="staffRememberMe" />
+                                    <label asp-for="RememberMe" for="staffRememberMe" class="form-check-label">Remember me</label>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-sign-in-alt me-2"></i> Staff Login
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <p class="mb-0">Staff accounts are created by administrators only.</p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer text-center p-3">
+                    <div class="small">
+                        <i class="fas fa-question-circle me-1"></i> Need help? Contact the Dean of Students at 078 2307832
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Update URL when tabs are changed
+        $(document).ready(function() {
+            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                let userType = $(e.target).attr('id').split('-')[0]; // Extract 'student' or 'staff'
+                
+                // Update URL query parameter without reloading page
+                let url = new URL(window.location.href);
+                url.searchParams.set('userType', userType);
+                window.history.pushState({}, '', url);
+            });
+        });
+    </script>
+}

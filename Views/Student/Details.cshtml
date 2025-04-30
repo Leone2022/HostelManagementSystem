@@ -1,0 +1,91 @@
+@model ApplicationUser
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4>Student Profile</h4>
+                </div>
+                <div class="card-body text-center">
+                    @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                    {
+                        <img src="@Model.ProfilePicture" class="img-fluid rounded-circle mb-3" style="max-width: 200px;" alt="Profile Picture">
+                    }
+                    else
+                    {
+                        <div class="bg-secondary rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 200px; height: 200px;">
+                            <i class="fas fa-user fa-5x text-white"></i>
+                        </div>
+                    }
+                    <h5 class="card-title">@Model.FirstName @Model.LastName</h5>
+                    <p class="card-text">
+                        <strong>Student ID:</strong> @Model.StudentId<br>
+                        <strong>Email:</strong> @Model.Email
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4>Accommodation Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Current Assignment</h5>
+                            @if (Model.CurrentHostelId.HasValue)
+                            {
+                                <p>
+                                    <strong>Hostel:</strong> @Model.CurrentHostel?.Name<br>
+                                    <strong>Room:</strong> @Model.CurrentRoomNumber<br>
+                                    <strong>Assignment Date:</strong> @Model.AssignmentDate?.ToString("dd MMM yyyy")
+                                </p>
+                                @if (Model.IsTemporaryAssignment)
+                                {
+                                    <span class="badge bg-warning">Temporary Assignment</span>
+                                    @if (Model.ProbationEndDate.HasValue)
+                                    {
+                                        <p>
+                                            <strong>Probation End:</strong> @Model.ProbationEndDate.Value.ToString("dd MMM yyyy")
+                                        </p>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted">No current room assignment</p>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Verification Status</h5>
+                            <span class="badge @(Model.IsVerified ? "bg-success" : "bg-warning")">
+                                @(Model.IsVerified ? "Verified" : "Unverified")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (ViewBag.RecentActivities != null)
+            {
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4>Recent Activities</h4>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var activity in ViewBag.RecentActivities)
+                        {
+                            <li class="list-group-item">
+                                <strong>@activity.ActivityType</strong>: @activity.Description
+                                <small class="text-muted float-end">@activity.Timestamp.ToString("dd MMM yyyy HH:mm")</small>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</div>

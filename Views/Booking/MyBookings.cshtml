@@ -1,0 +1,172 @@
+@model IEnumerable<HostelMS.Models.Booking>
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">My Bookings</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            You don't have any bookings yet. 
+            <a asp-action="Index" class="alert-link">Click here</a> to book a hostel.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Booking Details</th>
+                                <th>Hostel & Room</th>
+                                <th>Dates</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">#@booking.BookingId</div>
+                                        <div class="small text-muted">Booked on: @booking.BookingDate.ToString("dd MMM yyyy")</div>
+                                        <div class="small text-muted">Amount: UGX @booking.TotalAmount.ToString("N0")</div>
+                                    </td>
+                                    <td>
+                                        @if (booking.Room?.Hostel != null)
+                                        {
+                                            <div class="fw-bold">@booking.Room.Hostel.Name</div>
+                                            <div class="small text-muted">Room: @booking.Room.RoomNumber</div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Unknown</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div><i class="fas fa-calendar-check text-success me-1"></i> @booking.CheckInDate.ToString("dd MMM yyyy")</div>
+                                        <div><i class="fas fa-calendar-times text-danger me-1"></i> @booking.CheckOutDate.ToString("dd MMM yyyy")</div>
+                                    </td>
+                                    <td>
+                                        @switch (booking.Status)
+                                        {
+                                            case BookingStatus.Pending:
+                                                <div class="badge bg-warning text-dark p-2">
+                                                    <i class="fas fa-clock me-1"></i> Pending
+                                                </div>
+                                                break;
+                                            case BookingStatus.Approved:
+                                                <div class="badge bg-success p-2">
+                                                    <i class="fas fa-check-circle me-1"></i> Approved
+                                                </div>
+                                                if (!string.IsNullOrEmpty(booking.ApprovedBy))
+                                                {
+                                                    <div class="small text-muted mt-1">
+                                                        Approved on: @(booking.ApprovalDate?.ToString("dd MMM yyyy") ?? "")
+                                                    </div>
+                                                }
+                                                break;
+                                            case BookingStatus.Rejected:
+                                                <div class="badge bg-danger p-2">
+                                                    <i class="fas fa-times-circle me-1"></i> Rejected
+                                                </div>
+                                                if (!string.IsNullOrEmpty(booking.RejectionReason))
+                                                {
+                                                    <div class="small text-muted mt-1">
+                                                        Reason: @booking.RejectionReason
+                                                    </div>
+                                                }
+                                                break;
+                                            case BookingStatus.CheckedIn:
+                                                <div class="badge bg-primary p-2">
+                                                    <i class="fas fa-sign-in-alt me-1"></i> Checked In
+                                                </div>
+                                                break;
+                                            case BookingStatus.CheckedOut:
+                                                <div class="badge bg-secondary p-2">
+                                                    <i class="fas fa-sign-out-alt me-1"></i> Checked Out
+                                                </div>
+                                                break;
+                                            case BookingStatus.Cancelled:
+                                                <div class="badge bg-dark p-2">
+                                                    <i class="fas fa-ban me-1"></i> Cancelled
+                                                </div>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-action="Details" asp-route-id="@booking.BookingId" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye me-1"></i> View
+                                            </a>
+                                            
+                                            @if (booking.Status == BookingStatus.Pending)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#cancelModal@(booking.BookingId)">
+                                                    <i class="fas fa-times me-1"></i> Cancel
+                                                </button>
+                                            }
+                                        </div>
+                                        
+                                        <!-- Cancel Modal -->
+                                        @if (booking.Status == BookingStatus.Pending)
+                                        {
+                                            <div class="modal fade" id="cancelModal@(booking.BookingId)" tabindex="-1" 
+                                                 aria-labelledby="cancelModalLabel@(booking.BookingId)" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-danger text-white">
+                                                            <h5 class="modal-title" id="cancelModalLabel@(booking.BookingId)">
+                                                                Confirm Cancellation
+                                                            </h5>
+                                                            <button type="button" class="btn-close btn-close-white" 
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to cancel your booking for:</p>
+                                                            <ul>
+                                                                <li><strong>Hostel:</strong> @booking.Room?.Hostel?.Name</li>
+                                                                <li><strong>Room:</strong> @booking.Room?.RoomNumber</li>
+                                                                <li><strong>Check-in Date:</strong> @booking.CheckInDate.ToString("dd MMM yyyy")</li>
+                                                            </ul>
+                                                            <p class="text-danger">This action cannot be undone!</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                <i class="fas fa-times me-1"></i> No, Keep Booking
+                                                            </button>
+                                                            <form asp-action="Cancel" asp-route-id="@booking.BookingId" method="post">
+                                                                <button type="submit" class="btn btn-danger">
+                                                                    <i class="fas fa-check me-1"></i> Yes, Cancel Booking
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a asp-action="Index" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i>Book Another Hostel
+            </a>
+        </div>
+    }
+</div>

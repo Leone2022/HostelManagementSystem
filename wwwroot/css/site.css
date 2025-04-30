@@ -1,0 +1,216 @@
+/* Base HTML/Body Styles */
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main container */
+.container {
+  flex: 1 0 auto;
+  padding-bottom: 20px;
+}
+
+/* Focus States */
+.btn:focus, 
+.btn:active:focus, 
+.btn-link.nav-link:focus, 
+.form-control:focus, 
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* Form Styles */
+.form-floating > .form-control-plaintext::placeholder, 
+.form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, 
+.form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Footer Styles - Fixed */
+.footer {
+  flex-shrink: 0;
+  padding: 1rem 0;
+  background-color: #f8f9fc;
+  border-top: 1px solid #e3e6f0;
+  text-align: center;
+}
+
+/* Admin Dashboard Styles */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.border-left-primary {
+  border-left: .25rem solid #4e73df !important;
+}
+
+.border-left-success {
+  border-left: .25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+  border-left: .25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+  border-left: .25rem solid #f6c23e !important;
+}
+
+.border-left-danger {
+  border-left: .25rem solid #e74a3b !important;
+}
+
+.bg-gradient-primary {
+  background-color: #4e73df;
+  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+  background-size: cover;
+}
+
+.font-weight-bold {
+  font-weight: 700 !important;
+}
+
+.rounded-circle.d-inline-flex {
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-xs {
+  font-size: .7rem;
+}
+
+.text-gray-800 {
+  color: #5a5c69 !important;
+}
+
+.text-gray-300 {
+  color: #dddfeb !important;
+}
+
+/* Quick Actions Card Styles */
+.card.bg-light {
+  transition: all 0.3s ease;
+}
+
+.card.bg-light:hover {
+  background-color: #f8f9fc !important;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+  transform: translateY(-5px);
+}
+
+/* Navbar Enhancements */
+.nav-item .nav-link:hover {
+  background-color: #f8f9fc;
+  border-radius: 0.35rem;
+}
+
+.nav-item .nav-link.active {
+  color: #4e73df !important;
+  font-weight: 600;
+}
+
+/* Table Enhancements */
+.table-responsive {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #e3e6f0;
+  background-color: #f8f9fc;
+}
+
+.table-bordered td, .table-bordered th {
+  border: 1px solid #e3e6f0;
+}
+
+/* Badge Styles */
+.badge {
+  padding: 0.25em 0.7em;
+  font-weight: 600;
+  font-size: 75%;
+}
+
+/* Button Enhancements */
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
+.btn-primary {
+  background-color: #4e73df;
+  border-color: #4e73df;
+}
+
+.btn-primary:hover {
+  background-color: #2e59d9;
+  border-color: #2653d4;
+}
+
+.btn-outline-primary {
+  color: #4e73df;
+  border-color: #4e73df;
+}
+
+.btn-outline-primary:hover {
+  background-color: #4e73df;
+  border-color: #4e73df;
+}
+
+/* ProcessBooking Page Styles */
+.sticky-top {
+  z-index: 1020;
+}
+
+/* Fixed some issues with stickey elements getting cut off */
+@media (min-width: 992px) {
+  .sticky-top {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+/* Payment proof container */
+.payment-proof-container img {
+  max-height: 300px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Make sure modals appear above other content */
+.modal-backdrop {
+  z-index: 1040;
+}
+.modal {
+  z-index: 1050;
+}

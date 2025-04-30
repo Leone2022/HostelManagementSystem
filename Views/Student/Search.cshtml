@@ -1,0 +1,162 @@
+@model IEnumerable<HostelMS.Models.ApplicationUser>
+@using System.Linq
+@{
+    ViewData["Title"] = "Search Students";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Search Students</h1>
+        <div>
+            <a asp-controller="Student" asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Back to All Students
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-search me-2"></i> Search Filters</h5>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Student" asp-action="Search" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label for="searchTerm" class="form-label">Search Term</label>
+                    <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Name, Student ID, Email..." value="@ViewBag.SearchTerm">
+                </div>
+                <div class="col-md-3">
+                    <label for="hostelId" class="form-label">Hostel</label>
+                    <select class="form-select" id="hostelId" name="hostelId">
+                        <option value="">All Hostels</option>
+                        @foreach (var hostel in ViewBag.Hostels ?? new List<HostelMS.Models.Hostel>())
+                        {
+                            if (ViewBag.HostelId == hostel.HostelId)
+                            {
+                                <option value="@hostel.HostelId" selected>@hostel.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@hostel.HostelId">@hostel.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="verificationStatus" class="form-label">Verification Status</label>
+                    <select class="form-select" id="verificationStatus" name="verificationStatus">
+                        <option value="">All</option>
+                        @if (ViewBag.VerificationStatus == true)
+                        {
+                            <option value="true" selected>Verified</option>
+                        }
+                        else
+                        {
+                            <option value="true">Verified</option>
+                        }
+                        
+                        @if (ViewBag.VerificationStatus == false)
+                        {
+                            <option value="false" selected>Unverified</option>
+                        }
+                        else
+                        {
+                            <option value="false">Unverified</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-users me-2"></i> Search Results</h5>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Photo</th>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Hostel / Room</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td>
+    @if (!string.IsNullOrEmpty(student.ProfilePicture))
+    {
+        <img src="@student.ProfilePicture" alt="Student" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+    }
+    else
+    {
+        <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+            <i class="fas fa-user text-white"></i>
+        </div>
+    }
+</td>
+                                    <td>@student.StudentId</td>
+                                    <td>@student.FirstName @student.LastName</td>
+                                    <td>
+                                        @if (student.CurrentHostel != null)
+                                        {
+                                            @student.CurrentHostel.Name <span class="text-muted">/ Room @student.CurrentRoomNumber</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not Assigned</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge @(student.IsVerified ? "bg-success" : "bg-warning")">
+                                            @(student.IsVerified ? "Verified" : "Unverified")
+                                        </span>
+                                        @if (student.CurrentHostelId.HasValue)
+                                        {
+                                            <span class="badge @(student.IsCurrentlyInHostel ? "bg-info" : "bg-secondary")">
+                                                @(student.IsCurrentlyInHostel ? "In Hostel" : "Out")
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-controller="Student" asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-info-circle"></i> Details
+                                            </a>
+                                            @if (student.CurrentHostelId == null && (User.IsInRole("Admin") || User.IsInRole("Warden")))
+                                            {
+                                                <a asp-controller="Student" asp-action="Assign" asp-route-id="@student.Id" class="btn btn-sm btn-outline-success">
+                                                    <i class="fas fa-home"></i> Assign
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No students found matching your search criteria. Please try different search parameters.
+                </div>
+            }
+        </div>
+    </div>
+</div>

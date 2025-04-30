@@ -1,0 +1,152 @@
+@model HostelMS.ViewModels.BookingCreateViewModel
+@{
+    ViewData["Title"] = "Book a Hostel";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-bookmark me-2"></i> Book a Room in @Model.HostelName</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        
+                        <input type="hidden" asp-for="HostelId" />
+                        <input type="hidden" asp-for="HostelName" />
+                        <input type="hidden" asp-for="UserId" />
+                        
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Please complete the booking form below. Your booking will be reviewed by the hostel management team.
+                        </div>
+                        
+                        <!-- Room Selection Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-door-open me-2"></i> Room Selection</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="RoomId" class="form-label fw-bold">Select a Room</label>
+                                    <select asp-for="RoomId" asp-items="Model.AvailableRooms" class="form-select">
+                                        <option value="">-- Select a Room --</option>
+                                    </select>
+                                    <span asp-validation-for="RoomId" class="text-danger"></span>
+                                    <div class="form-text">Choose from available rooms in the hostel</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dates Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i> Booking Period</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="CheckInDate" class="form-label fw-bold">Check-in Date</label>
+                                            <input asp-for="CheckInDate" class="form-control" />
+                                            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="CheckOutDate" class="form-label fw-bold">Check-out Date</label>
+                                            <input asp-for="CheckOutDate" class="form-control" />
+                                            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Comments" class="form-label fw-bold">Additional Comments</label>
+                                    <textarea asp-for="Comments" class="form-control" rows="3" 
+                                       placeholder="Any special requests or information you want to include with your booking?"></textarea>
+                                    <span asp-validation-for="Comments" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i> Payment Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="Amount" class="form-label fw-bold">Payment Amount (UGX)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">UGX</span>
+                                        <input asp-for="Amount" class="form-control" type="number" step="1000" min="0" />
+                                    </div>
+                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                    <div class="form-text">Enter the amount you paid in Ugandan Shillings</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="PaymentMethod" class="form-label fw-bold">Payment Method</label>
+                                    <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<HostelMS.Models.PaymentMethod>()">
+                                        <option value="">-- Select Payment Method --</option>
+                                    </select>
+                                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="TransactionReference" class="form-label fw-bold">Transaction Reference/ID</label>
+                                    <input asp-for="TransactionReference" class="form-control" />
+                                    <span asp-validation-for="TransactionReference" class="text-danger"></span>
+                                    <div class="form-text">Enter the transaction reference from your payment receipt</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="PaymentProof" class="form-label fw-bold">Upload Proof of Payment</label>
+                                    <input asp-for="PaymentProof" class="form-control" type="file" accept="image/*,.pdf" />
+                                    <span asp-validation-for="PaymentProof" class="text-danger"></span>
+                                    <div class="form-text">Upload a screenshot or photo of your payment receipt (JPEG, PNG, or PDF)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Hostels
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i> Submit Booking
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Set minimum date for check-in to today
+            var today = new Date().toISOString().split('T')[0];
+            $('#CheckInDate').attr('min', today);
+            
+            // Update check-out min date when check-in changes
+            $('#CheckInDate').change(function() {
+                var checkInDate = $(this).val();
+                $('#CheckOutDate').attr('min', checkInDate);
+                
+                if ($('#CheckOutDate').val() < checkInDate) {
+                    $('#CheckOutDate').val(checkInDate);
+                }
+            });
+            
+            // Trigger change to set initial state
+            $('#CheckInDate').trigger('change');
+        });
+    </script>
+}

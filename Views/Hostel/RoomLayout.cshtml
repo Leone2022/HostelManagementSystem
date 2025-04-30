@@ -1,0 +1,361 @@
+@model HostelMS.Models.Hostel
+@{
+    ViewData["Title"] = "Room Layout";
+}
+
+@functions {
+    public string GetFloorFromRoomNumber(string roomNumber)
+    {
+        // Extract floor from room number (e.g., "A101" -> "Floor A1", "101" -> "Floor 1")
+        if (string.IsNullOrEmpty(roomNumber))
+            return "Ground Floor";
+            
+        if (roomNumber.Length >= 2 && char.IsLetter(roomNumber[0]))
+        {
+            // For room numbers like A101, B201, etc.
+            string floorPrefix = roomNumber.Substring(0, 1);
+            string floorNumber = "";
+            
+            // Try to extract a numeric part after the letter for the floor
+            int i = 1;
+            while (i < roomNumber.Length && char.IsDigit(roomNumber[i]))
+            {
+                floorNumber += roomNumber[i];
+                i++;
+            }
+            
+            // If we have a floor number (e.g., A1, B2), use it
+            if (!string.IsNullOrEmpty(floorNumber))
+            {
+                return $"Floor {floorPrefix}{floorNumber}";
+            }
+            
+            // Otherwise just use the letter
+            return $"Floor {floorPrefix}";
+        }
+        else if (roomNumber.Length > 0 && char.IsDigit(roomNumber[0]))
+        {
+            // For room numbers like 101, 201, etc.
+            // First digit usually indicates the floor
+            return $"Floor {roomNumber[0]}";
+        }
+        
+        return "Ground Floor";
+    }
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Room Layout - @Model.Name</h1>
+        <div>
+            <a asp-action="AddRoom" asp-route-id="@Model.HostelId" class="btn btn-success">
+                <i class="fas fa-plus-circle me-2"></i> Add Single Room
+            </a>
+            <a asp-action="AddBulkRooms" asp-route-id="@Model.HostelId" class="btn btn-primary ms-2">
+                <i class="fas fa-th me-2"></i> Bulk Add Rooms
+            </a>
+            <a asp-action="Details" asp-route-id="@Model.HostelId" class="btn btn-outline-primary ms-2">
+                <i class="fas fa-info-circle me-2"></i> Hostel Details
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["WarningMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-th me-2"></i> Visual Room Layout</h5>
+                <span class="badge bg-light text-dark">
+                    @Model.Rooms.Sum(r => r.CurrentOccupancy) / @Model.Rooms.Sum(r => r.Capacity) beds occupied
+                </span>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (Model.Rooms.Any())
+            {
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="badge bg-success me-2" style="width: 20px; height: 20px;"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="badge bg-warning me-2" style="width: 20px; height: 20px;"></div>
+                        <span>Partially Assigned</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="badge bg-danger me-2" style="width: 20px; height: 20px;"></div>
+                        <span>Fully Assigned</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="badge bg-secondary me-2" style="width: 20px; height: 20px;"></div>
+                        <span>Under Maintenance</span>
+                    </div>
+                </div>
+                
+                            @* Group rooms by floor *@
+                var floors = Model.Rooms
+                    .GroupBy(r => GetFloorFromRoomNumber(r.RoomNumber))
+                    .OrderBy(g => g.Key)
+                    .ToList();
+                                @if (floors.Count > 1)
+                {
+                    <ul class="nav nav-tabs mb-3" id="floorTabs" role="tablist">
+                        @for (int i = 0; i < floors.Count; i++)
+                        {
+                            var floor = floors[i];
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link @(i == 0 ? "active" : "")" 
+                                        id="floor-@(floor.Key.Replace(" ", "-"))-tab" 
+                                        data-bs-toggle="tab" 
+                                        data-bs-target="#floor-@(floor.Key.Replace(" ", "-"))" 
+                                        type="button" 
+                                        role="tab" 
+                                        aria-controls="floor-@(floor.Key.Replace(" ", "-"))" 
+                                        aria-selected="@(i == 0 ? "true" : "false")">
+                                    @floor.Key
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    
+                    <div class="tab-content" id="floorTabsContent">
+                        @for (int i = 0; i < floors.Count; i++)
+                        {
+                            var floor = floors[i];
+                            <div class="tab-pane fade @(i == 0 ? "show active" : "")" 
+                                 id="floor-@(floor.Key.Replace(" ", "-"))" 
+                                 role="tabpanel" 
+                                 aria-labelledby="floor-@(floor.Key.Replace(" ", "-"))-tab">
+                                <div class="row g-3">
+                                    @foreach (var room in floor.OrderBy(r => r.RoomNumber))
+                                    {
+                                        var statusClass = room.Status == RoomStatus.Available ? "bg-success" :
+                                                      room.Status == RoomStatus.PartiallyAssigned ? "bg-warning" :
+                                                      room.Status == RoomStatus.FullyAssigned ? "bg-danger" : "bg-secondary";
+                                        
+                                        <div class="col-md-3 col-sm-6">
+                                            <div class="card h-100 @(room.NeedsAttention ? "border-danger" : "")">
+                                                <div class="card-header @statusClass text-white d-flex justify-content-between align-items-center">
+                                                    <h6 class="mb-0">Room @room.RoomNumber</h6>
+                                                    <span class="badge bg-light text-dark">@room.CurrentOccupancy/@room.Capacity</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="card-text">
+                                                        <small class="text-muted">Room Type:</small> @room.Type<br>
+                                                        <small class="text-muted">Price per Semester:</small> @room.PricePerSemester.ToString("C")<br>
+                                                        <small class="text-muted">Status:</small> @room.Status
+                                                    </p>
+                                                    <div class="d-flex flex-wrap gap-1 mt-2">
+                                                        @for (int j = 0; j < room.Capacity; j++)
+                                                        {
+                                                            var bedClass = j < room.CurrentOccupancy ? "bg-danger" : "bg-success";
+                                                            <div class="@bedClass rounded-circle" style="width: 20px; height: 20px;" 
+                                                                title="@(j < room.CurrentOccupancy ? "Occupied" : "Available")">
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="d-flex justify-content-between">
+                                                        <a asp-controller="Room" asp-action="Details" asp-route-id="@room.RoomId" 
+                                                           class="btn btn-sm btn-outline-primary">
+                                                            <i class="fas fa-info-circle"></i> Details
+                                                        </a>
+                                                        <a asp-controller="Room" asp-action="Edit" asp-route-id="@room.RoomId" 
+                                                           class="btn btn-sm btn-outline-warning">
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="row g-3">
+                        @foreach (var room in Model.Rooms.OrderBy(r => r.RoomNumber))
+                        {
+                            var statusClass = room.Status == RoomStatus.Available ? "bg-success" :
+                                          room.Status == RoomStatus.PartiallyAssigned ? "bg-warning" :
+                                          room.Status == RoomStatus.FullyAssigned ? "bg-danger" : "bg-secondary";
+                            
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 @(room.NeedsAttention ? "border-danger" : "")">
+                                    <div class="card-header @statusClass text-white d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Room @room.RoomNumber</h6>
+                                        <span class="badge bg-light text-dark">@room.CurrentOccupancy/@room.Capacity</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <small class="text-muted">Room Type:</small> @room.Type<br>
+                                            <small class="text-muted">Price per Semester:</small> @room.PricePerSemester.ToString("C")<br>
+                                            <small class="text-muted">Status:</small> @room.Status
+                                        </p>
+                                        <div class="d-flex flex-wrap gap-1 mt-2">
+                                            @for (int i = 0; i < room.Capacity; i++)
+                                            {
+                                                var bedClass = i < room.CurrentOccupancy ? "bg-danger" : "bg-success";
+                                                <div class="@bedClass rounded-circle" style="width: 20px; height: 20px;" 
+                                                    title="@(i < room.CurrentOccupancy ? "Occupied" : "Available")">
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex justify-content-between">
+                                            <a asp-controller="Room" asp-action="Details" asp-route-id="@room.RoomId" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-info-circle"></i> Details
+                                            </a>
+                                            <a asp-controller="Room" asp-action="Edit" asp-route-id="@room.RoomId" 
+                                               class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No rooms have been added to this hostel yet.
+                    <div class="mt-3">
+                        <a asp-action="AddRoom" asp-route-id="@Model.HostelId" class="btn btn-success me-2">
+                            <i class="fas fa-plus-circle me-2"></i> Add Single Room
+                        </a>
+                        <a asp-action="AddBulkRooms" asp-route-id="@Model.HostelId" class="btn btn-primary">
+                            <i class="fas fa-th me-2"></i> Bulk Add Rooms
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-list me-2"></i> Room List</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Rooms.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Room Number</th>
+                                <th>Type</th>
+                                <th>Capacity</th>
+                                <th>Occupancy</th>
+                                <th>Status</th>
+                                <th>Price/Semester</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var room in Model.Rooms.OrderBy(r => r.RoomNumber))
+                            {
+                                <tr>
+                                    <td>@room.RoomNumber</td>
+                                    <td>@room.Type</td>
+                                    <td>@room.Capacity</td>
+                                    <td>@room.CurrentOccupancy / @room.Capacity
+                                        <div class="progress mt-1" style="height: 5px;">
+                                            <div class="progress-bar @(room.Status == RoomStatus.Available ? "bg-success" : 
+                                                              room.Status == RoomStatus.PartiallyAssigned ? "bg-warning" : 
+                                                              room.Status == RoomStatus.FullyAssigned ? "bg-danger" : "bg-secondary")"
+                                                 role="progressbar"
+                                                 style="width: @(room.Capacity > 0 ? (room.CurrentOccupancy * 100 / room.Capacity) : 0)%"
+                                                 aria-valuenow="@(room.Capacity > 0 ? (room.CurrentOccupancy * 100 / room.Capacity) : 0)"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge @(room.Status == RoomStatus.Available ? "bg-success" : 
+                                                  room.Status == RoomStatus.PartiallyAssigned ? "bg-warning" : 
+                                                  room.Status == RoomStatus.FullyAssigned ? "bg-danger" : "bg-secondary")">
+                                            @room.Status
+                                        </span>
+                                    </td>
+                                    <td>@room.PricePerSemester.ToString("C")</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-controller="Room" asp-action="Details" asp-route-id="@room.RoomId" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-info-circle"></i>
+                                            </a>
+                                            <a asp-controller="Room" asp-action="Assign" asp-route-id="@room.RoomId" class="btn btn-sm btn-outline-success">
+                                                <i class="fas fa-user-plus"></i>
+                                            </a>
+                                            <a asp-controller="Room" asp-action="Edit" asp-route-id="@room.RoomId" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-controller="Room" asp-action="Delete" asp-route-id="@room.RoomId" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No rooms have been added to this hostel yet.
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Back to Hostels
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-dismiss alerts after 5 seconds
+        $(document).ready(function() {
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 5000);
+        });
+    </script>
+}

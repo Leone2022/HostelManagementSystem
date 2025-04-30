@@ -1,0 +1,84 @@
+@model IEnumerable<HostelMS.Models.Hostel>
+@{
+    ViewData["Title"] = "Available Hostels";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Available Hostels for Booking</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            There are no private hostels available for booking at the moment.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var hostel in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm hover-shadow">
+                        @if (!string.IsNullOrEmpty(hostel.ImageUrl))
+                        {
+                            <img src="@hostel.ImageUrl" class="card-img-top" alt="@hostel.Name" style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="fas fa-building fa-4x text-muted"></i>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@hostel.Name</h5>
+                            <p class="card-text text-muted mb-1">
+                                <i class="fas fa-map-marker-alt me-2"></i>@hostel.Location
+                            </p>
+                            <p class="card-text text-muted mb-3">
+                                <i class="fas fa-venus-mars me-2"></i>@hostel.Gender
+                            </p>
+                            
+                            <p class="card-text">
+                                @if (string.IsNullOrEmpty(hostel.Description))
+                                {
+                                    <span>No description available</span>
+                                }
+                                else
+                                {
+                                    @if (hostel.Description.Length > 150)
+                                    {
+                                        @hostel.Description.Substring(0, 150)<text>...</text>
+                                    }
+                                    else
+                                    {
+                                        @hostel.Description
+                                    }
+                                }
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success">
+                                    <i class="fas fa-bed me-1"></i>
+                                    Private Hostel
+                                </span>
+                                <a asp-action="Create" asp-route-id="@hostel.HostelId" class="btn btn-primary">
+                                    <i class="fas fa-bookmark me-2"></i>Book Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        transition: all 0.3s ease;
+    }
+</style>

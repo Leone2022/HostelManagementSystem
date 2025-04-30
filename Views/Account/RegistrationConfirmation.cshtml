@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Registration Confirmation";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow border-0 rounded-lg">
+                <div class="card-header bg-success text-white text-center p-4">
+                    <i class="fas fa-check-circle fa-4x mb-3"></i>
+                    <h3>Registration Submitted</h3>
+                </div>
+                <div class="card-body p-5">
+                    <div class="text-center">
+                        <p class="lead mb-4">
+                            Thank you for registering with the Bugema University Hostel Management System!
+                        </p>
+                        
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Your account is pending approval.</strong> An administrator will review your information shortly.
+                        </div>
+                        
+                        <p class="mb-4">
+                            You will receive notification when your account has been approved. Once approved, you can log in
+                            using the email and password you provided during registration.
+                        </p>
+                        
+                        <div class="d-grid gap-3 col-lg-8 mx-auto">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                                <i class="fas fa-home me-2"></i> Return to Home
+                            </a>
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary">
+                                <i class="fas fa-sign-in-alt me-2"></i> Go to Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer p-3 text-center">
+                    <p class="mb-0">
+                        <small>For assistance, contact the Dean of Students at 078 2307832</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,294 @@
+@model IEnumerable<HostelMS.Models.Room>
+
+@{
+    ViewData["Title"] = "Rooms Management";
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold">Rooms Management</h1>
+        
+        <div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-home me-2"></i> Home
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Warden"))
+            {
+                <a asp-controller="Hostel" asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-building me-2"></i> Manage Hostels
+                </a>
+            }
+        </div>
+    </div>
+    
+    <!-- Search and Filter Bar -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form asp-action="Index" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" name="searchTerm" class="form-control" placeholder="Search by room number, hostel name" value="@ViewBag.SearchTerm">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="hostelId" class="form-select">
+                        <option value="">All Hostels</option>
+                        @if (ViewBag.Hostels != null)
+                        {
+                            @foreach (var hostel in ViewBag.Hostels)
+                            {
+                                if (ViewBag.HostelId != null && ViewBag.HostelId == hostel.HostelId)
+                                {
+                                    <option value="@hostel.HostelId" selected>@hostel.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@hostel.HostelId">@hostel.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select">
+                        <option value="">All Statuses</option>
+                        @foreach (var status in Enum.GetValues(typeof(HostelMS.Models.RoomStatus)))
+                        {
+                            if (ViewBag.Status != null && (int)ViewBag.Status == (int)status)
+                            {
+                                <option value="@((int)status)" selected>@status</option>
+                            }
+                            else
+                            {
+                                <option value="@((int)status)">@status</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-redo"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rooms Stats Cards -->
+    @if (Model != null && Model.Any())
+    {
+        var totalRooms = Model.Count();
+        var availableRooms = Model.Count(r => r.Status == HostelMS.Models.RoomStatus.Available);
+        var partialRooms = Model.Count(r => r.Status == HostelMS.Models.RoomStatus.PartiallyAssigned);
+        var fullRooms = Model.Count(r => r.Status == HostelMS.Models.RoomStatus.FullyAssigned);
+        var maintenanceRooms = Model.Count(r => r.Status == HostelMS.Models.RoomStatus.UnderMaintenance);
+        
+        <div class="row mb-4">
+            <div class="col-md-4 col-xl-2 mb-3">
+                <div class="card bg-light text-dark h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="display-6 fw-bold text-dark">@totalRooms</div>
+                        <div class="small text-muted">Total Rooms</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xl-2 mb-3">
+                <div class="card bg-success text-white h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="display-6 fw-bold">@availableRooms</div>
+                        <div class="small">Available</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xl-2 mb-3">
+                <div class="card bg-warning text-dark h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="display-6 fw-bold">@partialRooms</div>
+                        <div class="small">Partially Assigned</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xl-2 mb-3">
+                <div class="card bg-danger text-white h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="display-6 fw-bold">@fullRooms</div>
+                        <div class="small">Fully Assigned</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xl-2 mb-3">
+                <div class="card bg-secondary text-white h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="display-6 fw-bold">@maintenanceRooms</div>
+                        <div class="small">Under Maintenance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
+    <!-- Rooms Table -->
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-door-open me-2"></i> Room List</h5>
+            @if (User.IsInRole("Admin") || User.IsInRole("Warden"))
+            {
+                <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addRoomModal">
+                    <i class="fas fa-plus-circle me-2"></i> Add New Room
+                </button>
+            }
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Hostel</th>
+                                <th>Room</th>
+                                <th>Type</th>
+                                <th>Capacity</th>
+                                <th>Status</th>
+                                <th>Price (UGX)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var room in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded-circle p-2 me-2">
+                                                <i class="fas fa-building text-primary"></i>
+                                            </div>
+                                            <div>@room.Hostel?.Name</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold">@room.RoomNumber</span>
+                                    </td>
+                                    <td>@room.Type</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-2">@room.CurrentOccupancy / @room.Capacity</div>
+                                            <div class="progress flex-grow-1" style="height: 8px;">
+                                                @{
+                                                    var occupancyPercent = room.Capacity > 0 ? (double)room.CurrentOccupancy / room.Capacity * 100 : 0;
+                                                    var progressClass = room.Status == HostelMS.Models.RoomStatus.Available ? "bg-success" :
+                                                                      room.Status == HostelMS.Models.RoomStatus.PartiallyAssigned ? "bg-warning" :
+                                                                      room.Status == HostelMS.Models.RoomStatus.FullyAssigned ? "bg-danger" : "bg-secondary";
+                                                }
+                                                <div class="progress-bar @progressClass" role="progressbar" style="width: @occupancyPercent%" 
+                                                     aria-valuenow="@occupancyPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge @(room.Status == HostelMS.Models.RoomStatus.Available ? "bg-success" : 
+                                                      room.Status == HostelMS.Models.RoomStatus.PartiallyAssigned ? "bg-warning" :
+                                                      room.Status == HostelMS.Models.RoomStatus.FullyAssigned ? "bg-danger" : "bg-secondary")
+                                                      py-2 px-3">
+                                            @room.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-success fw-bold">UGX @room.PricePerSemester.ToString("N0")</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-action="Details" asp-route-id="@room.RoomId" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-info-circle"></i> Details
+                                            </a>
+                                            @if (User.IsInRole("Admin") || User.IsInRole("Warden"))
+                                            {
+                                                <a asp-action="Edit" asp-route-id="@room.RoomId" class="btn btn-sm btn-outline-warning">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No rooms found.
+                    @if (User.IsInRole("Admin") || User.IsInRole("Warden"))
+                    {
+                        <span>
+                            <button type="button" class="alert-link border-0 bg-transparent p-0" data-bs-toggle="modal" data-bs-target="#addRoomModal">
+                                Click here to add a new room
+                            </button>
+                        </span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Add Room Modal Placeholder -->
+<div class="modal fade" id="addRoomModal" tabindex="-1" aria-labelledby="addRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addRoomModalLabel"><i class="fas fa-plus-circle me-2"></i> Add New Room</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> Please select a hostel first to add a room.
+                </div>
+                
+                <form id="selectHostelForm" class="row g-3">
+                    <div class="col-md-8">
+                        <label for="selectHostel" class="form-label fw-bold">Select Hostel</label>
+                        <select id="selectHostel" class="form-select">
+                            <option value="">-- Select a hostel --</option>
+                            @if (ViewBag.AllHostels != null)
+                            {
+                                @foreach (var hostel in ViewBag.AllHostels)
+                                {
+                                    <option value="@hostel.HostelId">@hostel.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="button" id="goToAddRoom" class="btn btn-primary w-100">
+                            <i class="fas fa-arrow-right me-2"></i> Continue
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Handle the "Continue" button in the Add Room modal
+            $('#goToAddRoom').click(function() {
+                var selectedHostelId = $('#selectHostel').val();
+                if (selectedHostelId) {
+                    window.location.href = '@Url.Action("AddRoom", "Hostel")/' + selectedHostelId;
+                } else {
+                    alert('Please select a hostel first');
+                }
+            });
+        });
+    </script>
+}

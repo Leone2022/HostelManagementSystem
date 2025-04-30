@@ -1,0 +1,212 @@
+@model HostelMS.Models.Hostel
+@{
+    ViewData["Title"] = "Hostel Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-building me-2"></i> @Model.Name</h5>
+                        <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">
+                            @(Model.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded mb-3" style="max-height: 300px; width: 100%; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="bg-light d-flex justify-content-center align-items-center mb-3" style="height: 300px;">
+                                    <i class="fas fa-building fa-4x text-secondary"></i>
+                                </div>
+                            }
+                            
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Hostel Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless mb-0">
+                                        <tr>
+                                            <th style="width: 40%;">Location:</th>
+                                            <td>@Model.Location</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender Assignment:</th>
+                                            <td>@Model.Gender</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Distance from Campus:</th>
+                                            <td>@Model.DistanceFromCampus km</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Description</h6>
+                                </div>
+                                <div class="card-body">
+                                    @if (string.IsNullOrEmpty(Model.Description))
+                                    {
+                                        <p class="text-muted">No description available.</p>
+                                    }
+                                    else
+                                    {
+                                        <p>@Model.Description</p>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Occupancy Statistics</h6>
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        var totalCapacity = Model.Rooms.Sum(r => r.Capacity);
+                                        var currentOccupancy = Model.Rooms.Sum(r => r.CurrentOccupancy);
+                                        var occupancyRate = totalCapacity > 0 ? (double)currentOccupancy / totalCapacity * 100 : 0;
+                                    }
+                                    
+                                    <div class="mb-3">
+                                        <h5>@currentOccupancy / @totalCapacity beds occupied</h5>
+                                        <div class="progress" style="height: 10px;">
+                                            <div class="progress-bar @(occupancyRate < 70 ? "bg-success" : (occupancyRate < 90 ? "bg-warning" : "bg-danger"))"
+                                                 role="progressbar"
+                                                 style="width: @occupancyRate%"
+                                                 aria-valuenow="@occupancyRate"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">@Math.Round(occupancyRate, 1)% occupancy rate</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Room Types Available</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        @if (Model.Rooms.Any(r => r.Type == RoomType.Single))
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Single Rooms
+                                                <span class="badge bg-primary rounded-pill">@Model.Rooms.Count(r => r.Type == RoomType.Single)</span>
+                                            </li>
+                                        }
+                                        
+                                        @if (Model.Rooms.Any(r => r.Type == RoomType.Double))
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Double Rooms
+                                                <span class="badge bg-primary rounded-pill">@Model.Rooms.Count(r => r.Type == RoomType.Double)</span>
+                                            </li>
+                                        }
+                                        
+                                        @if (Model.Rooms.Any(r => r.Type == RoomType.Triple))
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Triple Rooms
+                                                <span class="badge bg-primary rounded-pill">@Model.Rooms.Count(r => r.Type == RoomType.Triple)</span>
+                                            </li>
+                                        }
+                                        
+                                        @if (Model.Rooms.Any(r => r.Type == RoomType.Dormitory))
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Dormitory Rooms
+                                                <span class="badge bg-primary rounded-pill">@Model.Rooms.Count(r => r.Type == RoomType.Dormitory)</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Back
+                        </a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login to Apply
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Facilities & Amenities</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Amenities != null && Model.Amenities.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var amenity in Model.Amenities)
+                            {
+                                <li class="list-group-item">
+                                    @if (!string.IsNullOrEmpty(amenity.IconClass))
+                                    {
+                                        <i class="@amenity.IconClass me-2"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-check-circle me-2 text-success"></i>
+                                    }
+                                    @amenity.Name
+                                    @if (!string.IsNullOrEmpty(amenity.Description))
+                                    {
+                                        <small class="d-block text-muted">@amenity.Description</small>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-center">No amenities listed for this hostel.</p>
+                    }
+                </div>
+            </div>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">How to Apply</h5>
+                </div>
+                <div class="card-body">
+                    <p>To apply for accommodation in this hostel:</p>
+                    <ol>
+                        <li>Login to your student account</li>
+                        <li>Visit the Student Dashboard</li>
+                        <li>Contact your warden or dean for room assignment</li>
+                        <li>Complete verification process</li>
+                    </ol>
+                    <div class="d-grid gap-2 mt-3">
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

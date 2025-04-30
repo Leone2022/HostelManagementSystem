@@ -1,0 +1,224 @@
+@model IEnumerable<HostelMS.Models.ApplicationUser>
+@using System.Linq
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Student Management</h1>
+        
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary">
+                <i class="fas fa-user-plus me-2"></i> Register New Student
+            </a>
+        }
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form asp-action="Search" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" name="searchTerm" class="form-control" placeholder="Search by name, ID, or email" value="@ViewBag.SearchTerm">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="hostelId" class="form-select">
+                        <option value="">All Hostels</option>
+                        @if (ViewBag.Hostels != null)
+                        {
+                            @foreach (var hostel in ViewBag.Hostels)
+                            {
+                                if (ViewBag.HostelId != null && ViewBag.HostelId == hostel.HostelId)
+                                {
+                                    <option value="@hostel.HostelId" selected>@hostel.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@hostel.HostelId">@hostel.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="verificationStatus" class="form-select">
+                        <option value="">All Verification</option>
+                        @if (ViewBag.VerificationStatus == true)
+                        {
+                            <option value="true" selected>Verified</option>
+                        }
+                        else
+                        {
+                            <option value="true">Verified</option>
+                        }
+                        
+                        @if (ViewBag.VerificationStatus == false)
+                        {
+                            <option value="false" selected>Not Verified</option>
+                        }
+                        else
+                        {
+                            <option value="false">Not Verified</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="approvalStatus" class="form-select">
+                        <option value="">All Status</option>
+                        @if (ViewBag.ApprovalStatus == true)
+                        {
+                            <option value="true" selected>Approved</option>
+                        }
+                        else
+                        {
+                            <option value="true">Approved</option>
+                        }
+                        
+                        @if (ViewBag.ApprovalStatus == false)
+                        {
+                            <option value="false" selected>Pending</option>
+                        }
+                        else
+                        {
+                            <option value="false">Pending</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <a asp-action="Index" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-redo"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Hostel / Room</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(student.ProfilePicture))
+                                        {
+                                            <img src="@student.ProfilePicture" alt="Student" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-user text-white"></i>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>@student.StudentId</td>
+                                    <td>@student.FirstName @student.LastName</td>
+                                    <td>
+                                        @if (student.CurrentHostel != null)
+                                        {
+                                            @student.CurrentHostel.Name <span class="text-muted">/ Room @student.CurrentRoomNumber</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not Assigned</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-info-circle"></i> Details
+                                            </a>
+                                            @if (student.CurrentHostelId == null && (User.IsInRole("Admin") || User.IsInRole("Warden")))
+                                            {
+                                                <a asp-action="Assign" asp-route-id="@student.Id" class="btn btn-sm btn-outline-success">
+                                                    <i class="fas fa-home"></i> Assign
+                                                </a>
+                                            }
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteStudentModal" 
+                                                        data-student-id="@student.Id"
+                                                        data-student-name="@student.FirstName @student.LastName">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No students found. 
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="Account" asp-action="Register" class="alert-link">Register a new student</a>
+            }
+        </div>
+    }
+</div>
+
+<!-- Delete Student Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteStudentModalLabel">Delete Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="studentNameToDelete"></strong>?</p>
+                <p class="text-danger">This action cannot be undone. All associated data will be permanently removed.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteStudentForm" asp-action="Delete" method="post">
+                    <input type="hidden" id="studentIdToDelete" name="id" />
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete Student</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Setup for delete modal
+            $('#deleteStudentModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var studentId = button.data('student-id');
+                var studentName = button.data('student-name');
+                
+                $('#studentIdToDelete').val(studentId);
+                $('#studentNameToDelete').text(studentName);
+            });
+        });
+    </script>
+}

@@ -1,0 +1,110 @@
+@{
+    ViewData["Title"] = "Dean Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Dean of Students Dashboard</h1>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h5>Total Students</h5>
+                    <h2>@ViewBag.TotalStudents</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="Student" asp-action="Index">View Students</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">
+                    <h5>Pending Approvals</h5>
+                    <h2>@ViewBag.PendingBookings</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="Booking" asp-action="PendingApprovals">Review</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <h5>Approved Bookings</h5>
+                    <h2>@ViewBag.ApprovedBookings</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="Booking" asp-action="Index">View All</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-bullhorn mr-1"></i>
+                    Announcements
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="announcementTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="announcementTitle">
+                        </div>
+                        <div class="mb-3">
+                            <label for="announcementContent" class="form-label">Content</label>
+                            <textarea class="form-control" id="announcementContent" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="hostelSelect" class="form-label">Post to</label>
+                            <select class="form-select" id="hostelSelect">
+                                <option selected>All Hostels</option>
+                                <option>Male Hostels Only</option>
+                                <option>Female Hostels Only</option>
+                                <option>Specific Hostel...</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Announcement</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    Issues Requiring Attention
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Maintenance request: Broken tap in Hostel A
+                            <span class="badge bg-danger rounded-pill">Urgent</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Security concern: Lost key in Hostel B
+                            <span class="badge bg-warning rounded-pill">Medium</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Space allocation: Overcrowding in Hostel C
+                            <span class="badge bg-warning rounded-pill">Medium</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Student complaint: Noise in Hostel D
+                            <span class="badge bg-info rounded-pill">Low</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

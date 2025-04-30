@@ -1,0 +1,301 @@
+<!-- Path: Views/Room/Assign.cshtml -->
+@model HostelMS.ViewModels.RoomAssignmentViewModel
+@{
+    ViewData["Title"] = "Room Assignment";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Room Assignment</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bed me-2"></i> @Model.Hostel.Name - Room @Model.Room.RoomNumber
+                        </h5>
+                        <span class="badge @(Model.Room.Status == RoomStatus.Available ? "bg-success" : 
+                                          Model.Room.Status == RoomStatus.PartiallyAssigned ? "bg-warning" : 
+                                          Model.Room.Status == RoomStatus.FullyAssigned ? "bg-danger" : "bg-secondary")">
+                            @Model.Room.Status
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Room Type:</strong> @Model.Room.Type</p>
+                            <p><strong>Capacity:</strong> @Model.Room.Capacity</p>
+                            <p><strong>Current Occupancy:</strong> @Model.Room.CurrentOccupancy / @Model.Room.Capacity</p>
+                            <p><strong>Description:</strong> @Model.Room.Description</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Current Occupants</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    @if (Model.CurrentOccupants.Any())
+                                    {
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var student in Model.CurrentOccupants)
+                                            {
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong>@student.FirstName @student.LastName</strong>
+                                                        <small class="d-block">@student.StudentId</small>
+                                                    </div>
+                                                    <div>
+                                                        <span class="badge @(student.IsVerified ? "bg-success" : "bg-warning") me-1">
+                                                            @(student.IsVerified ? "Verified" : "Unverified")
+                                                        </span>
+                                                        <button class="btn btn-sm btn-outline-danger" 
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#unassignModal" 
+                                                                data-student-id="@student.Id" 
+                                                                data-student-name="@student.FirstName @student.LastName">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-center my-3">No students currently assigned to this room.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Visual Bed Layout</h5>
+                        <div class="d-flex flex-wrap gap-3 justify-content-center p-3 border rounded bg-light">
+                            @for (int i = 1; i <= Model.Room.Capacity; i++)
+                            {
+                                var occupant = Model.CurrentOccupants.ElementAtOrDefault(i - 1);
+                                <div class="bed-space @(occupant != null ? "occupied" : "available")" data-bed-number="@i">
+                                    <div class="bed-icon">
+                                        <i class="fas fa-bed fa-2x @(occupant != null ? "text-danger" : "text-success")"></i>
+                                    </div>
+                                    <div class="bed-label">Bed @i</div>
+                                    @if (occupant != null)
+                                    {
+                                        <div class="occupant-name">@occupant.FirstName @occupant.LastName</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="assign-button">
+                                            <button class="btn btn-sm btn-primary" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#assignModal" 
+                                                    data-bed-number="@i">
+                                                Assign
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-search me-2"></i> Find Student</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Student" asp-action="Search" method="get" id="studentSearchForm" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="searchTerm" id="studentSearchInput" placeholder="Search by name or ID...">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </form> <div id="studentSearchResults" class="mt-3">
+                        <!-- Search results will be loaded here via AJAX -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i> Assignment Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Temporary Assignment:</strong> Students are initially given a temporary assignment for 30 days.</p>
+                    <p><strong>Verification Required:</strong> Students must verify their registration status with the administration before permanent assignment.</p>
+                    <p><strong>Check-in/Check-out:</strong> Students are required to check in and out when entering or leaving the hostel.</p>
+                    
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-lightbulb me-2"></i> <strong>Tip:</strong> Remember to update student verification status after confirming their registration.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Student Assignment Modal -->
+<div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignModalLabel">Assign Student to Bed</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Room" asp-action="AssignStudent" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="RoomId" value="@Model.Room.RoomId">
+                    <input type="hidden" name="BedNumber" id="assignBedNumber">
+                    
+                    <div class="mb-3">
+                        <label for="studentId" class="form-label">Student</label>
+                        <select class="form-select" id="studentId" name="StudentId" required>
+                            <option value="">Select a student...</option>
+                            @foreach (var student in Model.AvailableStudents)
+                            {
+                                <option value="@student.Id">@student.FirstName @student.LastName (@student.StudentId)</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="assignmentType" class="form-label">Assignment Type</label>
+                        <select class="form-select" id="assignmentType" name="IsTemporary">
+                            <option value="true" selected>Temporary (30-day probation)</option>
+                            <option value="false">Permanent</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="assignmentNotes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="assignmentNotes" name="Notes" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Assign Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Student Unassignment Modal -->
+<div class="modal fade" id="unassignModal" tabindex="-1" aria-labelledby="unassignModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unassignModalLabel">Unassign Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Room" asp-action="UnassignStudent" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="RoomId" value="@Model.Room.RoomId">
+                    <input type="hidden" name="StudentId" id="unassignStudentId">
+                    
+                    <p>Are you sure you want to unassign <span id="unassignStudentName"></span> from this room?</p>
+                    
+                    <div class="mb-3">
+                        <label for="unassignReason" class="form-label">Reason for Unassignment</label>
+                        <select class="form-select" id="unassignReason" name="Reason" required>
+                            <option value="">Select a reason...</option>
+                            <option value="Semester End">Semester End</option>
+                            <option value="Student Request">Student Request</option>
+                            <option value="Disciplinary Action">Disciplinary Action</option>
+                            <option value="Room Transfer">Room Transfer</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="unassignNotes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="unassignNotes" name="Notes" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Unassign Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            // Handle student search
+            $('#studentSearchForm').submit(function(e) {
+                e.preventDefault();
+                const searchTerm = $('#studentSearchInput').val();
+                
+                $.get(`/Student/SearchResults?searchTerm=${searchTerm}`, function(data) {
+                    $('#studentSearchResults').html(data);
+                });
+            });
+            
+            // Handle assignment modal
+            $('#assignModal').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget);
+                const bedNumber = button.data('bed-number');
+                $('#assignBedNumber').val(bedNumber);
+                $('#assignModalLabel').text(`Assign Student to Bed ${bedNumber}`);
+            });
+            
+            // Handle unassignment modal
+            $('#unassignModal').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget);
+                const studentId = button.data('student-id');
+                const studentName = button.data('student-name');
+                $('#unassignStudentId').val(studentId);
+                $('#unassignStudentName').text(studentName);
+            });
+            
+            // Style for bed spaces
+            $('.bed-space').css({
+                'width': '120px',
+                'height': '150px',
+                'border': '1px solid #ccc',
+                'border-radius': '5px',
+                'display': 'flex',
+                'flex-direction': 'column',
+                'align-items': 'center',
+                'justify-content': 'center',
+                'padding': '10px',
+                'text-align': 'center',
+                'background-color': '#f8f9fa'
+            });
+            
+            $('.bed-space.occupied').css({
+                'background-color': '#f8d7da',
+                'border-color': '#dc3545'
+            });
+            
+            $('.bed-space.available').css({
+                'background-color': '#d1e7dd',
+                'border-color': '#198754'
+            });
+            
+            $('.bed-label').css({
+                'font-weight': 'bold',
+                'margin-top': '5px'
+            });
+            
+            $('.occupant-name').css({
+                'margin-top': '5px',
+                'font-size': '0.9rem'
+            });
+            
+            $('.assign-button').css({
+                'margin-top': '10px'
+            });
+        });
+    </script>
+}
+                    

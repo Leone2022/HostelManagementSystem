@@ -1,0 +1,255 @@
+@model HostelMS.Models.Hostel
+@{
+    ViewData["Title"] = "Hostel Interior & Services - " + Model.Name;
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-building me-2"></i> @Model.Name - Interior & Services</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action("Details", new { id = Model.HostelId })">@Model.Name</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Interior & Services</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- Interior Gallery -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h4 class="mb-4 border-bottom pb-2">Hostel Interior</h4>
+                    
+                    <!-- Main image display -->
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-md-8">
+                            <div class="card shadow-sm">
+                                <img src="@Model.ImageUrl" id="mainImage" class="img-fluid" 
+                                     onerror="this.onerror=null; this.src='https://placehold.co/800x500/e9ecef/212529?text=Interior+View';"
+                                     alt="@Model.Name Interior">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Thumbnail Gallery -->
+                    <!-- Thumbnail Gallery -->
+<div class="row g-3 justify-content-center">
+    <!-- Use the main hostel image -->
+    <div class="col-6 col-md-2">
+        <div class="card hover-shadow cursor-pointer">
+            <img src="@Model.ImageUrl" onclick="changeMainImage(this.src)" class="img-fluid gallery-thumb" 
+                 onerror="this.onerror=null; this.src='https://placehold.co/800x500/e9ecef/212529?text=Building';"
+                 alt="Building Exterior">
+        </div>
+    </div>
+    
+    <!-- Sample interior images -->
+    <div class="col-6 col-md-2">
+        <div class="card hover-shadow cursor-pointer">
+            <img src="/images/hostels/room-interior.jpg" onclick="changeMainImage(this.src)" class="img-fluid gallery-thumb" 
+                 alt="Room Interior">
+        </div>
+    </div>
+    
+    <div class="col-6 col-md-2">
+        <div class="card hover-shadow cursor-pointer">
+            <img src="/images/hostels/dorm-room.jpg" onclick="changeMainImage(this.src)" class="img-fluid gallery-thumb" 
+                 alt="Dormitory Room">
+        </div>
+    </div>
+    
+    <div class="col-6 col-md-2">
+        <div class="card hover-shadow cursor-pointer">
+            <img src="/images/hostels/bathroom.jpg" onclick="changeMainImage(this.src)" class="img-fluid gallery-thumb" 
+                 alt="Bathroom Facilities">
+        </div>
+    </div>
+    
+    <div class="col-6 col-md-2">
+        <div class="card hover-shadow cursor-pointer">
+            <img src="/images/hostels/lounge.jpg" onclick="changeMainImage(this.src)" class="img-fluid gallery-thumb" 
+                 alt="Student Lounge">
+        </div>
+    </div>
+</div>
+            
+            <!-- Services Section -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h4 class="mb-4 border-bottom pb-2">Hostel Services</h4>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 hover-shadow">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-container rounded-circle bg-primary mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                                         style="width: 70px; height: 70px;">
+                                        <i class="fas fa-broom fa-2x text-white"></i>
+                                    </div>
+                                    <h5>Cleaning Services</h5>
+                                    <p class="text-muted">Regular cleaning of common areas is provided. Personal rooms are cleaned weekly upon request.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 hover-shadow">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-container rounded-circle bg-success mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                                         style="width: 70px; height: 70px;">
+                                        <i class="fas fa-shield-alt fa-2x text-white"></i>
+                                    </div>
+                                    <h5>24/7 Security</h5>
+                                    <p class="text-muted">Round-the-clock security personnel and CCTV surveillance ensure student safety at all times.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 hover-shadow">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-container rounded-circle bg-danger mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                                         style="width: 70px; height: 70px;">
+                                        <i class="fas fa-tools fa-2x text-white"></i>
+                                    </div>
+                                    <h5>Maintenance</h5>
+                                    <p class="text-muted">Quick response to maintenance requests with dedicated staff to handle repairs and issues.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-4 mt-1">
+                        @if (Model.Name == "Clifford Mensahs Hall" || Model.Name == "Bensdorp Hall")
+                        {
+                            <div class="col-md-4">
+                                <div class="card h-100 hover-shadow">
+                                    <div class="card-body text-center p-4">
+                                        <div class="icon-container rounded-circle bg-info mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                                             style="width: 70px; height: 70px;">
+                                            <i class="fas fa-wifi fa-2x text-white"></i>
+                                        </div>
+                                        <h5>Wi-Fi Services</h5>
+                                        <p class="text-muted">High-speed wireless internet available throughout the building for academic and personal use.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 hover-shadow">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-container rounded-circle bg-warning mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                                         style="width: 70px; height: 70px;">
+                                        <i class="fas fa-utensils fa-2x text-white"></i>
+                                    </div>
+                                    <h5>Common Kitchen</h5>
+                                    <p class="text-muted">Shared kitchen facilities available for student use with refrigerator and basic cooking equipment.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 hover-shadow">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-container rounded-circle bg-secondary mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                                         style="width: 70px; height: 70px;">
+                                        <i class="fas fa-couch fa-2x text-white"></i>
+                                    </div>
+                                    <h5>Common Areas</h5>
+                                    <p class="text-muted">Comfortable lounges and study spaces for relaxation and group activities.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Amenities Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h4 class="mb-4 border-bottom pb-2">Hostel Amenities</h4>
+                    
+                    @if (Model.Amenities != null && Model.Amenities.Any(a => a.IsActive))
+                    {
+                        <div class="row g-4">
+                            @foreach (var amenity in Model.Amenities.Where(a => a.IsActive))
+                            {
+                                <div class="col-md-4">
+                                    <div class="card h-100 hover-shadow">
+                                        <div class="card-body p-4">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="icon-container rounded-circle bg-light d-flex align-items-center justify-content-center me-3" 
+                                                     style="width: 50px; height: 50px;">
+                                                    <i class="@(string.IsNullOrEmpty(amenity.IconClass) ? "fas fa-check" : amenity.IconClass) fa-lg text-primary"></i>
+                                                </div>
+                                                <h5 class="mb-0">@amenity.Name</h5>
+                                            </div>
+                                            <p class="text-muted mb-0">@(string.IsNullOrEmpty(amenity.Description) ? "No description available." : amenity.Description)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No specific amenities listed for this hostel.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="@Url.Action("Details", new { id = Model.HostelId })" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i> Back to Hostel Details
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function changeMainImage(src) {
+            document.getElementById('mainImage').src = src;
+        }
+        
+        // Add hover effects for gallery thumbnails
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbs = document.querySelectorAll('.gallery-thumb');
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('mouseenter', function() {
+                    this.parentElement.classList.add('shadow');
+                });
+                thumb.addEventListener('mouseleave', function() {
+                    this.parentElement.classList.remove('shadow');
+                });
+            });
+        });
+    </script>
+    
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+            transform: translateY(-3px);
+            transition: all 0.3s ease;
+        }
+        
+        .cursor-pointer {
+            cursor: pointer;
+        }
+        
+        .gallery-thumb {
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    </style>
+}

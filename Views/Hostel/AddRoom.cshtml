@@ -1,0 +1,116 @@
+@model HostelMS.ViewModels.RoomViewModel
+@{
+    ViewData["Title"] = "Add Room";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Add New Room to @Model.HostelName</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddRoom" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="HostelId" />
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="RoomNumber" class="form-label fw-bold"></label>
+                                <input asp-for="RoomNumber" class="form-control" placeholder="e.g., A101, B202, etc." />
+                                <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Type" class="form-label fw-bold"></label>
+                                <select asp-for="Type" asp-items="Html.GetEnumSelectList<RoomType>()" class="form-select">
+                                    <option value="">Select room type</option>
+                                </select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Capacity" class="form-label fw-bold"></label>
+                                <input asp-for="Capacity" class="form-control" type="number" min="1" max="20" placeholder="Number of beds" />
+                                <span asp-validation-for="Capacity" class="text-danger"></span>
+                                <div class="form-text">Maximum capacity is 20 students per room.</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PricePerSemester" class="form-label fw-bold">Price Per Semester (UGX)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">UGX</span>
+                                    <input asp-for="PricePerSemester" class="form-control" type="number" min="0" step="1000" placeholder="Enter price" />
+                                </div>
+                                <span asp-validation-for="PricePerSemester" class="text-danger"></span>
+                                <div class="form-text">Price in Ugandan Shillings</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe the room facilities, location, etc."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input asp-for="NeedsAttention" class="form-check-input" type="checkbox" />
+                            <label asp-for="NeedsAttention" class="form-check-label fw-bold">
+                                Room needs maintenance attention
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="RoomLayout" asp-route-id="@Model.HostelId" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Room Layout
+                            </a>
+                            <div>
+                                <button type="submit" name="submitButton" value="addAnother" class="btn btn-outline-success me-2">
+                                    <i class="fas fa-plus-circle me-2"></i> Save & Add Another
+                                </button>
+                                <button type="submit" name="submitButton" value="saveOnly" class="btn btn-success">
+                                    <i class="fas fa-save me-2"></i> Save Room
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Update capacity when type changes
+            $('#Type').change(function() {
+                var selectedType = $(this).val();
+                var capacity = 1;
+                
+                switch(selectedType) {
+                    case '0': // Single
+                        capacity = 1;
+                        break;
+                    case '1': // Double
+                        capacity = 2;
+                        break;
+                    case '2': // Triple
+                        capacity = 3;
+                        break;
+                    case '3': // Quad
+                        capacity = 4;
+                        break;
+                    case '4': // Dormitory
+                        capacity = 8;
+                        break;
+                }
+                
+                $('#Capacity').val(capacity);
+            });
+        });
+    </script>
+}

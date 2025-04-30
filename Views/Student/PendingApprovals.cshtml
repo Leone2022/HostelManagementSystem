@@ -1,0 +1,104 @@
+@model IEnumerable<HostelMS.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Pending Student Approvals";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-user-check text-primary me-2"></i> Pending Student Approvals</h1>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Student ID</th>
+                                <th>Email</th>
+                                <th>Course</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(student.ProfilePicture))
+                                        {
+                                            <img src="@student.ProfilePicture" alt="Student" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-user text-white"></i>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>@student.FirstName @student.LastName</td>
+                                    <td>@student.StudentId</td>
+                                    <td>@student.Email</td>
+                                    <td>@student.Course</td>
+                                    <td>@(student.RegistrationDate?.ToString("MMM dd, yyyy") ?? "N/A")</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="@Url.Action("Review", "Student", new { id = student.Id })" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i> Review
+                                            </a>
+                                            <a href="@Url.Action("ApproveStudent", "Account", new { id = student.Id })" class="btn btn-sm btn-outline-success">
+                                                <i class="fas fa-check"></i> Approve
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rejectModal-@student.Id">
+                                                <i class="fas fa-times"></i> Reject
+                                            </button>
+                                        </div>
+
+                                        <!-- Reject Modal -->
+                                        <div class="modal fade" id="rejectModal-@student.Id" tabindex="-1" aria-labelledby="rejectModalLabel-@student.Id" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title" id="rejectModalLabel-@student.Id">Confirm Rejection</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to reject the registration of <strong>@student.FirstName @student.LastName</strong>?</p>
+                                                        <p class="text-danger">This action cannot be undone. The student will need to register again.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <a href="@Url.Action("RejectStudent", "Account", new { id = student.Id })" class="btn btn-danger">Confirm Rejection</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No pending student approvals at this time.
+        </div>
+    }
+</div>

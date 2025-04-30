@@ -1,0 +1,101 @@
+@model HostelMS.ViewModels.RoomVisualizerViewModel
+
+<div class="room-visualizer">
+    @if (Model.Floors != null && Model.Floors.Any())
+    {
+        <ul class="nav nav-tabs mb-3" id="floorTabs" role="tablist">
+            @foreach (var floor in Model.Floors.Keys)
+            {
+                var floorId = floor.Replace(" ", "_");
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(floor == Model.Floors.Keys.First() ? "active" : "")" 
+                            id="@floorId-tab" data-bs-toggle="tab" data-bs-target="#@floorId" 
+                            type="button" role="tab" aria-controls="@floorId" 
+                            aria-selected="@(floor == Model.Floors.Keys.First() ? "true" : "false")">
+                        @floor
+                    </button>
+                </li>
+            }
+        </ul>
+        
+        <div class="tab-content" id="floorTabContent">
+            @foreach (var floor in Model.Floors)
+            {
+                var floorId = floor.Key.Replace(" ", "_");
+                <div class="tab-pane fade @(floor.Key == Model.Floors.Keys.First() ? "show active" : "")" 
+                     id="@floorId" role="tabpanel" aria-labelledby="@floorId-tab">
+                    
+                    <div class="room-layout d-flex flex-wrap gap-2">
+                        @if (floor.Value != null && floor.Value.Any())
+                        {
+                            @foreach (var room in floor.Value)
+                            {
+                                var statusClass = room.Status == RoomStatus.Available ? "available" :
+                                                  room.Status == RoomStatus.PartiallyAssigned ? "partial" :
+                                                  room.Status == RoomStatus.FullyAssigned ? "full" : "maintenance";
+                                                  
+                                var isSelectable = room.Status != RoomStatus.FullyAssigned && 
+                                                  room.Status != RoomStatus.UnderMaintenance;
+                                                  
+                                <div class="room-block @statusClass @(isSelectable ? "selectable" : "")"
+                                     data-room-number="@room.RoomNumber"
+                                     data-room-id="@room.RoomId"
+                                     data-capacity="@room.Capacity"
+                                     data-occupancy="@room.CurrentOccupancy"
+                                     @(isSelectable ? "" : "disabled")>
+                                    <div class="room-number">@room.RoomNumber</div>
+                                    <div class="room-type">@room.Type</div>
+                                    <div class="room-occupancy">@room.CurrentOccupancy/@room.Capacity</div>
+                                    <div class="room-price">$@room.PricePerSemester.ToString("N0")</div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">No rooms found on this floor.</div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No rooms available for visualization. Please select a hostel with available rooms.
+        </div>
+    }
+</div>
+
+<style>
+    .room-block {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .room-block.available {
+        background-color: #d1e7dd;
+        border-color: #a3cfbb;
+    }
+    
+    .room-block.partial {
+        background-color: #fff3cd;
+        border-color: #ffecb5;
+    }
+    
+    .room-block.full {
+        background-color: #f8d7da;
+        border-color: #f5c2c7;
+    }
+    
+    .room-block.maintenance {
+        background-color: #e2e3e5;
+        border-color: #d3d6d8;
+    }
+    
+    .room-

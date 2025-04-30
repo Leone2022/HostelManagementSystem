@@ -1,0 +1,414 @@
+@model HostelMS.Models.Booking
+@{
+    ViewData["Title"] = "Booking Details";
+    
+    var isAdmin = User.IsInRole("Admin");
+    var isWarden = User.IsInRole("Warden");
+    var isStaff = isAdmin || isWarden;
+    
+    var payment = ViewBag.Payment as HostelMS.Models.Payment;
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i> Booking Details #@Model.BookingId</h5>
+                        
+                        @switch (Model.Status)
+                        {
+                            case BookingStatus.Pending:
+                                <span class="badge bg-warning text-dark p-2">Pending</span>
+                                break;
+                            case BookingStatus.Approved:
+                                <span class="badge bg-success p-2">Approved</span>
+                                break;
+                            case BookingStatus.Rejected:
+                                <span class="badge bg-danger p-2">Rejected</span>
+                                break;
+                            case BookingStatus.CheckedIn:
+                                <span class="badge bg-primary p-2">Checked In</span>
+                                break;
+                            case BookingStatus.CheckedOut:
+                                <span class="badge bg-secondary p-2">Checked Out</span>
+                                break;
+                            case BookingStatus.Cancelled:
+                                <span class="badge bg-dark p-2">Cancelled</span>
+                                break;
+                        }
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Booking Summary Card -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-clipboard me-2"></i> Booking Summary</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-4">Booking ID:</dt>
+                                        <dd class="col-sm-8">#@Model.BookingId</dd>
+                                        
+                                        <dt class="col-sm-4">Date:</dt>
+                                        <dd class="col-sm-8">@Model.BookingDate.ToString("dd MMM yyyy HH:mm")</dd>
+                                        
+                                        <dt class="col-sm-4">Check-in:</dt>
+                                        <dd class="col-sm-8">@Model.CheckInDate.ToString("dd MMM yyyy")</dd>
+                                        
+                                        <dt class="col-sm-4">Check-out:</dt>
+                                        <dd class="col-sm-8">@Model.CheckOutDate.ToString("dd MMM yyyy")</dd>
+                                        
+                                        <dt class="col-sm-4">Amount:</dt>
+                                        <dd class="col-sm-8">UGX @Model.TotalAmount.ToString("N0")</dd>
+                                    </dl>
+                                </div>
+                                <div class="col-md-6">
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-4">Status:</dt>
+                                        <dd class="col-sm-8">
+                                            @switch (Model.Status)
+                                            {
+                                                case BookingStatus.Pending:
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                    break;
+                                                case BookingStatus.Approved:
+                                                    <span class="badge bg-success">Approved</span>
+                                                    break;
+                                                case BookingStatus.Rejected:
+                                                    <span class="badge bg-danger">Rejected</span>
+                                                    break;
+                                                case BookingStatus.CheckedIn:
+                                                    <span class="badge bg-primary">Checked In</span>
+                                                    break;
+                                                case BookingStatus.CheckedOut:
+                                                    <span class="badge bg-secondary">Checked Out</span>
+                                                    break;
+                                                case BookingStatus.Cancelled:
+                                                    <span class="badge bg-dark">Cancelled</span>
+                                                    break;
+                                            }
+                                        </dd>
+                                        
+                                        @if (Model.Status == BookingStatus.Approved && !string.IsNullOrEmpty(Model.ApprovedBy))
+                                        {
+                                            <dt class="col-sm-4">Approved By:</dt>
+                                            <dd class="col-sm-8">@Model.ApprovedBy</dd>
+                                            
+                                            <dt class="col-sm-4">Approval Date:</dt>
+                                            <dd class="col-sm-8">@(Model.ApprovalDate?.ToString("dd MMM yyyy HH:mm") ?? "")</dd>
+                                        }
+                                        
+                                        @if (Model.Status == BookingStatus.Rejected && !string.IsNullOrEmpty(Model.RejectionReason))
+                                        {
+                                            <dt class="col-sm-4">Reason:</dt>
+                                            <dd class="col-sm-8">@Model.RejectionReason</dd>
+                                        }
+                                    </dl>
+                                </div>
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.Comments))
+                            {
+                                <div class="mt-3">
+                                    <h6 class="fw-bold">Comments:</h6>
+                                    <p class="mb-0">@Model.Comments</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <!-- Hostel & Room Card -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-building me-2"></i> Hostel & Room Details</h6>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.Room?.Hostel != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        @if (!string.IsNullOrEmpty(Model.Room.Hostel.ImageUrl))
+                                        {
+                                            <img src="@Model.Room.Hostel.ImageUrl" class="img-fluid rounded mb-2" 
+                                                 style="max-height: 150px; object-fit: cover;" alt="Hostel">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light d-flex align-items-center justify-content-center rounded mb-2" 
+                                                 style="height: 150px;">
+                                                <i class="fas fa-building fa-4x text-muted"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5>@Model.Room.Hostel.Name</h5>
+                                        <p class="mb-2"><i class="fas fa-map-marker-alt text-danger me-2"></i>@Model.Room.Hostel.Location</p>
+                                        <p class="mb-2"><i class="fas fa-venus-mars text-primary me-2"></i>@Model.Room.Hostel.Gender</p>
+                                        <p class="mb-2"><i class="fas fa-door-open text-success me-2"></i>Room @Model.Room.RoomNumber</p>
+                                        <p class="mb-0"><i class="fas fa-bed text-warning me-2"></i>@Model.Room.Type.ToString() Room</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <a asp-controller="Hostel" asp-action="Details" asp-route-id="@Model.Room.HostelId" 
+                                       class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fas fa-building me-1"></i> View Hostel
+                                    </a>
+                                    <a asp-controller="Room" asp-action="Details" asp-route-id="@Model.RoomId" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-door-open me-1"></i> View Room
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Hostel and room information not available.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <!-- Student Information Card (visible only to staff) -->
+                    @if (isStaff && Model.Student != null)
+                    {
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-user-graduate me-2"></i> Student Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2 text-center">
+                                        @if (!string.IsNullOrEmpty(Model.Student.ProfilePicture))
+                                        {
+                                            <img src="@Model.Student.ProfilePicture" class="rounded-circle img-thumbnail mb-2" 
+                                                 style="width:100px; height:100px; object-fit: cover;" alt="Profile Picture">
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-2" 
+                                                 style="width:100px; height:100px;">
+                                                <i class="fas fa-user fa-3x"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h5>@Model.Student.FirstName @Model.Student.LastName</h5>
+                                        <p class="mb-0 text-muted">Student ID: @Model.Student.StudentId</p>
+                                        <p class="mb-0 text-muted">Course: @Model.Student.Course</p>
+                                        <p class="mb-0 text-muted">Year: @Model.Student.Year</p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p class="mb-0 text-muted"><i class="fas fa-phone me-2"></i>@Model.Student.PhoneNumber</p>
+                                        <p class="mb-0 text-muted"><i class="fas fa-envelope me-2"></i>@Model.Student.Email</p>
+                                        <p class="mb-0 text-muted"><i class="fas fa-map-marker-alt me-2"></i>@Model.Student.Address</p>
+                                        <p class="mb-0 text-muted"><i class="fas fa-flag me-2"></i>@Model.Student.Nationality</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <a asp-controller="Student" asp-action="Details" asp-route-id="@Model.Student.Id" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-user-circle me-1"></i> View Full Student Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+                    <!-- Payment Information Card -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i> Payment Information</h6>
+                        </div>
+                        <div class="card-body">
+                            @if (payment != null)
+                            {
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Amount:</dt>
+                                            <dd class="col-sm-8">UGX @payment.Amount.ToString("N0")</dd>
+                                            
+                                            <dt class="col-sm-4">Date:</dt>
+                                            <dd class="col-sm-8">@payment.PaymentDate.ToString("dd MMM yyyy HH:mm")</dd>
+                                            
+                                            <dt class="col-sm-4">Method:</dt>
+                                            <dd class="col-sm-8">@payment.Method.ToString()</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Status:</dt>
+                                            <dd class="col-sm-8">
+                                                @switch (payment.Status)
+                                                {
+                                                    case PaymentStatus.Pending:
+                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                        break;
+                                                    case PaymentStatus.Completed:
+                                                        <span class="badge bg-success">Completed</span>
+                                                        break;
+                                                    case PaymentStatus.Failed:
+                                                        <span class="badge bg-danger">Failed</span>
+                                                        break;
+                                                    case PaymentStatus.Refunded:
+                                                        <span class="badge bg-info">Refunded</span>
+                                                        break;
+                                                }
+                                            </dd>
+                                            
+                                            <dt class="col-sm-4">Reference:</dt>
+                                            <dd class="col-sm-8">@payment.TransactionReference</dd>
+                                            
+                                            @if (!string.IsNullOrEmpty(payment.ReceiptNumber))
+                                            {
+                                                <dt class="col-sm-4">Receipt #:</dt>
+                                                <dd class="col-sm-8">@payment.ReceiptNumber</dd>
+                                            }
+                                        </dl>
+                                    </div>
+                                </div>
+                                
+                                @if (!string.IsNullOrEmpty(payment.Notes))
+                                {
+                                    <div class="mb-3">
+                                        <h6 class="fw-bold">Notes:</h6>
+                                        <p class="mb-0">@payment.Notes</p>
+                                    </div>
+                                }
+                                
+                                @if (!string.IsNullOrEmpty(payment.ProofOfPaymentUrl))
+                                {
+                                    <h6 class="fw-bold mb-2">Payment Proof:</h6>
+                                    <div class="payment-proof-container text-center">
+                                        @if (payment.ProofOfPaymentUrl.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <div class="mb-2">
+                                                <a href="@payment.ProofOfPaymentUrl" class="btn btn-sm btn-primary" target="_blank">
+                                                    <i class="fas fa-file-pdf me-1"></i> View PDF Payment Proof
+                                                </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <img src="@payment.ProofOfPaymentUrl" class="img-fluid rounded border shadow-sm" 
+                                                 style="max-height: 300px;" alt="Payment Proof">
+                                        }
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Payment information not available.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        @if (isStaff)
+                        {
+                            <a asp-action="ManageBookings" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Bookings
+                            </a>
+                            
+                            <div>
+                                @if (Model.Status == BookingStatus.Pending)
+                                {
+                                    <a asp-action="ProcessBooking" asp-route-id="@Model.BookingId" class="btn btn-success me-2">
+                                        <i class="fas fa-clipboard-check me-2"></i> Process Booking
+                                    </a>
+                                }
+                                
+                                @if (Model.Status == BookingStatus.Approved && Model.Status != BookingStatus.CheckedIn)
+                                {
+                                    <form asp-action="CheckIn" asp-route-id="@Model.BookingId" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-primary me-2" 
+                                                onclick="return confirm('Are you sure you want to check in this student?');">
+                                            <i class="fas fa-sign-in-alt me-2"></i> Check In
+                                        </button>
+                                    </form>
+                                }
+                                
+                                @if (Model.Status == BookingStatus.CheckedIn)
+                                {
+                                    <form asp-action="CheckOut" asp-route-id="@Model.BookingId" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-secondary me-2" 
+                                                onclick="return confirm('Are you sure you want to check out this student?');">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Check Out
+                                        </button>
+                                    </form>
+                                }
+                                
+                                @if (Model.Status == BookingStatus.Pending || Model.Status == BookingStatus.Approved)
+                                {
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                        <i class="fas fa-times me-2"></i> Cancel Booking
+                                    </button>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="MyBookings" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to My Bookings
+                            </a>
+                            
+                            @if (Model.Status == BookingStatus.Pending)
+                            {
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                    <i class="fas fa-times me-2"></i> Cancel Booking
+                                </button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Modal -->
+@if (Model.Status == BookingStatus.Pending || Model.Status == BookingStatus.Approved)
+{
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="cancelModalLabel">Confirm Cancellation</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this booking?</p>
+                    <ul>
+                        <li><strong>Booking ID:</strong> #@Model.BookingId</li>
+                        <li><strong>Hostel:</strong> @Model.Room?.Hostel?.Name</li>
+                        <li><strong>Room:</strong> @Model.Room?.RoomNumber</li>
+                        <li><strong>Check-in Date:</strong> @Model.CheckInDate.ToString("dd MMM yyyy")</li>
+                    </ul>
+                    <p class="text-danger">This action cannot be undone!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> No, Keep Booking
+                    </button>
+                    <form asp-action="Cancel" asp-route-id="@Model.BookingId" method="post">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-check me-1"></i> Yes, Cancel Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

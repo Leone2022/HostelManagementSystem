@@ -1,0 +1,477 @@
+﻿@model IEnumerable<HostelMS.Models.Hostel>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Section with Enhanced Design -->
+<div class="hero-container position-relative mb-5">
+    <div class="hero-bg position-relative" style="background: linear-gradient(135deg, #3a1c71, #131d69, #7d7bff); height: 500px; border-radius: 0 0 20px 20px; overflow: hidden;">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-7 text-white">
+                    <h1 class="display-4 fw-bold" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        Bugema University<br>Hostel Management 
+                    </h1>
+                    <p class="fs-5 mb-4 pe-lg-5">A comprehensive platform for managing student accommodations with ease and efficiency.</p>
+                    
+                    <!-- Simplified Portal Access -->
+                    <div class="d-flex flex-wrap gap-4 mt-4">
+                        <a href="/Account/Login?userType=student" class="btn btn-light btn-lg px-4 d-flex align-items-center">
+                            <i class="fas fa-user-graduate me-2"></i> Student Portal
+                        </a>
+                        <a href="/Account/Login?userType=staff" class="btn btn-outline-light btn-lg px-4 d-flex align-items-center">
+                            <i class="fas fa-user-tie me-2"></i> Staff Portal
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+                    <div class="hero-image-container position-relative" style="width: 380px; height: 380px;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <img src="~/images/bugema-university-logo.png" alt="Bugema University" class="img-fluid" style="max-width: 80%; max-height: 80%; opacity: 0.9;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wave Decoration -->
+        <div class="wave-container position-absolute bottom-0 left-0 w-100" style="height: 50px; overflow: hidden;">
+            <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+                <path d="M0.00,49.98 C149.99,150.00 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: #fff;"></path>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Status Section -->
+<div class="container mt-n5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-4 text-center p-4 d-flex flex-column justify-content-center" style="background-color: rgba(58, 28, 113, 0.05);">
+                            <div class="py-3">
+                                <i class="fas fa-calendar-check fa-2x mb-3" style="color: #3a1c71;"></i>
+                                <h5 class="fw-bold">2024/2025</h5>
+                                <p class="text-muted mb-0">Academic Year</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center p-4 d-flex flex-column justify-content-center" style="background-color: rgba(58, 28, 113, 0.1);">
+                            <div class="py-3">
+                                <i class="fas fa-door-open fa-2x mb-3" style="color: #3a1c71;"></i>
+                                <h5 class="fw-bold">Room are available</h5>
+                                <p class="text-muted mb-0">Come Reserve Your Room Now</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center p-4 d-flex flex-column justify-content-center" style="background-color: rgba(58, 28, 113, 0.05);">
+                            <div class="py-3">
+                                <i class="fas fa-clock fa-2x mb-3" style="color: #3a1c71;"></i>
+                                <h5 class="fw-bold">Aug 31, 2025</h5>
+                                <p class="text-muted mb-0">Application Deadline</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About System Section -->
+<div class="container mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="fw-bold mb-4" style="color: #3a1c71;">Hostel Management Information</h2>
+            <div class="feature-items">
+                <div class="feature-item d-flex align-items-start mb-4">
+                    <div class="feature-icon me-3 mt-1">
+                        <div class="icon-container rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 40px; height: 40px; background-color: rgba(13, 110, 253, 0.1);">
+                            <i class="fas fa-info-circle text-primary"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="mb-2">For Students</h5>
+                        <p class="text-muted">Create an account through the Student Portal to request hostel accommodation. Your application will be reviewed and approved by administrators.</p>
+                    </div>
+                </div>
+                <div class="feature-item d-flex align-items-start mb-4">
+                    <div class="feature-icon me-3 mt-1">
+                        <div class="icon-container rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 40px; height: 40px; background-color: rgba(25, 135, 84, 0.1);">
+                            <i class="fas fa-user-check text-success"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="mb-2">Application Process</h5>
+                        <p class="text-muted">Applications are processed on a first-come, first-served basis, with preference given to continuing students. Accommodation is assigned based on availability and eligibility.</p>
+                    </div>
+                </div>
+                <div class="feature-item d-flex align-items-start">
+                    <div class="feature-icon me-3 mt-1">
+                        <div class="icon-container rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 40px; height: 40px; background-color: rgba(220, 53, 69, 0.1);">
+                            <i class="fas fa-file-alt text-danger"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="mb-2">Hostel Regulations</h5>
+                        <p class="text-muted">All residents must adhere to the Bugema University hostel regulations. Visit our website for more details on policies and requirements.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm overflow-hidden">
+                <div class="card-body p-0">
+                    <img src="/images/hostels/hostel-management.jpg" alt="Hostel Management" class="img-fluid w-100" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/e9ecef/212529?text=Bugema+University+Hostels';">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonial Section -->
+<div class="container mb-5 py-4">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-8 text-center">
+            <h2 class="fw-bold" style="color: #3a1c71;">What Our Students Say</h2>
+            <p class="text-muted">Hear from students who have experienced our hostel facilities</p>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body px-4 py-5">
+                    <div class="row">
+                        <div class="col-md-4 mb-4 mb-md-0">
+                            <div class="text-center">
+                                <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" 
+                                     style="width: 100px; height: 100px;">
+                                    <i class="fas fa-user fa-3x text-primary"></i>
+                                </div>
+                                <h5 class="mb-1"> Leone Chirodza</h5>
+                                <p class="text-muted small mb-0"> Student, Bugema University</p>
+                            </div>
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div>
+                                <i class="fas fa-quote-left fa-2x text-primary opacity-25 mb-3"></i>
+                                <p class="lead mb-0">Living in the university hostel has been an enriching experience. The facilities are well-maintained, and the community atmosphere has helped me build lasting friendships. The security measures make me feel safe, and the management team is responsive to our needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Hostels Section with Tabs -->
+<div class="container mb-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col">
+            <h2 class="fw-bold" style="color: #3a1c71;">Available Hostels</h2>
+            <p class="text-muted">Explore our comfortable and well-equipped accommodations</p>
+        </div>
+    </div>
+    
+    <!-- Hostels Tabs Section -->
+    <div class="mb-5">
+        <ul class="nav nav-tabs mb-4" id="hostelsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="institution-tab" data-bs-toggle="tab" data-bs-target="#institution-hostels" 
+                        type="button" role="tab" aria-controls="institution-hostels" aria-selected="true">
+                    Institution-Managed Hostels
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="private-tab" data-bs-toggle="tab" data-bs-target="#private-hostels" 
+                        type="button" role="tab" aria-controls="private-hostels" aria-selected="false">
+                    Privately-Managed Hostels
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="hostelsTabsContent">
+            <!-- Institution-Managed Hostels Tab -->
+            <div class="tab-pane fade show active" id="institution-hostels" role="tabpanel" aria-labelledby="institution-tab">
+                <div class="row g-4">
+                    @if (ViewBag.InstitutionHostels != null && ViewBag.InstitutionHostels.Count > 0)
+                    {
+                        foreach (var hostel in ViewBag.InstitutionHostels)
+                        {
+                            <div class="col-lg-4 col-md-6">
+                                <div class="card h-100 border-0 shadow-sm hostel-card">
+                                    <div class="position-relative">
+                                        @if (!string.IsNullOrEmpty(hostel.ImageUrl))
+                                        {
+                                            <img src="@hostel.ImageUrl" class="card-img-top" alt="@hostel.Name" style="height: 220px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                                                <i class="fas fa-building fa-4x text-secondary"></i>
+                                            </div>
+                                        }
+                                        <span class="position-absolute top-0 end-0 m-3 badge rounded-pill bg-primary">
+                                            @hostel.Gender Hostel
+                                        </span>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold">@hostel.Name</h5>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                            <p class="card-text mb-0">@hostel.Location</p>
+                                        </div>
+                                        
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-tag text-primary me-2"></i>
+                                            <p class="card-text mb-0">@hostel.HostelCode</p>
+                                        </div>
+                                        
+                                        <div class="hostel-features mb-3">
+                                            <span class="badge bg-light text-dark me-2 mb-2">
+                                                @if (hostel.Name == "Clifford Mensahs Hall" || hostel.Name == "Bensdorp Hall")
+                                                {
+                                                    <i class="fas fa-wifi me-1 text-primary"></i> <span>Wi-Fi</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-bed me-1 text-primary"></i> <span>Comfortable</span>
+                                                }
+                                            </span>
+                                            <span class="badge bg-light text-dark me-2 mb-2">
+                                                <i class="fas fa-couch me-1 text-primary"></i> Common Areas
+                                            </span>
+                                            <span class="badge bg-light text-dark me-2 mb-2">
+                                                <i class="fas fa-shield-alt me-1 text-primary"></i> 24/7 Security
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white border-0 pb-3">
+                                        <a href="/Hostel/Details/@hostel.HostelId" class="btn btn-sm btn-outline-primary rounded-pill px-3 w-100">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <div class="alert alert-info text-center py-5">
+                                <i class="fas fa-info-circle fa-3x mb-3"></i>
+                                <h4>No institution-managed hostels available at the moment</h4>
+                                <p class="mb-0">New accommodations will be added soon.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <!-- Privately-Managed Hostels Tab -->
+            <div class="tab-pane fade" id="private-hostels" role="tabpanel" aria-labelledby="private-tab">
+                <div class="row g-4">
+                    @if (ViewBag.PrivateHostels != null && ViewBag.PrivateHostels.Count > 0)
+                    {
+                        foreach (var hostel in ViewBag.PrivateHostels)
+                        {
+                            <div class="col-lg-4 col-md-6">
+                                <div class="card h-100 border-0 shadow-sm hostel-card">
+                                    <div class="position-relative">
+                                        @if (!string.IsNullOrEmpty(hostel.ImageUrl))
+                                        {
+                                            <img src="@hostel.ImageUrl" class="card-img-top" alt="@hostel.Name" style="height: 220px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                                                <i class="fas fa-building fa-4x text-secondary"></i>
+                                            </div>
+                                        }
+                                        <span class="position-absolute top-0 end-0 m-3 badge rounded-pill bg-primary">
+                                            @hostel.Gender Hostel
+                                        </span>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold">@hostel.Name</h5>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                            <p class="card-text mb-0">@hostel.Location</p>
+                                        </div>
+                                        
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-tag text-info me-2"></i>
+                                            <p class="card-text mb-0">@hostel.HostelCode</p>
+                                        </div>
+                                        
+                                        <div class="hostel-features mb-3">
+                                            <span class="badge bg-light text-dark me-2 mb-2">
+                                                @if (hostel.Name == "Clifford Mensahs Hall" || hostel.Name == "Bensdorp Hall")
+                                                {
+                                                    <i class="fas fa-wifi me-1 text-primary"></i> <span>Wi-Fi</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-bed me-1 text-primary"></i> <span>Comfortable</span>
+                                                }
+                                            </span>
+                                            <span class="badge bg-light text-dark me-2 mb-2">
+                                                <i class="fas fa-couch me-1 text-primary"></i> Common Areas
+                                            </span>
+                                            <span class="badge bg-light text-dark me-2 mb-2">
+                                                <i class="fas fa-shield-alt me-1 text-primary"></i> 24/7 Security
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white border-0 pb-3">
+                                        <a href="/Hostel/Details/@hostel.HostelId" class="btn btn-sm btn-outline-primary rounded-pill px-3 w-100">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <div class="alert alert-info text-center py-5">
+                                <i class="fas fa-info-circle fa-3x mb-3"></i>
+                                <h4>No privately-managed hostels available at the moment</h4>
+                                <p class="mb-0">New accommodations will be added soon.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="container mb-5">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h2 class="fw-bold" style="color: #3a1c71;">Frequently Asked Questions</h2>
+            <p class="text-muted">Find answers to common questions about our hostel facilities</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h5 class="mb-3"><i class="fas fa-question-circle text-primary me-2"></i> How do I apply for accommodation?</h5>
+                    <p class="mb-0 text-muted">Register through the Student Portal, complete your profile, and submit your application. Accommodation is assigned based on availability and application date.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h5 class="mb-3"><i class="fas fa-question-circle text-primary me-2"></i> What's included in the hostel fees?</h5>
+                    <p class="mb-0 text-muted">Hostel fees include accommodation, water, electricity (within reasonable usage), basic furniture, and security services. Some hostels also provide Wi-Fi access.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h5 class="mb-3"><i class="fas fa-question-circle text-primary me-2"></i> Can I choose my roommate?</h5>
+                    <p class="mb-0 text-muted">Yes, you can request a specific roommate during the application process. Both students must select each other as preferred roommates for the request to be considered.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h5 class="mb-3"><i class="fas fa-question-circle text-primary me-2"></i> What items should I bring?</h5>
+                    <p class="mb-0 text-muted">You should bring bedding, toiletries, personal items, and study materials. A detailed packing list is provided upon acceptance to a hostel.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Information -->
+<div class="container mb-5">
+    <div class="card bg-light border-0 rounded-4">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h3 class="fw-bold mb-3" style="color: #3a1c71;">Need Assistance?</h3>
+                    <p class="mb-4">If you have any questions about hostel accommodations, please contact the Dean of Students' office.</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-container bg-white rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 40px; height: 40px;">
+                            <i class="fas fa-envelope text-primary"></i>
+                        </div>
+                        <span>deanofstudents@bugema.ac.ug</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-container bg-white rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 40px; height: 40px;">
+                            <i class="fas fa-phone text-primary"></i>
+                        </div>
+                        <span>078 2307832</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-container bg-white rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 40px; height: 40px;">
+                            <i class="fas fa-map-marker-alt text-primary"></i>
+                        </div>
+                        <span>Bugema University, Kampala-Gayaza Road, Uganda</span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="/images/hostels/hostel-management.jpg" alt="Bugema University Campus" class="img-fluid rounded-4" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/800x400/e9ecef/212529?text=Bugema+University+Campus';">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add custom CSS at the bottom of the page -->
+<style>
+    .hostel-card {
+        transition: transform 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .hostel-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    /* Add responsive fixes */
+    @@media (max-width: 768px) {
+        .hero-bg {
+            height: auto;
+            padding: 60px 0;
+        }
+    }
+</style>
+
+<!-- Add custom JavaScript for animations if needed -->
+@section Scripts {
+    <script>
+        // Initialize any JavaScript functionalities here
+        $(document).ready(function() {
+            // Add animations or interactions if needed
+            
+            // Simple animation for statistics section
+            $('.stat-number').each(function() {
+                $(this).prop('Counter', 0).animate({
+                    Counter: $(this).text()
+                }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function(now) {
+                        $(this).text(Math.ceil(now));
+                    }
+                });
+            });
+        });
+    </script>
+}

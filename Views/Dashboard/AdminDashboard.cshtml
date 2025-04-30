@@ -1,0 +1,357 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Administrator Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50 me-2"></i>Generate Report
+        </a>
+    </div>
+
+    <!-- Content Row - Stats Cards -->
+    <div class="row">
+        <!-- Total Students Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Students</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalStudents</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Student" asp-action="Index" class="small text-primary stretched-link">View Details</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Hostels Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Hostels</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalHostels</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-building fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Hostel" asp-action="Index" class="small text-success stretched-link">View Details</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Rooms Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Rooms</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalRooms</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-door-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Room" asp-action="Index" class="small text-info stretched-link">View Details</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Bookings Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Bookings</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.PendingBookings</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Booking" asp-action="ManageBookings" class="small text-warning stretched-link">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row - Main Content -->
+    <div class="row">
+        <!-- Booking Management Card -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Booking Management</h6>
+                    <a asp-controller="Booking" asp-action="ManageBookings" class="btn btn-primary btn-sm">
+                        <i class="fas fa-clipboard-check me-1"></i> Manage All Bookings
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-bookmark fa-3x text-primary mb-3"></i>
+                        <h4>Student Booking System</h4>
+                        <p class="text-muted">Review and process student booking requests with payment verification</p>
+                    </div>
+                    
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="rounded-circle bg-warning text-white d-inline-flex p-3">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h5 class="mt-2">Pending</h5>
+                            <h3>@ViewBag.PendingBookings</h3>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="rounded-circle bg-success text-white d-inline-flex p-3">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h5 class="mt-2">Approved</h5>
+                            <h3>@(ViewBag.ApprovedBookings ?? 0)</h3>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="rounded-circle bg-danger text-white d-inline-flex p-3">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <h5 class="mt-2">Rejected</h5>
+                            <h3>@(ViewBag.RejectedBookings ?? 0)</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a asp-controller="Booking" asp-action="ManageBookings" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-clipboard-check me-2"></i> Process Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <a asp-controller="Hostel" asp-action="Create" class="card bg-light h-100 text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-plus-circle fa-3x text-success mb-3"></i>
+                                    <h5 class="card-title">Add Hostel</h5>
+                                    <p class="card-text text-muted small">Create a new hostel</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a asp-controller="Room" asp-action="Create" class="card bg-light h-100 text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-door-open fa-3x text-info mb-3"></i>
+                                    <h5 class="card-title">Add Room</h5>
+                                    <p class="card-text text-muted small">Create a new room</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a asp-controller="Student" asp-action="PendingApprovals" class="card bg-light h-100 text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-check fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">Approve Students</h5>
+                                    <p class="card-text text-muted small">Verify student registrations</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a asp-controller="Student" asp-action="Assign" class="card bg-light h-100 text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-bed fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">Assign Rooms</h5>
+                                    <p class="card-text text-muted small">Assign students to rooms</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Row -->
+    <div class="row">
+        <!-- Recent Bookings Table -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Bookings</h6>
+                    <a asp-controller="Booking" asp-action="ManageBookings" class="btn btn-sm btn-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentBookings != null && ((IEnumerable<dynamic>)ViewBag.RecentBookings).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Student</th>
+                                        <th>Hostel/Room</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var booking in ViewBag.RecentBookings)
+                                    {
+                                        <tr>
+                                            <td>@booking.BookingId</td>
+                                            <td>@booking.Student?.FirstName @booking.Student?.LastName</td>
+                                            <td>@booking.Room?.Hostel?.Name / @booking.Room?.RoomNumber</td>
+                                            <td>
+                                                @switch (booking.Status)
+                                                {
+                                                    case BookingStatus.Pending:
+                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                        break;
+                                                    case BookingStatus.Approved:
+                                                        <span class="badge bg-success">Approved</span>
+                                                        break;
+                                                    case BookingStatus.Rejected:
+                                                        <span class="badge bg-danger">Rejected</span>
+                                                        break;
+                                                    case BookingStatus.CheckedIn:
+                                                        <span class="badge bg-primary">Checked In</span>
+                                                        break;
+                                                    case BookingStatus.CheckedOut:
+                                                        <span class="badge bg-secondary">Checked Out</span>
+                                                        break;
+                                                    case BookingStatus.Cancelled:
+                                                        <span class="badge bg-dark">Cancelled</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.BookingId" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center p-4">
+                            <i class="fas fa-info-circle fa-2x text-muted mb-3"></i>
+                            <p class="mb-0">No recent bookings found.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Recently Registered Students -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Recently Registered Students</h6>
+                    <a asp-controller="Student" asp-action="Index" class="btn btn-sm btn-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentStudents != null && ((IEnumerable<dynamic>)ViewBag.RecentStudents).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Student ID</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var student in ViewBag.RecentStudents)
+                                    {
+                                        <tr>
+                                            <td>@student.FirstName @student.LastName</td>
+                                            <td>@student.StudentId</td>
+                                            <td>
+                                                @if (student.IsApproved)
+                                                {
+                                                    <span class="badge bg-success">Approved</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Student" asp-action="Details" asp-route-id="@student.Id" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center p-4">
+                            <i class="fas fa-info-circle fa-2x text-muted mb-3"></i>
+                            <p class="mb-0">No recently registered students found.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.border-left-primary {
+    border-left: .25rem solid #4e73df!important;
+}
+.border-left-success {
+    border-left: .25rem solid #1cc88a!important;
+}
+.border-left-info {
+    border-left: .25rem solid #36b9cc!important;
+}
+.border-left-warning {
+    border-left: .25rem solid #f6c23e!important;
+}
+.rounded-circle.d-inline-flex {
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+</style>

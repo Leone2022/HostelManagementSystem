@@ -1,0 +1,307 @@
+@model HostelMS.ViewModels.HostelViewModel
+@{
+    ViewData["Title"] = "Create Hostel";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Create New Hostel</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Enhanced validation summary -->
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+                    
+                    <form asp-action="Create" enctype="multipart/form-data" id="hostelForm">
+                        @Html.AntiForgeryToken()
+                        
+                        <!-- Basic Information -->
+                        <h6 class="border-bottom pb-2 mb-3">Basic Information</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label"></label>
+                                <input asp-for="Name" class="form-control" placeholder="Enter hostel name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Location" class="form-label"></label>
+                                <input asp-for="Location" class="form-control" placeholder="Enter location" />
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Gender" class="form-label"></label>
+                                <select asp-for="Gender" class="form-select">
+                                    <option value="">Select gender assignment</option>
+                                    <option value="0">Male</option>
+                                    <option value="1">Female</option>
+                                    <option value="2">Mixed</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ManagementType" class="form-label">Management Type</label>
+                                <select asp-for="ManagementType" class="form-select">
+                                    <option value="0">Institution-Managed</option>
+                                    <option value="1">Privately-Managed</option>
+                                </select>
+                                <span asp-validation-for="ManagementType" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Capacity & Details -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Capacity & Details</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Capacity" class="form-label"></label>
+                                <input asp-for="Capacity" class="form-control" type="number" min="1" placeholder="Enter total capacity" />
+                                <span asp-validation-for="Capacity" class="text-danger"></span>
+                                <div class="form-text">This is the target capacity. Actual capacity will be determined by rooms.</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DistanceFromCampus" class="form-label"></label>
+                                <input asp-for="DistanceFromCampus" class="form-control" type="number" step="0.1" min="0" placeholder="Enter distance in km" />
+                                <span asp-validation-for="DistanceFromCampus" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Warden Information</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="WardenName" class="form-label"></label>
+                                <input asp-for="WardenName" class="form-control" placeholder="Enter warden name" />
+                                <span asp-validation-for="WardenName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="WardenContact" class="form-label"></label>
+                                <input asp-for="WardenContact" class="form-control" placeholder="Enter warden contact" />
+                                <span asp-validation-for="WardenContact" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Status & Media -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Status & Media</h6>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+                                <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ImageFile" class="form-label">Main Hostel Image</label>
+                            <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" id="mainImageUpload" />
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            <div class="form-text">Upload an image (max 10MB, recommended: 800x600px)</div>
+                            <div class="mt-2" id="imagePreviewContainer" style="display:none">
+                                <img id="imagePreview" class="img-thumbnail" style="max-height:200px"/>
+                            </div>
+                        </div>
+                        
+                        <!-- YouTube Video -->
+                        <div class="mb-4">
+                            <label asp-for="YouTubeVideoId" class="form-label">YouTube Video ID</label>
+                            <div class="input-group">
+                                <span class="input-group-text">youtube.com/watch?v=</span>
+                                <input asp-for="YouTubeVideoId" class="form-control" 
+                                       placeholder="e.g., dQw4w9WgXcQ" 
+                                       pattern="[A-Za-z0-9_-]{11}"
+                                       title="11-character YouTube video ID"/>
+                            </div>
+                            <span asp-validation-for="YouTubeVideoId" class="text-danger"></span>
+                            <div class="form-text">Enter just the video ID (11 characters after v=)</div>
+                        </div>
+
+                        <!-- Interior Images Section -->
+                        <div class="mb-4">
+                            <label class="form-label">Interior Images (optional, max 10MB each)</label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label small">Room Interior</label>
+                                        <div class="custom-file">
+                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
+                                            <label class="custom-file-label">Choose file</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small">Dormitory Room</label>
+                                        <div class="custom-file">
+                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
+                                            <label class="custom-file-label">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label small">Bathroom</label>
+                                        <div class="custom-file">
+                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
+                                            <label class="custom-file-label">Choose file</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small">Lounge Area</label>
+                                        <div class="custom-file">
+                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
+                                            <label class="custom-file-label">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Amenities Section -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Amenities & Services</h6>
+                        <div class="mb-4">
+                            <label class="form-label">Hostel Services</label>
+                            <div class="row g-2">
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="HostelServices" value="wifi" id="wifi">
+                                        <label class="form-check-label" for="wifi">Wi-Fi</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="HostelServices" value="cleaning" id="cleaning">
+                                        <label class="form-check-label" for="cleaning">Cleaning</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="HostelServices" value="security" id="security">
+                                        <label class="form-check-label" for="security">Security</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="HostelServices" value="kitchen" id="kitchen">
+                                        <label class="form-check-label" for="kitchen">Kitchen</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Amenities Inputs -->
+                        <div class="mb-4">
+                            <label class="form-label">Additional Amenities</label>
+                            <div id="amenities-container">
+                                <div class="row mb-2 amenity-row">
+                                    <div class="col-md-6">
+                                        <input type="text" name="AmenityNames" class="form-control" placeholder="Amenity name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" name="AmenityDescriptions" class="form-control" placeholder="Description (optional)">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" id="add-amenity" class="btn btn-sm btn-outline-secondary mt-2">
+                                <i class="fas fa-plus-circle me-1"></i> Add More Amenities
+                            </button>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="submitButton">
+                                <i class="fas fa-save me-2"></i> Create Hostel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // File upload preview
+            $('#mainImageUpload').change(function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#imagePreview').attr('src', e.target.result);
+                        $('#imagePreviewContainer').show();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Show selected filenames
+            $('.custom-file-input').change(function() {
+                const fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').html(fileName || 'Choose file');
+            });
+
+            // Amenity row functionality
+            $("#add-amenity").click(function() {
+                const newRow = `
+                <div class="row mb-2 amenity-row">
+                    <div class="col-md-6">
+                        <input type="text" name="AmenityNames" class="form-control" placeholder="Amenity name">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" name="AmenityDescriptions" class="form-control" placeholder="Description (optional)">
+                            <button type="button" class="btn btn-outline-danger remove-amenity">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+                $("#amenities-container").append(newRow);
+            });
+            
+            $("#amenities-container").on("click", ".remove-amenity", function() {
+                $(this).closest(".amenity-row").remove();
+            });
+
+            // File size validation (10MB limit)
+            $('#hostelForm').submit(function(e) {
+                const maxSize = 10 * 1024 * 1024; // 10MB
+                let isValid = true;
+
+                // Validate main image
+                const mainImage = $('#mainImageUpload')[0].files[0];
+                if (mainImage && mainImage.size > maxSize) {
+                    alert('Main image must be under 10MB');
+                    isValid = false;
+                }
+
+                // Validate interior images
+                $('input[name="InteriorImages"]').each(function() {
+                    const file = this.files[0];
+                    if (file && file.size > maxSize) {
+                        alert(`"${file.name}" exceeds 10MB limit`);
+                        isValid = false;
+                        return false; // Break loop
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                } else {
+                    // Disable button to prevent double submission
+                    $('#submitButton').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Saving...');
+                }
+            });
+        });
+    </script>
+}

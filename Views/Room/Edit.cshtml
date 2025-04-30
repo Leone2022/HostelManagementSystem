@@ -1,0 +1,257 @@
+@model HostelMS.Models.Room
+@{
+    ViewData["Title"] = "Edit Room";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0"><i class="fas fa-edit me-2"></i> Edit Room</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        
+                        <input type="hidden" asp-for="RoomId" />
+                        <input type="hidden" asp-for="HostelId" />
+                        <input type="hidden" asp-for="CurrentOccupancy" />
+                        
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i> Editing room in hostel: <strong>@Model.Hostel?.Name</strong>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Basic Information Card -->
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i> Basic Information</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label asp-for="RoomNumber" class="form-label fw-bold">Room Number</label>
+                                            <input asp-for="RoomNumber" class="form-control" placeholder="Enter room number" />
+                                            <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label asp-for="Type" class="form-label fw-bold">Room Type</label>
+                                            <select asp-for="Type" class="form-select" id="roomType">
+                                                <option value="0">Single</option>
+                                                <option value="1">Double</option>
+                                                <option value="2">Triple</option>
+                                                <option value="3">Quad</option>
+                                                <option value="4">Dormitory</option>
+                                            </select>
+                                            <span asp-validation-for="Type" class="text-danger"></span>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label asp-for="Capacity" class="form-label fw-bold">Room Capacity</label>
+                                            <input asp-for="Capacity" class="form-control" type="number" min="@Model.CurrentOccupancy" max="20" />
+                                            <span asp-validation-for="Capacity" class="text-danger"></span>
+                                            <div class="form-text">Must be at least equal to current occupancy (@Model.CurrentOccupancy)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <!-- Pricing & Status Card -->
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i> Pricing & Status</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label asp-for="PricePerSemester" class="form-label fw-bold">Price Per Semester (UGX)</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">UGX</span>
+                                                <input asp-for="PricePerSemester" class="form-control" type="number" step="1000" min="0" />
+                                            </div>
+                                            <span asp-validation-for="PricePerSemester" class="text-danger"></span>
+                                            <div class="form-text">Price in Ugandan Shillings</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label asp-for="Status" class="form-label fw-bold">Room Status</label>
+                                            <select asp-for="Status" class="form-select">
+                                                <option value="0">Available</option>
+                                                <option value="1">Partially Assigned</option>
+                                                <option value="2">Fully Assigned</option>
+                                                <option value="3">Under Maintenance</option>
+                                            </select>
+                                            <span asp-validation-for="Status" class="text-danger"></span>
+                                            <div class="form-text">
+                                                @if (Model.CurrentOccupancy > 0)
+                                                {
+                                                    <span class="text-warning">
+                                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                                        Room has @Model.CurrentOccupancy student(s) assigned. Status changes will affect them.
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Set room availability status</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input asp-for="NeedsAttention" class="form-check-input" type="checkbox" role="switch" id="needsAttentionSwitch">
+                                                <label asp-for="NeedsAttention" class="form-check-label" for="needsAttentionSwitch">
+                                                    <span id="maintenanceLabel" class="badge bg-secondary">Maintenance Attention Required</span>
+                                                </label>
+                                            </div>
+                                            <div class="form-text">Flag this room for maintenance attention</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Description Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-align-left me-2"></i> Description</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="Description" class="form-label fw-bold">Room Description</label>
+                                    <textarea asp-for="Description" class="form-control" rows="3" 
+                                              placeholder="Describe room facilities, location, features, etc."></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Current Occupancy Card -->
+                        @if (Model.CurrentOccupancy > 0)
+                        {
+                            <div class="card shadow-sm mb-4 border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <h6 class="mb-0"><i class="fas fa-users me-2"></i> Current Occupancy</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="alert alert-warning mb-0">
+                                        <i class="fas fa-exclamation-circle me-2"></i>
+                                        <strong>Note:</strong> This room currently has @Model.CurrentOccupancy student(s) assigned. 
+                                        Changes to room type or capacity may affect these students. Room capacity cannot be set lower 
+                                        than the current occupancy.
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                        <!-- Current Status Visualization -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-chart-pie me-2"></i> Occupancy Status</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-center">
+                                        <div class="display-5 text-center mb-2">
+                                            @{
+                                                var occupancyRate = Model.Capacity > 0 ? (double)Model.CurrentOccupancy / Model.Capacity * 100 : 0;
+                                                var color = occupancyRate < 50 ? "success" : 
+                                                            occupancyRate < 85 ? "warning" : "danger";
+                                            }
+                                            <span class="text-@color">@Math.Round(occupancyRate, 0)%</span>
+                                        </div>
+                                        <div class="text-muted">Occupancy Rate</div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="progress mb-3" style="height: 20px;">
+                                            <div class="progress-bar bg-@color"
+                                                role="progressbar"
+                                                style="width: @occupancyRate%;"
+                                                aria-valuenow="@occupancyRate"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                @Model.CurrentOccupancy/@Model.Capacity beds
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-2">
+                                            @for (int i = 0; i < Model.Capacity; i++)
+                                            {
+                                                bool isOccupied = i < Model.CurrentOccupancy;
+                                                <div class="mx-1 text-center">
+                                                    <i class="fas fa-bed @(isOccupied ? "text-danger" : "text-success")"></i>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Rooms
+                            </a>
+                            <div>
+                                <a asp-action="Details" asp-route-id="@Model.RoomId" class="btn btn-outline-primary me-2">
+                                    <i class="fas fa-eye me-2"></i> View Details
+                                </a>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-save me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Sync room type and capacity
+            $('#roomType').change(function() {
+                var selectedType = $(this).val();
+                var currentOccupancy = @Model.CurrentOccupancy;
+                var recommendedCapacity = currentOccupancy;
+                
+                switch(selectedType) {
+                    case '0': // Single
+                        recommendedCapacity = Math.max(1, currentOccupancy);
+                        break;
+                    case '1': // Double
+                        recommendedCapacity = Math.max(2, currentOccupancy);
+                        break;
+                    case '2': // Triple
+                        recommendedCapacity = Math.max(3, currentOccupancy);
+                        break;
+                    case '3': // Quad
+                        recommendedCapacity = Math.max(4, currentOccupancy);
+                        break;
+                    case '4': // Dormitory
+                        recommendedCapacity = Math.max(8, currentOccupancy);
+                        break;
+                }
+                
+                $('#Capacity').val(recommendedCapacity);
+            });
+            
+            // Update maintenance label when switch changes
+            $('#needsAttentionSwitch').change(function() {
+                if($(this).is(':checked')) {
+                    $('#maintenanceLabel').removeClass('bg-secondary').addClass('bg-danger');
+                } else {
+                    $('#maintenanceLabel').removeClass('bg-danger').addClass('bg-secondary');
+                }
+            });
+            
+            // Trigger change on load to set initial state
+            $('#needsAttentionSwitch').trigger('change');
+        });
+    </script>
+}

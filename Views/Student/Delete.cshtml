@@ -1,0 +1,75 @@
+@model HostelMS.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Confirm Delete</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> 
+                        <strong>Warning:</strong> This action cannot be undone. All student data, including accommodation history, will be permanently deleted.
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                        {
+                            <img src="@Model.ProfilePicture" alt="Student" class="rounded-circle img-thumbnail" style="width: 120px; height: 120px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 120px; height: 120px;">
+                                <i class="fas fa-user fa-3x text-white"></i>
+                            </div>
+                        }
+                        <h4 class="mt-3">@Model.FirstName @Model.LastName</h4>
+                        <p class="text-muted">@Model.StudentId</p>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tr>
+                                <th>Email:</th>
+                                <td>@Model.Email</td>
+                            </tr>
+                            <tr>
+                                <th>Course:</th>
+                                <td>@(string.IsNullOrEmpty(Model.Course) ? "Not Provided" : Model.Course)</td>
+                            </tr>
+                            <tr>
+                                <th>Year:</th>
+                                <td>@(string.IsNullOrEmpty(Model.Year) ? "Not Provided" : Model.Year)</td>
+                            </tr>
+                            @if (Model.CurrentHostel != null)
+                            {
+                                <tr>
+                                    <th>Current Hostel:</th>
+                                    <td>@Model.CurrentHostel.Name, Room @Model.CurrentRoomNumber</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    
+                    <form asp-action="DeleteConfirmed" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Details
+                            </a>
+                            
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt me-2"></i> Delete Student
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

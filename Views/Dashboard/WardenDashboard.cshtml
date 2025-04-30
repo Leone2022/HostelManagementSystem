@@ -1,0 +1,281 @@
+<!-- Path: Views/Dashboard/WardenDashboard.cshtml -->
+@using HostelMS.Models
+@model HostelMS.ViewModels.WardenDashboardViewModel
+@{
+    ViewData["Title"] = "Warden Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Hostel Warden Dashboard</h1>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <h5>Assigned Students</h5>
+                    <h2>@Model.TotalAssignedStudents</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="Student" asp-action="Assigned">View Students</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">
+                    <h5>Pending Verifications</h5>
+                    <h2>@Model.PendingVerifications</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="Student" asp-action="PendingVerification">Verify Students</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    <h5>Available Beds</h5>
+                    <h2>@Model.AvailableBeds</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="Room" asp-action="AvailableBeds">View Available</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body">
+                    <h5>Maintenance Requests</h5>
+                    <h2>@Model.MaintenanceRequests</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="MaintenanceRequest" asp-action="Index">View Requests</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-search me-2"></i> Student Search</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Student" asp-action="Search" method="get" class="mb-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="searchTerm" placeholder="Search by name, student ID, room number, or hostel...">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </form>
+                    
+                    @if (Model.SearchResults != null && Model.SearchResults.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Photo</th>
+                                        <th>Student ID</th>
+                                        <th>Name</th>
+                                        <th>Hostel / Room</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var student in Model.SearchResults)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(student.ProfilePicture))
+                                                {
+                                                    <img src="@student.ProfilePicture" alt="Student" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                                }
+                                                else
+                                                {
+                                                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                        <i class="fas fa-user text-white"></i>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td>@student.StudentId</td>
+                                            <td>@student.FirstName @student.LastName</td>
+                                            <td>@(student.CurrentHostel?.Name ?? "Not Assigned") / @(student.CurrentRoomNumber ?? "N/A")</td>
+                                            <td>
+                                                <span class="badge @(student.IsVerified ? "bg-success" : "bg-warning")">
+                                                    @(student.IsVerified ? "Verified" : "Unverified")
+                                                </span>
+                                                <span class="badge @(student.IsCurrentlyInHostel ? "bg-info" : "bg-secondary")">
+                                                    @(student.IsCurrentlyInHostel ? "In Hostel" : "Out")
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a asp-controller="Student" asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-info-circle"></i> Details
+                                                    </a>
+                                                    <a asp-controller="Student" asp-action="Assign" asp-route-id="@student.Id" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-home"></i> Assign
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-bed me-2"></i> Room Assignment Dashboard</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="hostelDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Hostel
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="hostelDropdown">
+                                @foreach(var hostel in Model.Hostels)
+                                {
+                                    <li><a class="dropdown-item hostel-selector" data-hostel-id="@hostel.HostelId" href="#">@hostel.Name</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="roomLayout" class="d-flex flex-wrap gap-2 mb-3">
+                        <!-- Room layout will be loaded here via AJAX -->
+                        <div class="alert alert-info">Please select a hostel to view room layout</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="badge bg-success me-2" style="width: 20px; height: 20px;"></div>
+                            <span>Available</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="badge bg-warning me-2" style="width: 20px; height: 20px;"></div>
+                            <span>Partially Assigned</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="badge bg-danger me-2" style="width: 20px; height: 20px;"></div>
+                            <span>Fully Assigned</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="badge bg-secondary me-2" style="width: 20px; height: 20px;"></div>
+                            <span>Under Maintenance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-5">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-tasks me-2"></i> Recent Activities
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach(var activity in Model.RecentActivities)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@activity.ActivityType</strong> - @activity.Description
+                                    <small class="d-block text-muted">@activity.Timestamp.ToString("g")</small>
+                                </div>
+                                <span class="badge rounded-pill bg-primary">@activity.UserName</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-bullhorn me-2"></i> Post Announcement
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Announcement" asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label for="announcementTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="announcementTitle" name="Title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="announcementContent" class="form-label">Content</label>
+                            <textarea class="form-control" id="announcementContent" name="Content" rows="3" required></textarea>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="isUrgent" name="IsUrgent">
+                            <label class="form-check-label" for="isUrgent">
+                                Mark as Urgent
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Announcement</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Room selection and assignment functionality
+        $(function() {
+            $('.hostel-selector').click(function(e) {
+                e.preventDefault();
+                const hostelId = $(this).data('hostel-id');
+                
+                // Load room layout via AJAX
+                $.get(`/Room/GetRoomLayout?hostelId=${hostelId}`, function(data) {
+                    $('#roomLayout').html(data);
+                });
+            });
+            
+            // Room click event will be delegated
+            $(document).on('click', '.room-card', function() {
+                const roomId = $(this).data('room-id');
+                const roomNumber = $(this).data('room-number');
+                
+                // Open room details modal
+                $.get(`/Room/GetRoomDetails?roomId=${roomId}`, function(data) {
+                    $('#roomDetailsModalContent').html(data);
+                    $('#roomDetailsModal').modal('show');
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Room Details Modal -->
+<div class="modal fade" id="roomDetailsModal" tabindex="-1" aria-labelledby="roomDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roomDetailsModalLabel">Room Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="roomDetailsModalContent">
+                <!-- Room details will be loaded here via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>

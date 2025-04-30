@@ -1,0 +1,132 @@
+@model HostelMS.ViewModels.BulkRoomViewModel
+@{
+    ViewData["Title"] = "Bulk Add Rooms";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Bulk Add Rooms to @Model.HostelName</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddBulkRooms" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="HostelId" />
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> This tool allows you to create multiple rooms at once.
+                            Room numbers will be generated with the format: [Prefix][Number]. For example, with prefix "A" and starting number 101, 
+                            rooms will be named A101, A102, A103, etc.
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="RoomNumberPrefix" class="form-label"></label>
+                                <input asp-for="RoomNumberPrefix" class="form-control" placeholder="e.g., A, B, 1F-" />
+                                <span asp-validation-for="RoomNumberPrefix" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="StartingNumber" class="form-label"></label>
+                                <input asp-for="StartingNumber" class="form-control" type="number" min="1" />
+                                <span asp-validation-for="StartingNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="NumberOfRooms" class="form-label"></label>
+                                <input asp-for="NumberOfRooms" class="form-control" type="number" min="1" max="100" />
+                                <span asp-validation-for="NumberOfRooms" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Type" class="form-label"></label>
+                                <select asp-for="Type" asp-items="Html.GetEnumSelectList<RoomType>()" class="form-select">
+                                    <option value="">Select room type</option>
+                                </select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Capacity" class="form-label"></label>
+                                <input asp-for="Capacity" class="form-control" type="number" min="1" max="20" placeholder="Number of beds" />
+                                <span asp-validation-for="Capacity" class="text-danger"></span>
+                                <div class="form-text">Maximum capacity is 20 students per room.</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PricePerSemester" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input asp-for="PricePerSemester" class="form-control" type="number" min="0" step="0.01" placeholder="Enter price" />
+                                </div>
+                                <span asp-validation-for="PricePerSemester" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Description" class="form-label"></label>
+                                <textarea asp-for="Description" class="form-control" rows="1" placeholder="Optional description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Preview</h6>
+                            </div>
+                            <div class="card-body" id="roomPreview">
+                                <p class="text-muted">Complete the form to see a preview of room numbers.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="RoomLayout" asp-route-id="@Model.HostelId" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Room Layout
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i> Create Rooms
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(function() {
+            // Update preview as user inputs data
+            function updatePreview() {
+                const prefix = $('#RoomNumberPrefix').val();
+                const startNum = parseInt($('#StartingNumber').val()) || 0;
+                const numRooms = parseInt($('#NumberOfRooms').val()) || 0;
+                
+                if (prefix && startNum > 0 && numRooms > 0) {
+                    let preview = '<div class="row">';
+                    const maxDisplay = Math.min(numRooms, 20); // Show up to 20 rooms in preview
+                    
+                    for (let i = 0; i < maxDisplay; i++) {
+                        const roomNum = prefix + (startNum + i).toString().padStart(2, '0');
+                        preview += `<div class="col-auto mb-2"><span class="badge bg-success">${roomNum}</span></div>`;
+                    }
+                    
+                    if (numRooms > 20) {
+                        preview += `<div class="col-auto mb-2"><span class="badge bg-secondary">+${numRooms - 20} more</span></div>`;
+                    }
+                    
+                    preview += '</div>';
+                    $('#roomPreview').html(preview);
+                } else {
+                    $('#roomPreview').html('<p class="text-muted">Complete the form to see a preview of room numbers.</p>');
+                }
+            }
+            
+            $('#RoomNumberPrefix, #StartingNumber, #NumberOfRooms').on('input', updatePreview);
+        });
+    </script>
+}

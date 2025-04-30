@@ -1,0 +1,99 @@
+@model HostelMS.ViewModels.StudentAssignViewModel
+@{
+    ViewData["Title"] = "Assign Room to Student";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Assign Room: @Model.Student.FirstName @Model.Student.LastName</h1>
+
+    <form asp-action="Assign" method="post">
+        <input type="hidden" asp-for="Student.Id" />
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Select Hostel and Room</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="SelectedHostelId" class="form-label">Hostel</label>
+                            <select asp-for="SelectedHostelId" 
+                                    asp-items="@(new SelectList(Model.Hostels, "HostelId", "Name"))" 
+                                    class="form-select" id="hostelSelect">
+                                <option value="">-- Select Hostel --</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SelectedRoomNumber" class="form-label">Room</label>
+                            <select asp-for="SelectedRoomNumber" class="form-select" id="roomSelect">
+                                <option value="">-- Select Room --</option>
+                                @if (ViewBag.AvailableRooms != null)
+                                {
+                                    foreach (var room in ViewBag.AvailableRooms)
+                                    {
+                                        <option value="@room.RoomNumber">
+                                            Room @room.RoomNumber - @room.Type (@room.CurrentOccupancy/@room.Capacity)
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="IsTemporaryAssignment" class="form-check-input" />
+                            <label asp-for="IsTemporaryAssignment" class="form-check-label">
+                                Temporary Assignment
+                            </label>
+                        </div>
+
+                        <div class="mb-3" id="probationDateContainer" style="display:none;">
+                            <label asp-for="ProbationEndDate" class="form-label">Probation End Date</label>
+                            <input asp-for="ProbationEndDate" class="form-control" type="date" />
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Assign Room</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            // Toggle probation date visibility
+            $('#IsTemporaryAssignment').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#probationDateContainer').show();
+                } else {
+                    $('#probationDateContainer').hide();
+                }
+            });
+
+            // Hostel selection logic for rooms
+            $('#hostelSelect').change(function() {
+                var hostelId = $(this).val();
+                var roomSelect = $('#roomSelect');
+                
+                roomSelect.empty();
+                roomSelect.append('<option value="">-- Select Room --</option>');
+                
+                if (hostelId) {
+                    $.getJSON('/Student/GetAvailableRooms?hostelId=' + hostelId, function(rooms) {
+                        $.each(rooms, function(index, room) {
+                            roomSelect.append(
+                                $('<option></option>')
+                                    .val(room.roomNumber)
+                                    .text('Room ' + room.roomNumber + ' - ' + room.type + ' (' + room.currentOccupancy + '/' + room.capacity + ')')
+                            );
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,230 @@
+@model HostelMS.ViewModels.HostelViewModel
+@{
+    ViewData["Title"] = "Edit Hostel";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0"><i class="fas fa-edit me-2"></i> Edit Hostel</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <input type="hidden" asp-for="HostelId" />
+                        <input type="hidden" asp-for="ExistingImagePath" />
+                        <input type="hidden" asp-for="HostelCode" />
+                        
+                        <div class="row">
+                            <!-- Left column - Image and basic information -->
+                            <div class="col-md-4">
+                                <!-- Current and New Image -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-image me-2"></i> Hostel Image</h6>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        @if (!string.IsNullOrEmpty(Model.ExistingImagePath))
+                                        {
+                                            <div class="mb-3">
+                                                <img src="@Model.ExistingImagePath" class="img-fluid rounded" style="max-height: 250px; object-fit: cover;">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="mb-3 bg-light p-5 rounded d-flex align-items-center justify-content-center" style="height: 200px;">
+                                                <i class="fas fa-image fa-3x text-secondary"></i>
+                                            </div>
+                                        }
+                                        
+                                        <div class="input-group mb-3">
+                                            <label asp-for="ImageFile" class="input-group-text">
+                                                <i class="fas fa-upload me-2"></i> Upload
+                                            </label>
+                                            <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" id="imageUpload" />
+                                        </div>
+                                        <div class="form-text">Upload a new image to replace the current one (optional).</div>
+                                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Status Toggle -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-toggle-on me-2"></i> Status</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check form-switch">
+                                            <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                            <label asp-for="IsActive" class="form-check-label" for="flexSwitchCheckDefault">
+                                                <span id="statusLabel" class="badge bg-success">Active</span>
+                                            </label>
+                                        </div>
+                                        <div class="form-text">Toggle hostel availability for students.</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- YouTube Video -->
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fab fa-youtube me-2"></i> Video Tour</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <label asp-for="YouTubeVideoId" class="form-label">YouTube Video ID</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">youtube.com/watch?v=</span>
+                                            <input asp-for="YouTubeVideoId" class="form-control" 
+                                                placeholder="e.g., dQw4w9WgXcQ" />
+                                        </div>
+                                        <span asp-validation-for="YouTubeVideoId" class="text-danger"></span>
+                                        <div class="form-text">Enter just the video ID (11 characters after v= in YouTube URL)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Right column - Form fields -->
+                            <div class="col-md-8">
+                                <!-- Basic Information -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i> Basic Information</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="Name" class="form-label fw-bold"></label>
+                                                <input asp-for="Name" class="form-control" placeholder="Enter hostel name" />
+                                                <span asp-validation-for="Name" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="Location" class="form-label fw-bold"></label>
+                                                <input asp-for="Location" class="form-control" placeholder="Enter location" />
+                                                <span asp-validation-for="Location" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="Gender" class="form-label fw-bold"></label>
+                                                <select asp-for="Gender" class="form-select">
+                                                    <option value="0">Male</option>
+                                                    <option value="1">Female</option>
+                                                    <option value="2">Mixed</option>
+                                                </select>
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="ManagementType" class="form-label fw-bold">Management Type</label>
+                                                <select asp-for="ManagementType" class="form-select">
+                                                    <option value="0">Institution-Managed</option>
+                                                    <option value="1">Privately-Managed</option>
+                                                </select>
+                                                <span asp-validation-for="ManagementType" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Description" class="form-label fw-bold"></label>
+                                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter description"></textarea>
+                                            <span asp-validation-for="Description" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Capacity & Details -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-bed me-2"></i> Capacity & Details</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="Capacity" class="form-label fw-bold"></label>
+                                                <input asp-for="Capacity" class="form-control" type="number" min="1" placeholder="Enter total capacity" />
+                                                <span asp-validation-for="Capacity" class="text-danger"></span>
+                                                <div class="form-text">This is the target capacity. Actual capacity is determined by rooms.</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="DistanceFromCampus" class="form-label fw-bold"></label>
+                                                <div class="input-group">
+                                                    <input asp-for="DistanceFromCampus" class="form-control" type="number" step="0.1" min="0" placeholder="Enter distance" />
+                                                    <span class="input-group-text">km</span>
+                                                </div>
+                                                <span asp-validation-for="DistanceFromCampus" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Warden Information -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-user-shield me-2"></i> Warden Information</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="WardenName" class="form-label fw-bold"></label>
+                                                <input asp-for="WardenName" class="form-control" placeholder="Enter warden name" />
+                                                <span asp-validation-for="WardenName" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="WardenContact" class="form-label fw-bold"></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                    <input asp-for="WardenContact" class="form-control" placeholder="Enter warden contact" />
+                                                </div>
+                                                <span asp-validation-for="WardenContact" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // Update status label when switch changes
+            $('#flexSwitchCheckDefault').change(function() {
+                if($(this).is(':checked')) {
+                    $('#statusLabel').removeClass('bg-danger').addClass('bg-success').text('Active');
+                } else {
+                    $('#statusLabel').removeClass('bg-success').addClass('bg-danger').text('Inactive');
+                }
+            });
+            
+            // Trigger change on load to set initial state
+            $('#flexSwitchCheckDefault').trigger('change');
+            
+            // Preview uploaded image
+            $("#imageUpload").change(function() {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('img.img-fluid').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+}
