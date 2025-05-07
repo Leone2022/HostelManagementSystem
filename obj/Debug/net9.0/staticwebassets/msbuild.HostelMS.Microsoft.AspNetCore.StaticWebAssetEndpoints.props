@@ -1,16 +1,16 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAssetEndpoint Include="_content/HostelMS/css/site.a5seb3ole6.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"a5seb3ole6"},{"Name":"integrity","Value":"sha256-/hyP9IzplUdB\u002BuYVVv/6enKIymlLTg4eWPo11dK2eyQ="},{"Name":"label","Value":"_content/HostelMS/css/site.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"3973"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022/hyP9IzplUdB\u002BuYVVv/6enKIymlLTg4eWPo11dK2eyQ=\u0022"},{"Name":"Last-Modified","Value":"Wed, 30 Apr 2025 08:15:13 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HostelMS/css/site.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-/hyP9IzplUdB\u002BuYVVv/6enKIymlLTg4eWPo11dK2eyQ="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"3973"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022/hyP9IzplUdB\u002BuYVVv/6enKIymlLTg4eWPo11dK2eyQ=\u0022"},{"Name":"Last-Modified","Value":"Wed, 30 Apr 2025 08:15:13 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-0qvGlEL2BD2Ik57rv2X7kA1qF5Yx\u002Bq\u002BWVDrHnormFoU="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"6112"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00220qvGlEL2BD2Ik57rv2X7kA1qF5Yx\u002Bq\u002BWVDrHnormFoU=\u0022"},{"Name":"Last-Modified","Value":"Thu, 01 May 2025 03:23:07 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HostelMS/css/site.u4owmn02p5.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"u4owmn02p5"},{"Name":"integrity","Value":"sha256-0qvGlEL2BD2Ik57rv2X7kA1qF5Yx\u002Bq\u002BWVDrHnormFoU="},{"Name":"label","Value":"_content/HostelMS/css/site.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"6112"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00220qvGlEL2BD2Ik57rv2X7kA1qF5Yx\u002Bq\u002BWVDrHnormFoU=\u0022"},{"Name":"Last-Modified","Value":"Thu, 01 May 2025 03:23:07 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HostelMS/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>
@@ -636,6 +636,18 @@
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-2qxNJGtCQ/k8m6jpKb6Jm3FDplcJPawD2SHktRo\u002BTEA="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"512174"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u00222qxNJGtCQ/k8m6jpKb6Jm3FDplcJPawD2SHktRo\u002BTEA=\u0022"},{"Name":"Last-Modified","Value":"Tue, 22 Apr 2025 02:37:50 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.4ile8850en.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"4ile8850en"},{"Name":"integrity","Value":"sha256-XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE="},{"Name":"label","Value":"_content/HostelMS/images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1863212"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE=\u0022"},{"Name":"Last-Modified","Value":"Sun, 04 May 2025 14:21:02 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"1863212"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE=\u0022"},{"Name":"Last-Modified","Value":"Sun, 04 May 2025 14:21:02 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
@@ -696,6 +708,18 @@
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-foBmS8ky50yBGRn0YBwyOGwvEK4ZT94dXsTEmbv9NwI="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"11656313"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022foBmS8ky50yBGRn0YBwyOGwvEK4ZT94dXsTEmbv9NwI=\u0022"},{"Name":"Last-Modified","Value":"Sun, 06 Apr 2025 06:58:54 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-JYp4J4pI7exDQ\u002BPBHbmsX9mhbjcqp7YLtn5w2xcBaxY="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"7091771"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022JYp4J4pI7exDQ\u002BPBHbmsX9mhbjcqp7YLtn5w2xcBaxY=\u0022"},{"Name":"Last-Modified","Value":"Sun, 04 May 2025 14:17:57 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.pjuivwy4fl.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"pjuivwy4fl"},{"Name":"integrity","Value":"sha256-JYp4J4pI7exDQ\u002BPBHbmsX9mhbjcqp7YLtn5w2xcBaxY="},{"Name":"label","Value":"_content/HostelMS/images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"7091771"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022JYp4J4pI7exDQ\u002BPBHbmsX9mhbjcqp7YLtn5w2xcBaxY=\u0022"},{"Name":"Last-Modified","Value":"Sun, 04 May 2025 14:17:57 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
@@ -719,6 +743,18 @@
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-LSYsIAAnnrvMhIuHEVlO8wx9fuXOx/8YysAN7MFO968="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"2942824"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022LSYsIAAnnrvMhIuHEVlO8wx9fuXOx/8YysAN7MFO968=\u0022"},{"Name":"Last-Modified","Value":"Tue, 22 Apr 2025 10:16:06 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"5379261"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk=\u0022"},{"Name":"Last-Modified","Value":"Wed, 07 May 2025 07:49:35 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HostelMS/images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.rezxc6p8rj.png">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"rezxc6p8rj"},{"Name":"integrity","Value":"sha256-fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk="},{"Name":"label","Value":"_content/HostelMS/images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"5379261"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk=\u0022"},{"Name":"Last-Modified","Value":"Wed, 07 May 2025 07:49:35 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HostelMS/js/site.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>

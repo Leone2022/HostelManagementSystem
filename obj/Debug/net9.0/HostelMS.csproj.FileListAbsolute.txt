@@ -297,4 +297,5 @@ C:\Users\HP ELITEBOOK 840 G5\HostelManagementSystem\HostelMS\obj\Debug\net9.0\re
 C:\Users\HP ELITEBOOK 840 G5\HostelManagementSystem\HostelMS\obj\Debug\net9.0\HostelMS.pdb
 C:\Users\HP ELITEBOOK 840 G5\HostelManagementSystem\HostelMS\obj\Debug\net9.0\HostelMS.genruntimeconfig.cache
 C:\Users\HP ELITEBOOK 840 G5\HostelManagementSystem\HostelMS\obj\Debug\net9.0\ref\HostelMS.dll
-C:\Users\HP ELITEBOOK 840 G5\HostelManagementSystem\HostelMS\obj\Debug\net9.0\compressed\lfy0dd7fur-a5seb3ole6.gz
+C:\Users\HP ELITEBOOK 840 G5\HostelManagementSystem\HostelMS\obj\Debug\net9.0\HostelMS.sourcelink.json
+C:\Users\HP ELITEBOOK 840 G5\HostelManagementSystem\HostelMS\obj\Debug\net9.0\compressed\lfy0dd7fur-u4owmn02p5.gz

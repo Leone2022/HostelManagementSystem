@@ -145,12 +145,6 @@
                                             <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-info-circle"></i> Details
                                             </a>
-                                            @if (student.CurrentHostelId == null && (User.IsInRole("Admin") || User.IsInRole("Warden")))
-                                            {
-                                                <a asp-action="Assign" asp-route-id="@student.Id" class="btn btn-sm btn-outline-success">
-                                                    <i class="fas fa-home"></i> Assign
-                                                </a>
-                                            }
                                             @if (User.IsInRole("Admin"))
                                             {
                                                 <button type="button" class="btn btn-sm btn-outline-danger" 

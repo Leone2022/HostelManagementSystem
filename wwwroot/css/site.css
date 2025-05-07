@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  margin-bottom: 0;
+  margin-bottom: 60px; /* Make space for the fixed footer */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@ body {
 /* Main container */
 .container {
   flex: 1 0 auto;
-  padding-bottom: 20px;
+  padding-bottom: 80px; /* Additional space for footer */
 }
 
 /* Focus States */
@@ -45,18 +45,33 @@ body {
   text-align: start;
 }
 
-/* Footer Styles - Fixed */
-.footer {
-  flex-shrink: 0;
-  padding: 1rem 0;
+/* Footer Styles - Fixed and smaller height */
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   background-color: #f8f9fc;
   border-top: 1px solid #e3e6f0;
+  padding: 0.5rem 0; /* Reduced padding */
   text-align: center;
+  height: 50px; /* Smaller fixed height */
+  line-height: 30px; /* Vertically center text */
+  z-index: 1030; /* Above other content */
 }
 
 /* Admin Dashboard Styles */
 .card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Fix overflow issues but keep original styling */
+  overflow: visible; 
+  margin-bottom: 1rem;
+}
+
+/* Ensure content is visible */
+.card-body {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  height: auto;
 }
 
 .card:hover {
@@ -135,9 +150,10 @@ body {
   font-weight: 600;
 }
 
-/* Table Enhancements */
+/* Table Enhancements - Make sure content is visible */
 .table-responsive {
   margin-bottom: 0;
+  overflow-x: auto; /* Enable horizontal scrolling on small screens */
 }
 
 .table thead th {
@@ -148,6 +164,13 @@ body {
 
 .table-bordered td, .table-bordered th {
   border: 1px solid #e3e6f0;
+}
+
+/* Content visibility fixes for tables */
+.table td, .table th {
+  vertical-align: middle;
+  word-break: break-word; /* Allow words to break */
+  white-space: normal; /* Allow text to wrap */
 }
 
 /* Badge Styles */
@@ -190,12 +213,14 @@ body {
   z-index: 1020;
 }
 
-/* Fixed some issues with stickey elements getting cut off */
+/* Fixed issues with sticky elements */
 @media (min-width: 992px) {
   .sticky-top {
     position: -webkit-sticky;
     position: sticky;
     top: 1rem;
+    max-height: calc(100vh - 120px); /* Account for footer */
+    overflow-y: auto;
   }
 }
 
@@ -207,10 +232,68 @@ body {
   display: block;
 }
 
-/* Make sure modals appear above other content */
+/* Make sure modals appear above footer */
 .modal-backdrop {
   z-index: 1040;
 }
 .modal {
   z-index: 1050;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 767px) {
+  /* Scroll tables on small screens */
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  /* Make buttons full width on mobile */
+  .btn-block-sm {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Adjust card padding on small screens */
+  .card-body {
+    padding: 1rem;
+  }
+  
+  /* Ensure footer doesn't block content */
+  body {
+    margin-bottom: 50px;
+  }
+  
+  /* Wrap long text better on small screens */
+  .text-truncate-sm {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+  
+  /* Adjust dashboard card sizes for better mobile viewing */
+  .col-lg-4, .col-md-4, .col-md-6 {
+    margin-bottom: 1rem;
+  }
+  
+  /* Reduce navbar item padding for mobile */
+  .navbar-nav .nav-item .nav-link {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Critical fixes for content visibility */
+.status-card .card-body {
+  overflow: visible; /* Make sure content is visible */
+}
+
+/* Ensure alerts can be seen on all device sizes */
+.alert {
+  word-break: break-word;
+}
+
+/* Fix for notifications section */
+.notifications-area .list-group-item {
+  white-space: normal;
+  word-break: break-word;
 }

@@ -3,108 +3,223 @@
 }
 
 <div class="container-fluid mt-4">
-    <h1 class="mb-4">Dean of Students Dashboard</h1>
-    
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dean of Students Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50 me-2"></i>
+        </a>
+    </div>
+
+    <!-- Content Row - Stats Cards -->
     <div class="row">
-        <div class="col-md-4">
-            <div class="card bg-primary text-white mb-4">
+        <!-- Total Students Card -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
-                    <h5>Total Students</h5>
-                    <h2>@ViewBag.TotalStudents</h2>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Students</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-controller="Student" asp-action="Index">View Students</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Student" asp-action="Index" class="small text-primary stretched-link">View Students</a>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4">
-            <div class="card bg-warning text-white mb-4">
+
+        <!-- Total Rooms Card -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
-                    <h5>Pending Approvals</h5>
-                    <h2>@ViewBag.PendingBookings</h2>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Rooms</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-door-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-controller="Booking" asp-action="PendingApprovals">Review</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Room" asp-action="Index" class="small text-info stretched-link">View Details</a>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4">
-            <div class="card bg-success text-white mb-4">
+
+        <!-- Pending Bookings Card -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
-                    <h5>Approved Bookings</h5>
-                    <h2>@ViewBag.ApprovedBookings</h2>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Bookings</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-controller="Booking" asp-action="Index">View All</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Booking" asp-action="ManageBookings" class="small text-warning stretched-link">View Details</a>
                 </div>
             </div>
         </div>
     </div>
-    
+
+    <!-- Content Row - Main Content -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-bullhorn mr-1"></i>
-                    Announcements
+        <!-- Quick Actions Card -->
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
                 </div>
                 <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="announcementTitle" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="announcementTitle">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 mb-4">
+                            <a href="http://localhost:5225/Account/Register" class="card bg-light h-100 text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-plus fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">Register Student</h5>
+                                    <p class="card-text text-muted small">Add new student to the system</p>
+                                </div>
+                            </a>
                         </div>
-                        <div class="mb-3">
-                            <label for="announcementContent" class="form-label">Content</label>
-                            <textarea class="form-control" id="announcementContent" rows="3"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> You can register new students and manage their bookings through the dashboard.
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="hostelSelect" class="form-label">Post to</label>
-                            <select class="form-select" id="hostelSelect">
-                                <option selected>All Hostels</option>
-                                <option>Male Hostels Only</option>
-                                <option>Female Hostels Only</option>
-                                <option>Specific Hostel...</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Post Announcement</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-exclamation-triangle mr-1"></i>
-                    Issues Requiring Attention
-                </div>
-                <div class="card-body">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Maintenance request: Broken tap in Hostel A
-                            <span class="badge bg-danger rounded-pill">Urgent</span>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Security concern: Lost key in Hostel B
-                            <span class="badge bg-warning rounded-pill">Medium</span>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Space allocation: Overcrowding in Hostel C
-                            <span class="badge bg-warning rounded-pill">Medium</span>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Student complaint: Noise in Hostel D
-                            <span class="badge bg-info rounded-pill">Low</span>
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Manage Students Row -->
+    <div class="row">
+        <div class="col-lg-12 mb-4" id="searchSection">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Manage Students</h6>
+                    <a href="http://localhost:5225/Account/Register" class="btn btn-success btn-sm">
+                        <i class="fas fa-user-plus me-1"></i> Register New Student
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <form asp-controller="Student" asp-action="Search" method="get">
+                            <div class="input-group">
+                                <span class="input-group-text bg-primary text-white">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" class="form-control" name="searchTerm" placeholder="Search by name, student ID...">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    @if (ViewBag.RecentStudents != null)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0" id="studentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Student ID</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var student in ViewBag.RecentStudents)
+                                    {
+                                        <tr>
+                                            <td>@student.FirstName @student.LastName</td>
+                                            <td>@student.StudentId</td>
+                                            <td>
+                                                @if (student.IsApproved)
+                                                {
+                                                    <span class="badge bg-success">Approved</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Student" asp-action="Details" asp-route-id="@student.Id" 
+                                                class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a asp-controller="Student" asp-action="Index" class="btn btn-primary">
+                                View All Students
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center p-4">
+                            <i class="fas fa-info-circle fa-2x text-muted mb-3"></i>
+                            <p class="mb-0">No students found in the system.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+.border-left-primary {
+    border-left: .25rem solid #4e73df!important;
+}
+.border-left-success {
+    border-left: .25rem solid #1cc88a!important;
+}
+.border-left-info {
+    border-left: .25rem solid #36b9cc!important;
+}
+.border-left-warning {
+    border-left: .25rem solid #f6c23e!important;
+}
+.rounded-circle.d-inline-flex {
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+
+@section Scripts {
+    <script>
+        $(function() {
+            // Init DataTable for student management
+            if ($.fn.DataTable) {
+                $('#studentsTable').DataTable({
+                    pageLength: 5,
+                    responsive: true,
+                    searching: false,
+                    paging: false,
+                    info: false
+                });
+            }
+        });
+    </script>
+}

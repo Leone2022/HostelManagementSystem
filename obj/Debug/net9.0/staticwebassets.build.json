@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vDFFQztSYlasTKJFWfEdM+T7862ZnFU3H3KeQpLx3oM=",
+  "Hash": "GTpQwu4992DJ5i/OJysAQ51VrqkDME8AwdfSvrASnCw=",
   "Source": "HostelMS",
   "BasePath": "_content/HostelMS",
   "Mode": "Default",
@@ -2768,12 +2768,12 @@
       "OriginalItemSpec": "C:\\Users\\HP ELITEBOOK 840 G5\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\9.0.3\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-a5seb3ole6.gz",
+      "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-u4owmn02p5.gz",
       "SourceId": "HostelMS",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/HostelMS",
-      "RelativePath": "css/site#[.{fingerprint=a5seb3ole6}]?.css.gz",
+      "RelativePath": "css/site#[.{fingerprint=u4owmn02p5}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -2782,8 +2782,8 @@
       "RelatedAsset": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\css\\site.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "0cv51lgc81",
-      "Integrity": "4EKV7ESdZ7NLLOZ3xi3wyMGH+1zx8OlYcodTnSNGyWs=",
+      "Fingerprint": "h3vomwslvu",
+      "Integrity": "k/Yt43tYvUfno0RdpbtHFmk+QgpQOfBcLoGeXl1s4fo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\css\\site.css"
@@ -4042,8 +4042,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "a5seb3ole6",
-      "Integrity": "/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ=",
+      "Fingerprint": "u4owmn02p5",
+      "Integrity": "0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -5120,6 +5120,27 @@
       "OriginalItemSpec": "wwwroot\\images\\students\\0623dc17-b622-4183-81c2-29091cc26e23_WhatsApp Image 2025-04-22 at 5.34.52 AM.jpeg"
     },
     {
+      "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg",
+      "SourceId": "HostelMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\",
+      "BasePath": "_content/HostelMS",
+      "RelativePath": "images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "4ile8850en",
+      "Integrity": "XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\students\\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg"
+    },
+    {
       "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG",
       "SourceId": "HostelMS",
       "SourceType": "Discovered",
@@ -5225,6 +5246,27 @@
       "OriginalItemSpec": "wwwroot\\images\\students\\bb7d9810-4780-46f3-a74d-e2249e018c28_20230927_143210.jpg"
     },
     {
+      "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg",
+      "SourceId": "HostelMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\",
+      "BasePath": "_content/HostelMS",
+      "RelativePath": "images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "pjuivwy4fl",
+      "Integrity": "JYp4J4pI7exDQ+PBHbmsX9mhbjcqp7YLtn5w2xcBaxY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\students\\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg"
+    },
+    {
       "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg",
       "SourceId": "HostelMS",
       "SourceType": "Discovered",
@@ -5265,6 +5307,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\students\\f04acadb-2e66-40db-9680-c349595a28a0_HEADTEACHER.png"
+    },
+    {
+      "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png",
+      "SourceId": "HostelMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\",
+      "BasePath": "_content/HostelMS",
+      "RelativePath": "images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rezxc6p8rj",
+      "Integrity": "fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\students\\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png"
     },
     {
       "Identity": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\js\\site.js",
@@ -6613,167 +6676,6 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/site.a5seb3ole6.css",
-      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-a5seb3ole6.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000740740741"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1349"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"4EKV7ESdZ7NLLOZ3xi3wyMGH+1zx8OlYcodTnSNGyWs=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 08:15:13 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "a5seb3ole6"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.a5seb3ole6.css",
-      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\css\\site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3973"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 08:15:13 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "a5seb3ole6"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.a5seb3ole6.css.gz",
-      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-a5seb3ole6.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1349"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"4EKV7ESdZ7NLLOZ3xi3wyMGH+1zx8OlYcodTnSNGyWs=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 08:15:13 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "a5seb3ole6"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css.gz"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-4EKV7ESdZ7NLLOZ3xi3wyMGH+1zx8OlYcodTnSNGyWs="
-        }
-      ]
-    },
-    {
       "Route": "css/site.css",
       "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\9.0.3\\staticwebassets\\css\\site.css",
       "Selectors": [],
@@ -6812,12 +6714,12 @@
     },
     {
       "Route": "css/site.css",
-      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-a5seb3ole6.gz",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-u4owmn02p5.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000740740741"
+          "Quality": "0.000494559842"
         }
       ],
       "ResponseHeaders": [
@@ -6827,15 +6729,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1349"
+          "Value": "2021"
         },
         {
           "Name": "ETag",
-          "Value": "\"4EKV7ESdZ7NLLOZ3xi3wyMGH+1zx8OlYcodTnSNGyWs=\""
+          "Value": "\"k/Yt43tYvUfno0RdpbtHFmk+QgpQOfBcLoGeXl1s4fo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 08:15:13 GMT"
+          "Value": "Thu, 01 May 2025 03:23:07 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6855,13 +6757,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ=\""
+          "Value": "W/\"0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ="
+          "Value": "sha256-0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU="
         }
       ]
     },
@@ -6876,7 +6778,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3973"
+          "Value": "6112"
         },
         {
           "Name": "Content-Type",
@@ -6884,11 +6786,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ=\""
+          "Value": "\"0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 08:15:13 GMT"
+          "Value": "Thu, 01 May 2025 03:23:07 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6898,13 +6800,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ="
+          "Value": "sha256-0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU="
         }
       ]
     },
     {
       "Route": "css/site.css.gz",
-      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-a5seb3ole6.gz",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-u4owmn02p5.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6913,7 +6815,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1349"
+          "Value": "2021"
         },
         {
           "Name": "Content-Type",
@@ -6921,11 +6823,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"4EKV7ESdZ7NLLOZ3xi3wyMGH+1zx8OlYcodTnSNGyWs=\""
+          "Value": "\"k/Yt43tYvUfno0RdpbtHFmk+QgpQOfBcLoGeXl1s4fo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 08:15:13 GMT"
+          "Value": "Thu, 01 May 2025 03:23:07 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6943,7 +6845,168 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-4EKV7ESdZ7NLLOZ3xi3wyMGH+1zx8OlYcodTnSNGyWs="
+          "Value": "sha256-k/Yt43tYvUfno0RdpbtHFmk+QgpQOfBcLoGeXl1s4fo="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.u4owmn02p5.css",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-u4owmn02p5.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000494559842"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2021"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k/Yt43tYvUfno0RdpbtHFmk+QgpQOfBcLoGeXl1s4fo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 01 May 2025 03:23:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "u4owmn02p5"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.u4owmn02p5.css",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6112"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 01 May 2025 03:23:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "u4owmn02p5"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.u4owmn02p5.css.gz",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\obj\\Debug\\net9.0\\compressed\\lfy0dd7fur-u4owmn02p5.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2021"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k/Yt43tYvUfno0RdpbtHFmk+QgpQOfBcLoGeXl1s4fo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 01 May 2025 03:23:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "u4owmn02p5"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-k/Yt43tYvUfno0RdpbtHFmk+QgpQOfBcLoGeXl1s4fo="
         }
       ]
     },
@@ -20510,6 +20573,88 @@
       ]
     },
     {
+      "Route": "images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.4ile8850en.jpg",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1863212"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 14:21:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4ile8850en"
+        },
+        {
+          "Name": "label",
+          "Value": "images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE="
+        }
+      ]
+    },
+    {
+      "Route": "images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1863212"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 14:21:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE="
+        }
+      ]
+    },
+    {
       "Route": "images/students/4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG",
       "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG",
       "Selectors": [],
@@ -20920,6 +21065,88 @@
       ]
     },
     {
+      "Route": "images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7091771"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JYp4J4pI7exDQ+PBHbmsX9mhbjcqp7YLtn5w2xcBaxY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 14:17:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-JYp4J4pI7exDQ+PBHbmsX9mhbjcqp7YLtn5w2xcBaxY="
+        }
+      ]
+    },
+    {
+      "Route": "images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.pjuivwy4fl.jpg",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7091771"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JYp4J4pI7exDQ+PBHbmsX9mhbjcqp7YLtn5w2xcBaxY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 14:17:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pjuivwy4fl"
+        },
+        {
+          "Name": "label",
+          "Value": "images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-JYp4J4pI7exDQ+PBHbmsX9mhbjcqp7YLtn5w2xcBaxY="
+        }
+      ]
+    },
+    {
       "Route": "images/students/ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg",
       "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg",
       "Selectors": [],
@@ -21080,6 +21307,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-LSYsIAAnnrvMhIuHEVlO8wx9fuXOx/8YysAN7MFO968="
+        }
+      ]
+    },
+    {
+      "Route": "images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5379261"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 07 May 2025 07:49:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk="
+        }
+      ]
+    },
+    {
+      "Route": "images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.rezxc6p8rj.png",
+      "AssetFile": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5379261"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 07 May 2025 07:49:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rezxc6p8rj"
+        },
+        {
+          "Name": "label",
+          "Value": "images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk="
         }
       ]
     },

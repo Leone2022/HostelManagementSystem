@@ -1,281 +1,315 @@
-<!-- Path: Views/Dashboard/WardenDashboard.cshtml -->
-@using HostelMS.Models
 @model HostelMS.ViewModels.WardenDashboardViewModel
-@{
-    ViewData["Title"] = "Warden Dashboard";
-}
 
 <div class="container-fluid mt-4">
-    <h1 class="mb-4">Hostel Warden Dashboard</h1>
-    
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Hostel Warden Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50 me-2"></i>
+        </a>
+    </div>
+
+    <!-- Content Row - Stats Cards -->
     <div class="row">
-        <div class="col-md-3">
-            <div class="card bg-success text-white mb-4">
+        <!-- Total Students Card -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
-                    <h5>Assigned Students</h5>
-                    <h2>@Model.TotalAssignedStudents</h2>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Students</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-controller="Student" asp-action="Assigned">View Students</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Student" asp-action="Index" class="small text-primary stretched-link">View Details</a>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-3">
-            <div class="card bg-warning text-white mb-4">
+
+        <!-- Total Rooms Card -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
-                    <h5>Pending Verifications</h5>
-                    <h2>@Model.PendingVerifications</h2>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Rooms</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-door-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-controller="Student" asp-action="PendingVerification">Verify Students</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Room" asp-action="Index" class="small text-info stretched-link">View Details</a>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-3">
-            <div class="card bg-info text-white mb-4">
+
+        <!-- Pending Bookings Card -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
-                    <h5>Available Beds</h5>
-                    <h2>@Model.AvailableBeds</h2>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Bookings</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-controller="Room" asp-action="AvailableBeds">View Available</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-3">
-            <div class="card bg-danger text-white mb-4">
-                <div class="card-body">
-                    <h5>Maintenance Requests</h5>
-                    <h2>@Model.MaintenanceRequests</h2>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-controller="MaintenanceRequest" asp-action="Index">View Requests</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Booking" asp-action="ManageBookings" class="small text-warning stretched-link">View Details</a>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="fas fa-search me-2"></i> Student Search</h5>
-                    </div>
+
+    <!-- Content Row - Main Content -->
+    <div class="row">
+        <!-- Booking Management Card -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Booking Management</h6>
+                    <a asp-controller="Booking" asp-action="ManageBookings" class="btn btn-primary btn-sm">
+                        <i class="fas fa-clipboard-check me-1"></i> Manage All Bookings
+                    </a>
                 </div>
                 <div class="card-body">
-                    <form asp-controller="Student" asp-action="Search" method="get" class="mb-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="searchTerm" placeholder="Search by name, student ID, room number, or hostel...">
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </div>
-                    </form>
+                    <div class="text-center mb-4">
+                        <i class="fas fa-bookmark fa-3x text-primary mb-3"></i>
+                        <h4>Student Booking System</h4>
+                        <p class="text-muted">Review and process student booking requests with payment verification</p>
+                    </div>
                     
-                    @if (Model.SearchResults != null && Model.SearchResults.Any())
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="rounded-circle bg-warning text-white d-inline-flex p-3">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h5 class="mt-2">Pending</h5>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="rounded-circle bg-success text-white d-inline-flex p-3">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h5 class="mt-2">Approved</h5>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="rounded-circle bg-danger text-white d-inline-flex p-3">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <h5 class="mt-2">Rejected</h5>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a asp-controller="Booking" asp-action="ManageBookings" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-clipboard-check me-2"></i> Process Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 mb-4">
+                            <a href="http://localhost:5225/Account/Register" class="card bg-light h-100 text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-plus fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">Register Student</h5>
+                                    <p class="card-text text-muted small">Add new student to the system</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> You can register new students and manage their bookings through the dashboard.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Row -->
+    <div class="row">
+        <!-- Recent Bookings Table -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Bookings</h6>
+                    <a asp-controller="Booking" asp-action="ManageBookings" class="btn btn-sm btn-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (Model?.RecentActivities != null && Model.RecentActivities.Any())
                     {
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Photo</th>
-                                        <th>Student ID</th>
-                                        <th>Name</th>
-                                        <th>Hostel / Room</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th>Activity</th>
+                                        <th>Description</th>
+                                        <th>User</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var student in Model.SearchResults)
+                                    @foreach (var activity in Model.RecentActivities)
                                     {
                                         <tr>
-                                            <td>
-                                                @if (!string.IsNullOrEmpty(student.ProfilePicture))
-                                                {
-                                                    <img src="@student.ProfilePicture" alt="Student" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
-                                                }
-                                                else
-                                                {
-                                                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="fas fa-user text-white"></i>
-                                                    </div>
-                                                }
-                                            </td>
-                                            <td>@student.StudentId</td>
-                                            <td>@student.FirstName @student.LastName</td>
-                                            <td>@(student.CurrentHostel?.Name ?? "Not Assigned") / @(student.CurrentRoomNumber ?? "N/A")</td>
-                                            <td>
-                                                <span class="badge @(student.IsVerified ? "bg-success" : "bg-warning")">
-                                                    @(student.IsVerified ? "Verified" : "Unverified")
-                                                </span>
-                                                <span class="badge @(student.IsCurrentlyInHostel ? "bg-info" : "bg-secondary")">
-                                                    @(student.IsCurrentlyInHostel ? "In Hostel" : "Out")
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a asp-controller="Student" asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-info-circle"></i> Details
-                                                    </a>
-                                                    <a asp-controller="Student" asp-action="Assign" asp-route-id="@student.Id" class="btn btn-sm btn-success">
-                                                        <i class="fas fa-home"></i> Assign
-                                                    </a>
-                                                </div>
-                                            </td>
+                                            <td>@activity.ActivityType</td>
+                                            <td>@activity.Description</td>
+                                            <td>@activity.UserName</td>
+                                            <td>@activity.Timestamp.ToString("g")</td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
                     }
+                    else
+                    {
+                        <div class="text-center p-4">
+                            <i class="fas fa-info-circle fa-2x text-muted mb-3"></i>
+                            <p class="mb-0">No recent bookings found.</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-7">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="fas fa-bed me-2"></i> Room Assignment Dashboard</h5>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="hostelDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Select Hostel
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="hostelDropdown">
-                                @foreach(var hostel in Model.Hostels)
-                                {
-                                    <li><a class="dropdown-item hostel-selector" data-hostel-id="@hostel.HostelId" href="#">@hostel.Name</a></li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
+
+        <!-- Recently Registered Students -->
+        <div class="col-lg-6 mb-4" id="searchSection">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Manage Students</h6>
+                    <a href="http://localhost:5225/Account/Register" class="btn btn-success btn-sm">
+                        <i class="fas fa-user-plus me-1"></i> Register New Student
+                    </a>
                 </div>
                 <div class="card-body">
-                    <div id="roomLayout" class="d-flex flex-wrap gap-2 mb-3">
-                        <!-- Room layout will be loaded here via AJAX -->
-                        <div class="alert alert-info">Please select a hostel to view room layout</div>
+                    <div class="mb-4">
+                        <form asp-controller="Student" asp-action="Search" method="get">
+                            <div class="input-group">
+                                <span class="input-group-text bg-primary text-white">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" class="form-control" name="searchTerm" placeholder="Search by name, student ID...">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </form>
                     </div>
                     
-                    <div class="mb-3">
-                        <div class="d-flex align-items-center mb-1">
-                            <div class="badge bg-success me-2" style="width: 20px; height: 20px;"></div>
-                            <span>Available</span>
+                    @if (Model?.AllStudents != null && Model.AllStudents.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0" id="studentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Student ID</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var student in Model.AllStudents.Take(5))
+                                    {
+                                        <tr>
+                                            <td>@student.FirstName @student.LastName</td>
+                                            <td>@student.StudentId</td>
+                                            <td>
+                                                @if (student.IsVerified)
+                                                {
+                                                    <span class="badge bg-success">Approved</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Student" asp-action="Details" asp-route-id="@student.Id" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="d-flex align-items-center mb-1">
-                            <div class="badge bg-warning me-2" style="width: 20px; height: 20px;"></div>
-                            <span>Partially Assigned</span>
+                        <div class="text-center mt-3">
+                            <a asp-controller="Student" asp-action="Index" class="btn btn-primary">
+                                View All Students
+                            </a>
                         </div>
-                        <div class="d-flex align-items-center mb-1">
-                            <div class="badge bg-danger me-2" style="width: 20px; height: 20px;"></div>
-                            <span>Fully Assigned</span>
+                    }
+                    else
+                    {
+                        <div class="text-center p-4">
+                            <i class="fas fa-info-circle fa-2x text-muted mb-3"></i>
+                            <p class="mb-0">No students found in the system.</p>
                         </div>
-                        <div class="d-flex align-items-center">
-                            <div class="badge bg-secondary me-2" style="width: 20px; height: 20px;"></div>
-                            <span>Under Maintenance</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-5">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-tasks me-2"></i> Recent Activities
-                </div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        @foreach(var activity in Model.RecentActivities)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>@activity.ActivityType</strong> - @activity.Description
-                                    <small class="d-block text-muted">@activity.Timestamp.ToString("g")</small>
-                                </div>
-                                <span class="badge rounded-pill bg-primary">@activity.UserName</span>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-bullhorn me-2"></i> Post Announcement
-                </div>
-                <div class="card-body">
-                    <form asp-controller="Announcement" asp-action="Create" method="post">
-                        <div class="mb-3">
-                            <label for="announcementTitle" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="announcementTitle" name="Title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="announcementContent" class="form-label">Content</label>
-                            <textarea class="form-control" id="announcementContent" name="Content" rows="3" required></textarea>
-                        </div>
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="isUrgent" name="IsUrgent">
-                            <label class="form-check-label" for="isUrgent">
-                                Mark as Urgent
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Post Announcement</button>
-                    </form>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+.border-left-primary {
+    border-left: .25rem solid #4e73df!important;
+}
+.border-left-success {
+    border-left: .25rem solid #1cc88a!important;
+}
+.border-left-info {
+    border-left: .25rem solid #36b9cc!important;
+}
+.border-left-warning {
+    border-left: .25rem solid #f6c23e!important;
+}
+.rounded-circle.d-inline-flex {
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+</style>
 
 @section Scripts {
     <script>
-        // Room selection and assignment functionality
         $(function() {
-            $('.hostel-selector').click(function(e) {
-                e.preventDefault();
-                const hostelId = $(this).data('hostel-id');
-                
-                // Load room layout via AJAX
-                $.get(`/Room/GetRoomLayout?hostelId=${hostelId}`, function(data) {
-                    $('#roomLayout').html(data);
+            // Init DataTable for student management
+            if ($.fn.DataTable) {
+                $('#studentsTable').DataTable({
+                    pageLength: 5,
+                    responsive: true,
+                    searching: false,
+                    paging: false,
+                    info: false
                 });
-            });
-            
-            // Room click event will be delegated
-            $(document).on('click', '.room-card', function() {
-                const roomId = $(this).data('room-id');
-                const roomNumber = $(this).data('room-number');
-                
-                // Open room details modal
-                $.get(`/Room/GetRoomDetails?roomId=${roomId}`, function(data) {
-                    $('#roomDetailsModalContent').html(data);
-                    $('#roomDetailsModal').modal('show');
-                });
-            });
+            }
         });
     </script>
 }
-
-<!-- Room Details Modal -->
-<div class="modal fade" id="roomDetailsModal" tabindex="-1" aria-labelledby="roomDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="roomDetailsModalLabel">Room Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="roomDetailsModalContent">
-                <!-- Room details will be loaded here via AJAX -->
-            </div>
-        </div>
-    </div>
-</div>

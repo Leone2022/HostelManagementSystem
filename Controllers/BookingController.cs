@@ -116,6 +116,7 @@ namespace HostelMS.Controllers
             {
                 // Get selected room
                 var room = await _context.Rooms
+                    .Include(r => r.Hostel)
                     .FirstOrDefaultAsync(r => r.RoomId == model.RoomId);
 
                 if (room == null)
@@ -141,7 +142,7 @@ namespace HostelMS.Controllers
                     CheckOutDate = model.CheckOutDate,
                     TotalAmount = room.PricePerSemester,
                     Status = BookingStatus.Pending,
-                    Comments = model.Comments
+                    Comments = model.Comments ?? string.Empty
                 };
 
                 _context.Add(booking);
@@ -220,7 +221,7 @@ namespace HostelMS.Controllers
 
             var bookings = await _context.Bookings
                 .Include(b => b.Room)
-                .ThenInclude(r => r.Hostel)
+                .ThenInclude(r => r != null ? r.Hostel : null)
                 .Where(b => b.UserId == student.Id)
                 .OrderByDescending(b => b.BookingDate)
                 .ToListAsync();
@@ -230,12 +231,12 @@ namespace HostelMS.Controllers
 
         // GET: Booking/ManageBookings
         [Authorize(Roles = "Admin,Warden")]
-        public async Task<IActionResult> ManageBookings(string status = "Pending", string searchString = null, int? hostelId = null, DateTime? dateFilter = null)
+        public async Task<IActionResult> ManageBookings(string status = "Pending", string? searchString = null, int? hostelId = null, DateTime? dateFilter = null)
         {
             var query = _context.Bookings
                 .Include(b => b.Student)
                 .Include(b => b.Room)
-                .ThenInclude(r => r.Hostel)
+                .ThenInclude(r => r != null ? r.Hostel : null)
                 .AsQueryable();
 
             // Filter by status
@@ -248,16 +249,18 @@ namespace HostelMS.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 query = query.Where(b => 
-                    b.Student.FirstName.Contains(searchString) || 
-                    b.Student.LastName.Contains(searchString) || 
-                    (b.Student.StudentId != null && b.Student.StudentId.Contains(searchString)) || 
-                    b.Room.RoomNumber.Contains(searchString));
+                    (b.Student != null && (
+                        b.Student.FirstName.Contains(searchString) || 
+                        b.Student.LastName.Contains(searchString) || 
+                        (b.Student.StudentId != null && b.Student.StudentId.Contains(searchString))
+                    )) || 
+                    (b.Room != null && b.Room.RoomNumber.Contains(searchString)));
             }
 
             // Filter by hostel
             if (hostelId.HasValue)
             {
-                query = query.Where(b => b.Room.HostelId == hostelId);
+                query = query.Where(b => b.Room != null && b.Room.HostelId == hostelId);
             }
 
             // Filter by date
@@ -299,7 +302,7 @@ namespace HostelMS.Controllers
             var booking = await _context.Bookings
                 .Include(b => b.Student)
                 .Include(b => b.Room)
-                .ThenInclude(r => r.Hostel)
+                .ThenInclude(r => r != null ? r.Hostel : null)
                 .FirstOrDefaultAsync(b => b.BookingId == id);
 
             if (booking == null)
@@ -338,7 +341,7 @@ namespace HostelMS.Controllers
             var booking = await _context.Bookings
                 .Include(b => b.Student)
                 .Include(b => b.Room)
-                .ThenInclude(r => r.Hostel)
+                .ThenInclude(r => r != null ? r.Hostel : null)
                 .FirstOrDefaultAsync(b => b.BookingId == id);
 
             if (booking == null)
@@ -372,84 +375,116 @@ namespace HostelMS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Warden")]
-        public async Task<IActionResult> ProcessBooking(BookingProcessViewModel model)
+        public async Task<IActionResult> ProcessBooking(int BookingId, bool IsApproved, string? RejectionReason)
         {
-            if (ModelState.IsValid)
+            // Find the booking
+            var booking = await _context.Bookings
+                .Include(b => b.Room)
+                .FirstOrDefaultAsync(b => b.BookingId == BookingId);
+
+            if (booking == null)
             {
-                var booking = await _context.Bookings
-                    .Include(b => b.Room)
-                    .FirstOrDefaultAsync(b => b.BookingId == model.BookingId);
-
-                if (booking == null)
-                {
-                    return NotFound();
-                }
-
-                // Get current user (admin/warden) who is processing this
-                var currentUser = await _userManager.GetUserAsync(User);
-                if (currentUser == null)
-                {
-                    return NotFound();
-                }
-
-                if (model.IsApproved)
-                {
-                    // Approve the booking
-                    booking.Status = BookingStatus.Approved;
-                    booking.ApprovedBy = currentUser.Id;
-                    booking.ApprovalDate = DateTime.Now;
-                    
-                    // Update payment status
-                    var payment = await _context.Payments
-                        .FirstOrDefaultAsync(p => p.BookingId == booking.BookingId);
-                    
-                    if (payment != null)
-                    {
-                        payment.Status = PaymentStatus.Completed;
-                        payment.Notes = $"{payment.Notes ?? ""}\nVerified by {currentUser.FirstName} {currentUser.LastName} on {DateTime.Now}";
-                    }
-
-                    TempData["SuccessMessage"] = "Booking has been approved successfully.";
-                }
-                else
-                {
-                    // Reject the booking
-                    booking.Status = BookingStatus.Rejected;
-                    booking.RejectionReason = model.RejectionReason;
-                    
-                    // Update payment status
-                    var payment = await _context.Payments
-                        .FirstOrDefaultAsync(p => p.BookingId == booking.BookingId);
-                    
-                    if (payment != null)
-                    {
-                        payment.Status = PaymentStatus.Failed;
-                        payment.Notes = $"{payment.Notes ?? ""}\nRejected by {currentUser.FirstName} {currentUser.LastName}: {model.RejectionReason}";
-                    }
-
-                    TempData["InfoMessage"] = "Booking has been rejected.";
-                }
-
-                // Save changes
-                await _context.SaveChangesAsync();
-                
-                return RedirectToAction(nameof(ManageBookings));
+                return NotFound();
             }
 
-            // If we got this far, something failed, reload the form
-            var bookingDetails = await _context.Bookings
-                .Include(b => b.Student)
-                .Include(b => b.Room)
-                .ThenInclude(r => r.Hostel)
-                .FirstOrDefaultAsync(b => b.BookingId == model.BookingId);
+            // Get current user (admin/warden) who is processing this
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
 
-            var paymentDetails = await _context.Payments
-                .FirstOrDefaultAsync(p => p.BookingId == model.BookingId);
+            if (IsApproved)
+            {
+                // Get room details
+                var room = booking.Room;
+                if (room == null)
+                {
+                    TempData["ErrorMessage"] = "Room information not available.";
+                    return RedirectToAction(nameof(ProcessBooking), new { id = BookingId });
+                }
 
-            model.Booking = bookingDetails;
-            model.Payment = paymentDetails;
+                // Check if this is a single room that already has an approved booking
+                if (room.Type == RoomType.Single)
+                {
+                    // Check if the room already has an approved or checked-in booking
+                    var existingApprovals = await _context.Bookings
+                        .CountAsync(b => b.RoomId == room.RoomId && 
+                                        (b.Status == BookingStatus.Approved || b.Status == BookingStatus.CheckedIn));
 
-            return View(model);
+                    if (existingApprovals > 0)
+                    {
+                        TempData["ErrorMessage"] = "Cannot approve booking. This is a single room that already has an approved booking.";
+                        return RedirectToAction(nameof(ProcessBooking), new { id = BookingId });
+                    }
+                }
+
+                // Check if the room would be overbooked with this approval
+                if (room.CurrentOccupancy >= room.Capacity)
+                {
+                    TempData["ErrorMessage"] = "Cannot approve booking. The room is already fully occupied.";
+                    return RedirectToAction(nameof(ProcessBooking), new { id = BookingId });
+                }
+
+                // Check if there are pending bookings for same room with earlier dates
+                // This implements "first come, first served" for pending bookings
+                var earlierPendingBookings = await _context.Bookings
+                    .AnyAsync(b => b.RoomId == room.RoomId && 
+                                b.Status == BookingStatus.Pending && 
+                                b.BookingDate < booking.BookingDate);
+
+                if (earlierPendingBookings)
+                {
+                    TempData["WarningMessage"] = "Note: There are earlier pending booking requests for this room. Consider processing those first.";
+                }
+
+                // Approve the booking
+                booking.Status = BookingStatus.Approved;
+                booking.ApprovedBy = currentUser.Id;
+                booking.ApprovalDate = DateTime.Now;
+                
+                // Update payment status
+                var payment = await _context.Payments
+                    .FirstOrDefaultAsync(p => p.BookingId == booking.BookingId);
+                
+                if (payment != null)
+                {
+                    payment.Status = PaymentStatus.Completed;
+                    payment.Notes = $"{payment.Notes ?? ""}\nVerified by {currentUser.FirstName} {currentUser.LastName} on {DateTime.Now}";
+                }
+
+                TempData["SuccessMessage"] = "Booking has been approved successfully.";
+            }
+            else
+            {
+                // Validate rejection reason
+                if (string.IsNullOrWhiteSpace(RejectionReason))
+                {
+                    TempData["ErrorMessage"] = "Rejection reason is required when rejecting a booking.";
+                    return RedirectToAction(nameof(ProcessBooking), new { id = BookingId });
+                }
+
+                // Reject the booking
+                booking.Status = BookingStatus.Rejected;
+                booking.RejectionReason = RejectionReason;
+                
+                // Update payment status
+                var payment = await _context.Payments
+                    .FirstOrDefaultAsync(p => p.BookingId == booking.BookingId);
+                
+                if (payment != null)
+                {
+                    payment.Status = PaymentStatus.Failed;
+                    payment.Notes = $"{payment.Notes ?? ""}\nRejected by {currentUser.FirstName} {currentUser.LastName}: {RejectionReason}";
+                }
+
+                TempData["InfoMessage"] = "Booking has been rejected.";
+            }
+
+            // Save changes
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(ManageBookings));
         }
 
         // POST: Booking/CheckIn/5
@@ -475,10 +510,32 @@ namespace HostelMS.Controllers
                 return RedirectToAction(nameof(Details), new { id = id });
             }
 
+            // Check if the room is a single room and already has someone checked in
+            var room = booking.Room;
+            if (room != null && room.Type == RoomType.Single)
+            {
+                var existingCheckIns = await _context.Bookings
+                    .CountAsync(b => b.RoomId == room.RoomId && 
+                                   b.Status == BookingStatus.CheckedIn &&
+                                   b.BookingId != id);
+
+                if (existingCheckIns > 0)
+                {
+                    TempData["ErrorMessage"] = "Cannot check in student. This is a single room that already has a student checked in.";
+                    return RedirectToAction(nameof(Details), new { id = id });
+                }
+            }
+
+            // Ensure the room won't be overbooked
+            if (room != null && room.CurrentOccupancy >= room.Capacity)
+            {
+                TempData["ErrorMessage"] = "Cannot check in student. The room is already at full capacity.";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+
             booking.Status = BookingStatus.CheckedIn;
 
             // Update the room capacity and student information
-            var room = booking.Room;
             var student = booking.Student;
 
             if (room != null && student != null)
@@ -495,7 +552,7 @@ namespace HostelMS.Controllers
                     room.Status = RoomStatus.PartiallyAssigned;
                 }
 
-                // Update student record
+                // Update student record - handle nullable properties properly
                 student.CurrentHostelId = room.HostelId;
                 student.CurrentRoomNumber = room.RoomNumber;
                 student.IsBoarding = true;
@@ -556,13 +613,19 @@ namespace HostelMS.Controllers
                     room.Status = RoomStatus.PartiallyAssigned;
                 }
 
-                // Update student record
-                student.CurrentHostelId = null;
-                student.CurrentRoomNumber = null;
+                // Update student record - properly handle nullable properties
+                // Check your ApplicationUser model to see if these are nullable or not
+                // If they're not nullable, use an appropriate default value
+                if (student.CurrentHostelId.HasValue) // This assumes CurrentHostelId is int?
+                {
+                    student.CurrentHostelId = null;
+                }
+                
+                student.CurrentRoomNumber = string.Empty; // Using empty string instead of null if non-nullable
                 student.IsBoarding = false;
                 student.LastCheckOutTime = DateTime.Now;
                 student.IsCurrentlyInHostel = false;
-                student.AssignmentDate = null;
+                student.AssignmentDate = null; // Assuming this is DateTime?
             }
 
             await _context.SaveChangesAsync();

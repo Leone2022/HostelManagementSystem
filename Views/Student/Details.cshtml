@@ -1,16 +1,34 @@
 @model ApplicationUser
 
 <div class="container-fluid mt-4">
+    <!-- Navigation Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <a asp-controller="Student" asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Students
+            </a>
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="fas fa-edit me-2"></i> Edit Profile
+                </a>
+            </div>
+        }
+    </div>
+
     <div class="row">
+        <!-- Left Column - Student Profile -->
         <div class="col-md-4">
-            <div class="card mb-4">
+            <div class="card shadow-sm mb-4">
                 <div class="card-header bg-primary text-white">
-                    <h4>Student Profile</h4>
+                    <h4><i class="fas fa-user-graduate me-2"></i> Student Profile</h4>
                 </div>
                 <div class="card-body text-center">
                     @if (!string.IsNullOrEmpty(Model.ProfilePicture))
                     {
-                        <img src="@Model.ProfilePicture" class="img-fluid rounded-circle mb-3" style="max-width: 200px;" alt="Profile Picture">
+                        <img src="@Model.ProfilePicture" class="img-fluid rounded-circle mb-3" style="max-width: 200px; height: 200px; object-fit: cover;" alt="Profile Picture">
                     }
                     else
                     {
@@ -18,74 +36,226 @@
                             <i class="fas fa-user fa-5x text-white"></i>
                         </div>
                     }
-                    <h5 class="card-title">@Model.FirstName @Model.LastName</h5>
-                    <p class="card-text">
-                        <strong>Student ID:</strong> @Model.StudentId<br>
-                        <strong>Email:</strong> @Model.Email
-                    </p>
+                    <h4 class="mb-0">@Model.FirstName @Model.LastName</h4>
+                    <p class="text-muted mb-3">@Model.StudentId</p>
+                    
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="badge @(Model.IsVerified ? "bg-success" : "bg-warning") px-3 py-2 fs-6">
+                            <i class="fas @(Model.IsVerified ? "fa-check-circle" : "fa-exclamation-circle") me-1"></i>
+                            @(Model.IsVerified ? "Verified" : "Unverified")
+                        </span>
+                    </div>
+                    
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong><i class="fas fa-envelope me-2"></i> Email:</strong>
+                                <span>@Model.Email</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong><i class="fas fa-graduation-cap me-2"></i> Course:</strong>
+                                <span>@Model.Course</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong><i class="fas fa-calendar-alt me-2"></i> Year:</strong>
+                                <span>@Model.Year</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-8">
-            <div class="card mb-4">
+
+        <!-- Middle Column - Details -->
+        <div class="col-md-4">
+            <!-- Accommodation Details -->
+            <div class="card shadow-sm mb-4">
                 <div class="card-header bg-success text-white">
-                    <h4>Accommodation Details</h4>
+                    <h4><i class="fas fa-home me-2"></i> Accommodation</h4>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Current Assignment</h5>
-                            @if (Model.CurrentHostelId.HasValue)
+                    @if (Model.CurrentHostelId.HasValue)
+                    {
+                        <div class="mb-3 p-3 border rounded bg-light">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-bed me-2"></i> Current Assignment
+                            </h5>
+                            <p class="mb-2">
+                                <strong>Hostel:</strong> @Model.CurrentHostel?.Name
+                            </p>
+                            <p class="mb-2">
+                                <strong>Room:</strong> @Model.CurrentRoomNumber
+                            </p>
+                            <p class="mb-2">
+                                <strong>Assignment Date:</strong> @Model.AssignmentDate?.ToString("dd MMM yyyy")
+                            </p>
+                            @if (Model.IsTemporaryAssignment)
                             {
-                                <p>
-                                    <strong>Hostel:</strong> @Model.CurrentHostel?.Name<br>
-                                    <strong>Room:</strong> @Model.CurrentRoomNumber<br>
-                                    <strong>Assignment Date:</strong> @Model.AssignmentDate?.ToString("dd MMM yyyy")
-                                </p>
-                                @if (Model.IsTemporaryAssignment)
-                                {
-                                    <span class="badge bg-warning">Temporary Assignment</span>
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-exclamation-triangle me-2"></i> Temporary Assignment
                                     @if (Model.ProbationEndDate.HasValue)
                                     {
-                                        <p>
+                                        <p class="mb-0 mt-2">
                                             <strong>Probation End:</strong> @Model.ProbationEndDate.Value.ToString("dd MMM yyyy")
                                         </p>
                                     }
-                                }
+                                </div>
                             }
-                            else
-                            {
-                                <p class="text-muted">No current room assignment</p>
-                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No room currently assigned to this student.
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4><i class="fas fa-info-circle me-2"></i> Personal Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Nationality:</strong></p>
+                            <p class="text-muted">@Model.Nationality</p>
                         </div>
                         <div class="col-md-6">
-                            <h5>Verification Status</h5>
-                            <span class="badge @(Model.IsVerified ? "bg-success" : "bg-warning")">
-                                @(Model.IsVerified ? "Verified" : "Unverified")
-                            </span>
+                            <p><strong>Country:</strong></p>
+                            <p class="text-muted">@Model.Country</p>
                         </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <p><strong>Address:</strong></p>
+                        <p class="text-muted">@Model.Address</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Contacts & Activities -->
+        <div class="col-md-4">
+            <!-- Emergency Contacts -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h4><i class="fas fa-phone-alt me-2"></i> Emergency Contacts</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="border-bottom pb-2 mb-3">Parent/Guardian</h5>
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Name:</strong></p>
+                        <p class="text-muted">@Model.ParentName</p>
+                    </div>
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Contact:</strong></p>
+                        <p class="text-muted">
+                            <a href="tel:@Model.ParentContact" class="text-decoration-none">
+                                <i class="fas fa-phone-alt me-1 text-success"></i> @Model.ParentContact
+                            </a>
+                        </p>
+                    </div>
+                    
+                    <h5 class="border-bottom pb-2 mb-3 mt-4">Emergency Contact</h5>
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Name:</strong></p>
+                        <p class="text-muted">@Model.EmergencyContactName</p>
+                    </div>
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Contact:</strong></p>
+                        <p class="text-muted">
+                            <a href="tel:@Model.EmergencyContactPhone" class="text-decoration-none">
+                                <i class="fas fa-phone-alt me-1 text-success"></i> @Model.EmergencyContactPhone
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
 
+            <!-- Recent Activities -->
             @if (ViewBag.RecentActivities != null)
             {
-                <div class="card">
-                    <div class="card-header bg-info text-white">
-                        <h4>Recent Activities</h4>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h4><i class="fas fa-history me-2"></i> Recent Activities</h4>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        @foreach (var activity in ViewBag.RecentActivities)
-                        {
-                            <li class="list-group-item">
-                                <strong>@activity.ActivityType</strong>: @activity.Description
-                                <small class="text-muted float-end">@activity.Timestamp.ToString("dd MMM yyyy HH:mm")</small>
-                            </li>
-                        }
-                    </ul>
+                    <div class="card-body p-0">
+                        <div class="timeline p-3">
+                            @foreach (var activity in ViewBag.RecentActivities)
+                            {
+                                <div class="timeline-item mb-4 pb-4 border-bottom">
+                                    <div class="d-flex">
+                                        <div class="timeline-icon bg-@GetActivityColor(activity.ActivityType) text-white rounded-circle text-center me-3">
+                                            <i class="fas @GetActivityIcon(activity.ActivityType) mt-2"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h6 class="mb-1">@activity.ActivityType</h6>
+                                            <p class="mb-1">@activity.Description</p>
+                                            <small class="text-muted">@activity.Timestamp.ToString("dd MMM yyyy HH:mm")</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
             }
         </div>
     </div>
 </div>
+
+@functions {
+    public string GetActivityColor(string activityType)
+    {
+        return activityType switch
+        {
+            "Login" => "primary",
+            "Registration" => "success",
+            "Room Assignment" => "info",
+            "Verification" => "warning",
+            "Profile Update" => "secondary",
+            _ => "dark"
+        };
+    }
+    
+    public string GetActivityIcon(string activityType)
+    {
+        return activityType switch
+        {
+            "Login" => "fa-sign-in-alt",
+            "Registration" => "fa-user-plus",
+            "Room Assignment" => "fa-home",
+            "Verification" => "fa-check-circle",
+            "Profile Update" => "fa-edit",
+            _ => "fa-circle"
+        };
+    }
+}
+
+<style>
+    .timeline-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .timeline-item:last-child {
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .hover-shadow {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-shadow:hover {
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
+</style>

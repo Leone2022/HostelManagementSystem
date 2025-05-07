@@ -12,6 +12,33 @@
                     <span class="badge bg-warning text-dark">Pending Approval</span>
                 </div>
                 <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    
+                    @if (TempData["WarningMessage"] != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            @TempData["WarningMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                
                     @if (Model.Booking == null)
                     {
                         <div class="alert alert-danger">
@@ -61,6 +88,15 @@
                                                     
                                                     <dt class="col-sm-4">Room:</dt>
                                                     <dd class="col-sm-8">@Model.Booking.Room?.RoomNumber</dd>
+                                                    
+                                                    <dt class="col-sm-4">Room Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        @Model.Booking.Room?.Type.ToString()
+                                                        @if (Model.Booking.Room?.Type == RoomType.Single)
+                                                        {
+                                                            <span class="badge bg-info ms-1">Single Occupancy</span>
+                                                        }
+                                                    </dd>
                                                 </dl>
                                             </div>
                                         </div>
@@ -215,8 +251,9 @@
                                         <h6 class="mb-0"><i class="fas fa-clipboard-check me-2"></i> Process Booking</h6>
                                     </div>
                                     <div class="card-body">
+                                        <!-- Direct form method without model binding for simplicity -->
                                         <form asp-action="ProcessBooking" method="post">
-                                            <input type="hidden" asp-for="BookingId" />
+                                            <input type="hidden" name="BookingId" value="@Model.BookingId" />
                                             
                                             <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
                                             
@@ -225,8 +262,28 @@
                                             {
                                                 var room = Model.Booking.Room;
                                                 var remainingCapacity = room.Capacity - room.CurrentOccupancy;
+                                                bool isSingleRoom = room.Type == RoomType.Single;
                                                 
-                                                @if (remainingCapacity <= 0)
+                                                // Check if single room already has approved bookings
+                                                bool singleRoomBlocked = false;
+                                                
+                                                if (isSingleRoom)
+                                                {
+                                                    var approvedCount = Model.Booking.Room.OccupyingStudents?.Count ?? 0;
+                                                    var approvedBookings = ViewBag.ApprovedBookingsCount != null ? ViewBag.ApprovedBookingsCount : 0;
+                                                    singleRoomBlocked = approvedCount > 0 || approvedBookings > 0;
+                                                    
+                                                    if (singleRoomBlocked)
+                                                    {
+                                                        <div class="alert alert-danger mb-3">
+                                                            <i class="fas fa-ban me-2"></i>
+                                                            <strong>Single Room Alert:</strong> This is a single room that already has an approved booking. 
+                                                            You cannot approve multiple bookings for a single room.
+                                                        </div>
+                                                    }
+                                                }
+                                                
+                                                if (remainingCapacity <= 0)
                                                 {
                                                     <div class="alert alert-danger mb-3">
                                                         <i class="fas fa-exclamation-circle me-2"></i>
@@ -245,42 +302,96 @@
                                                     <div class="alert alert-success mb-3">
                                                         <i class="fas fa-check-circle me-2"></i>
                                                         <strong>Room Available:</strong> This room has @remainingCapacity beds available.
+                                                        @if (isSingleRoom)
+                                                        {
+                                                            <div class="mt-2">
+                                                                <span class="badge bg-info">Single Room</span> This room can only be assigned to one student.
+                                                            </div>
+                                                        }
                                                     </div>
                                                 }
                                             }
                                             
-                                            <div class="mb-4">
-                                                <label class="form-label fw-bold">Decision</label>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" name="IsApproved" id="approveBooking" value="true" checked>
-                                                    <label class="form-check-label" for="approveBooking">
-                                                        <span class="text-success fw-bold">Approve</span> - 
-                                                        Accept payment and confirm the booking
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="IsApproved" id="rejectBooking" value="false">
-                                                    <label class="form-check-label" for="rejectBooking">
-                                                        <span class="text-danger fw-bold">Reject</span> - 
-                                                        Decline the booking request
-                                                    </label>
+                                            <!-- Decision Buttons - New Approach with Clearer Buttons -->
+                                            <div class="mb-4 text-center">
+                                                <h5 class="fw-bold mb-3">Make a Decision</h5>
+                                                
+                                                <div class="d-grid gap-3">
+                                                    @{
+                                                        bool disableApproveButton = false;
+                                                        string disabledReason = "";
+                                                        
+                                                        if (Model.Booking.Room != null)
+                                                        {
+                                                            var room = Model.Booking.Room;
+                                                            
+                                                            // Check if single room already has approved bookings
+                                                            if (room.Type == RoomType.Single)
+                                                            {
+                                                                var approvedCount = Model.Booking.Room.OccupyingStudents?.Count ?? 0;
+                                                                var approvedBookings = ViewBag.ApprovedBookingsCount != null ? ViewBag.ApprovedBookingsCount : 0;
+                                                                
+                                                                if (approvedCount > 0 || approvedBookings > 0)
+                                                                {
+                                                                    disableApproveButton = true;
+                                                                    disabledReason = "Single room already has an approved booking";
+                                                                }
+                                                            }
+                                                            
+                                                            // Check if room is at capacity
+                                                            if (room.CurrentOccupancy >= room.Capacity)
+                                                            {
+                                                                disableApproveButton = true;
+                                                                disabledReason = "Room is already at capacity";
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                    @if (disableApproveButton)
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-lg" disabled>
+                                                            <i class="fas fa-check-circle me-2"></i> Approve Booking
+                                                        </button>
+                                                        <small class="text-danger">Cannot approve: @disabledReason</small>
+                                                    }
+                                                    else 
+                                                    {
+                                                        <button type="submit" class="btn btn-success btn-lg" name="IsApproved" value="true">
+                                                            <i class="fas fa-check-circle me-2"></i> Approve Booking
+                                                        </button>
+                                                    }
+                                                    
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="collapse" 
+                                                            data-bs-target="#rejectionReasonCollapse" aria-expanded="false">
+                                                        <i class="fas fa-times-circle me-2"></i> Reject Booking
+                                                    </button>
                                                 </div>
                                             </div>
                                             
-                                            <div class="mb-4" id="rejectionReasonGroup" style="display:none;">
-                                                <label asp-for="RejectionReason" class="form-label fw-bold">Rejection Reason</label>
-                                                <textarea asp-for="RejectionReason" class="form-control" rows="3" 
-                                                          placeholder="Please provide a reason for rejecting this booking request..."></textarea>
-                                                <span asp-validation-for="RejectionReason" class="text-danger"></span>
-                                                <div class="form-text">This reason will be displayed to the student.</div>
+                                            <!-- Rejection Reason (Collapsible) -->
+                                            <div class="collapse mb-4" id="rejectionReasonCollapse">
+                                                <div class="card card-body bg-light border-danger">
+                                                    <h6 class="text-danger mb-2">Rejection Details</h6>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="RejectionReason" class="form-label">Reason for Rejection</label>
+                                                        <textarea id="RejectionReason" name="RejectionReason" class="form-control" rows="3" 
+                                                                placeholder="Please provide a reason for rejecting this booking..."></textarea>
+                                                        <span class="text-danger field-validation-valid" data-valmsg-for="RejectionReason" data-valmsg-replace="true"></span>
+                                                        <div class="form-text">This message will be visible to the student</div>
+                                                    </div>
+                                                    
+                                                    <div class="d-grid">
+                                                        <button type="submit" class="btn btn-danger" name="IsApproved" value="false">
+                                                            <i class="fas fa-ban me-2"></i> Confirm Rejection
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             
-                                            <div class="d-grid gap-2 mt-4">
-                                                <button type="submit" class="btn btn-primary btn-lg">
-                                                    <i class="fas fa-save me-2"></i> Submit Decision
-                                                </button>
-                                                <a asp-action="ManageBookings" class="btn btn-outline-secondary">
-                                                    <i class="fas fa-arrow-left me-2"></i> Back to Bookings
+                                            <div class="mt-4">
+                                                <a asp-action="ManageBookings" class="btn btn-outline-secondary w-100">
+                                                    <i class="fas fa-arrow-left me-2"></i> Back to All Bookings
                                                 </a>
                                             </div>
                                         </form>
@@ -300,28 +411,33 @@
     
     <script>
         $(document).ready(function() {
-            // Toggle rejection reason field based on decision
-            $('input[name="IsApproved"]').change(function() {
-                if ($(this).val() === 'false') {
-                    $('#rejectionReasonGroup').slideDown();
-                    $('#RejectionReason').attr('required', 'required');
-                } else {
-                    $('#rejectionReasonGroup').slideUp();
-                    $('#RejectionReason').removeAttr('required');
-                }
+            // Add client-side validation for rejection reason
+            $('#rejectionReasonCollapse').on('show.bs.collapse', function () {
+                $('#RejectionReason').attr('required', 'required');
             });
             
-            // Trigger change on load to set initial state
-            $('input[name="IsApproved"]:checked').trigger('change');
+            $('#rejectionReasonCollapse').on('hide.bs.collapse', function () {
+                $('#RejectionReason').removeAttr('required');
+            });
             
-            // Confirm submission
-            $('form').submit(function(e) {
-                var isApproved = $('input[name="IsApproved"]:checked').val() === 'true';
-                var message = isApproved ? 
-                    'Are you sure you want to APPROVE this booking? The student will be notified and the room will be allocated.' : 
-                    'Are you sure you want to REJECT this booking? The student will be notified of your decision.';
+            // Confirm approval with explicit message
+            $('button[value="true"]').click(function(e) {
+                if (!confirm('Are you sure you want to APPROVE this booking? The student will be notified and the room will be allocated.')) {
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
+            
+            // Confirm rejection with explicit message
+            $('button[name="IsApproved"][value="false"]').click(function(e) {
+                if ($('#RejectionReason').val().trim() === '') {
+                    alert('Please provide a reason for rejecting this booking.');
+                    e.preventDefault();
+                    return false;
+                }
                 
-                if (!confirm(message)) {
+                if (!confirm('Are you sure you want to REJECT this booking? The student will be notified of your decision.')) {
                     e.preventDefault();
                     return false;
                 }

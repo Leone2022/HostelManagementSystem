@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>a5seb3ole6</Fingerprint>
-      <Integrity>/hyP9IzplUdB+uYVVv/6enKIymlLTg4eWPo11dK2eyQ=</Integrity>
+      <Fingerprint>u4owmn02p5</Fingerprint>
+      <Integrity>0qvGlEL2BD2Ik57rv2X7kA1qF5Yx+q+WVDrHnormFoU=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
@@ -954,6 +954,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\0623dc17-b622-4183-81c2-29091cc26e23_WhatsApp Image 2025-04-22 at 5.34.52 AM.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>HostelMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HostelMS</BasePath>
+      <RelativePath>images/students/324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>4ile8850en</Fingerprint>
+      <Integrity>XNxBqoOrCCZIqF7MQXnlPpQWSV6UuSe9jCWZQDDhKyE=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG'))">
       <SourceType>Package</SourceType>
       <SourceId>HostelMS</SourceId>
@@ -1044,6 +1062,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\bb7d9810-4780-46f3-a74d-e2249e018c28_20230927_143210.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>HostelMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HostelMS</BasePath>
+      <RelativePath>images/students/dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>pjuivwy4fl</Fingerprint>
+      <Integrity>JYp4J4pI7exDQ+PBHbmsX9mhbjcqp7YLtn5w2xcBaxY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg'))">
       <SourceType>Package</SourceType>
       <SourceId>HostelMS</SourceId>
@@ -1079,6 +1115,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\f04acadb-2e66-40db-9680-c349595a28a0_HEADTEACHER.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>HostelMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HostelMS</BasePath>
+      <RelativePath>images/students/fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>rezxc6p8rj</Fingerprint>
+      <Integrity>fdpy4wn39K6VlwecGMQIXih/wHHT6OSGbQWEIyYObNk=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\students\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))">
       <SourceType>Package</SourceType>

@@ -213,6 +213,10 @@
       "PackagePath": "staticwebassets\\images\\students\\0623dc17-b622-4183-81c2-29091cc26e23_WhatsApp Image 2025-04-22 at 5.34.52 AM.jpeg"
     },
     {
+      "Id": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg",
+      "PackagePath": "staticwebassets\\images\\students\\324e6275-39df-4a57-9de2-2924c2cd259f_20240216_190331.jpg"
+    },
+    {
       "Id": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG",
       "PackagePath": "staticwebassets\\images\\students\\4b1f9ce9-ee80-4d62-a376-8e68a394f33b_IMG_3473.JPG"
     },
@@ -233,12 +237,20 @@
       "PackagePath": "staticwebassets\\images\\students\\bb7d9810-4780-46f3-a74d-e2249e018c28_20230927_143210.jpg"
     },
     {
+      "Id": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg",
+      "PackagePath": "staticwebassets\\images\\students\\dc12bf2d-4e8a-4e69-8490-540e763b89ac_20241204_144948.jpg"
+    },
+    {
       "Id": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg",
       "PackagePath": "staticwebassets\\images\\students\\ef152c6d-4570-4b3a-b56e-28158546bdc2_IMG-20240315-WA0022.jpg"
     },
     {
       "Id": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\f04acadb-2e66-40db-9680-c349595a28a0_HEADTEACHER.png",
       "PackagePath": "staticwebassets\\images\\students\\f04acadb-2e66-40db-9680-c349595a28a0_HEADTEACHER.png"
+    },
+    {
+      "Id": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\images\\students\\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png",
+      "PackagePath": "staticwebassets\\images\\students\\fb481942-6a8d-4a54-969f-1b78935d4712_Untitl1.png"
     },
     {
       "Id": "C:\\Users\\HP ELITEBOOK 840 G5\\HostelManagementSystem\\HostelMS\\wwwroot\\js\\site.js",
