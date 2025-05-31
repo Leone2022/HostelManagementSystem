@@ -1,0 +1,131 @@
+@{
+    ViewData["Title"] = "Hostel Booking Information";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-warning text-dark text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                        <br>
+                        Hostel Booking Information
+                    </h2>
+                </div>
+                <div class="card-body p-5">
+                    <div class="alert alert-warning border-warning">
+                        <h4 class="alert-heading">
+                            <i class="fas fa-info-circle"></i> Important Notice
+                        </h4>
+                        <p class="mb-0">
+                            Online hostel booking is currently <strong>not available</strong> for students in certain programs.
+                        </p>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title text-danger">
+                                        <i class="fas fa-ban"></i> Restricted Programs
+                                    </h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-dot-circle text-danger"></i> <strong>All Nursing Programs:</strong>
+                                            <ul class="mt-2">
+                                                <li>• BSc Nursing</li>
+                                                <li>• Diploma in Nursing</li>
+                                                <li>• Certificate in Nursing</li>
+                                            </ul>
+                                        </li>
+                                        <li class="mt-3"><i class="fas fa-dot-circle text-danger"></i> <strong>All Certificate Programs:</strong>
+                                            <ul class="mt-2">
+                                                <li>• Certificate in IT</li>
+                                                <li>• Certificate in Early Childhood Development</li>
+                                                <li>• Certificate in Computer Networks</li>
+                                                <li>• Certificate in Office Administration</li>
+                                                <li>• Certificate in Computer Repair</li>
+                                            </ul>
+                                        </li>
+                                        <li class="mt-3"><i class="fas fa-dot-circle text-danger"></i> <strong>Bridging Programs:</strong>
+                                            <ul class="mt-2">
+                                                <li>• Higher Education Certificate (HEC) Sciences</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-primary text-white border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-map-marker-alt"></i> How to Book Your Hostel
+                                    </h5>
+                                    <div class="mb-4">
+                                        <h6><i class="fas fa-building"></i> Visit the Dean's Office</h6>
+                                        <p class="mb-2">
+                                            <strong>Location:</strong> Administration Block, 2nd Floor<br>
+                                            <strong>Room:</strong> Dean of Students Office
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h6><i class="fas fa-clock"></i> Office Hours</h6>
+                                        <p class="mb-2">
+                                            <strong>Monday - Friday:</strong> 8:00 AM - 5:00 PM<br>
+                                            <strong>Saturday:</strong> 8:00 AM - 12:00 PM<br>
+                                            <strong>Sunday:</strong> Closed
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <h6><i class="fas fa-phone"></i> Contact Information</h6>
+                                        <p class="mb-0">
+                                            <strong>Phone:</strong> +256-XXX-XXXXXX<br>
+                                            <strong>Email:</strong> dean.students@university.ac.ug
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <h5 class="alert-heading">
+                            <i class="fas fa-clipboard-list"></i> Required Documents
+                        </h5>
+                        <p>When visiting the Dean's office, please bring:</p>
+                        <ul class="mb-0">
+                            <li>Student ID card</li>
+                            <li>Current semester fees receipt</li>
+                            <li>Completed hostel application form</li>
+                            <li>Copy of admission letter</li>
+                        </ul>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary btn-block btn-lg">
+                                <i class="fas fa-home"></i> Back to Home
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="@Url.Action("Index", "Booking")" class="btn btn-primary btn-block btn-lg">
+                                <i class="fas fa-bed"></i> View Available Hostels
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-light text-center">
+                    <small class="text-muted">
+                        <i class="fas fa-question-circle"></i> 
+                        For technical issues with this system, contact IT Support: support@university.ac.ug
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

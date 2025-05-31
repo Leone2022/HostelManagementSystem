@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace HostelMS.Models
 {
@@ -15,7 +16,7 @@ namespace HostelMS.Models
 
         [Key]
         public int HostelId { get; set; }
-        
+
         [Display(Name = "Hostel Code")]
         public string? HostelCode { get; set; }
 
@@ -55,7 +56,17 @@ namespace HostelMS.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal DistanceFromCampus { get; set; }
 
-        // Navigation property
+        // NEW: Price range properties for display (KEEP ONLY THESE)
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? MinPrice { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? MaxPrice { get; set; }
+
+        // NEW: Available room types (stored as comma-separated)
+        public string? AvailableRoomTypes { get; set; }
+
+        // Navigation properties
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<Amenity> Amenities { get; set; }
         public virtual ICollection<Announcement> Announcements { get; set; }

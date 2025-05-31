@@ -2,217 +2,452 @@
 @using System.Linq
 
 <div class="container-fluid mt-4">
+    <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Student Management</h1>
+        <div>
+            <h1 class="h3 mb-0">
+                <i class="fas fa-users me-2 text-primary"></i>Student Management
+            </h1>
+            <p class="text-muted mb-0">Total Students: @Model.Count()</p>
+        </div>
         
         @if (User.IsInRole("Admin"))
         {
-            <a asp-controller="Account" asp-action="Register" class="btn btn-primary">
-                <i class="fas fa-user-plus me-2"></i> Register New Student
-            </a>
+            <div class="btn-group">
+                <a asp-controller="Account" asp-action="Register" class="btn btn-primary">
+                    <i class="fas fa-user-plus me-2"></i> Register Student
+                </a>
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" 
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" asp-action="BulkImport">
+                            <i class="fas fa-file-import me-2"></i>Bulk Import
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-action="DownloadTemplate">
+                            <i class="fas fa-file-download me-2"></i>Download Template
+                        </a>
+                    </li>
+                </ul>
+            </div>
         }
     </div>
 
-    <!-- Search and Filter Bar -->
+    <!-- Report Tools Card -->
+    <div class="card shadow-sm mb-4 no-print">
+        <div class="card-body p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 text-muted">
+                    <i class="fas fa-chart-bar me-2"></i>Reports & Analytics
+                </h6>
+                <div class="btn-group">
+                    <button onclick="printStudentList()" class="btn btn-outline-primary">
+                        <i class="fas fa-print me-2"></i>Print
+                    </button>
+                    <a asp-action="DownloadStudentReport" class="btn btn-outline-success" target="_blank">
+                        <i class="fas fa-file-excel me-2"></i>Excel
+                    </a>
+                    <a asp-action="GenerateStudentPDF" class="btn btn-outline-danger" target="_blank">
+                        <i class="fas fa-file-pdf me-2"></i>PDF
+                    </a>
+                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#analyticsModal">
+                        <i class="fas fa-chart-pie me-2"></i>Analytics
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
     <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form asp-action="Search" method="get" class="row g-3">
-                <div class="col-md-4">
+        <div class="card-body p-3">
+            <form asp-action="Search" method="get" class="row g-2">
+                <div class="col-md-3">
                     <div class="input-group">
-                        <input type="text" name="searchTerm" class="form-control" placeholder="Search by name, ID, or email" value="@ViewBag.SearchTerm">
-                        <button class="btn btn-outline-primary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" name="searchTerm" class="form-control" 
+                               placeholder="Search students..." value="@ViewBag.SearchTerm">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <select name="hostelId" class="form-select">
                         <option value="">All Hostels</option>
-                        @if (ViewBag.Hostels != null)
+                        @foreach (var hostel in ViewBag.Hostels ?? new List<Hostel>())
                         {
-                            @foreach (var hostel in ViewBag.Hostels)
-                            {
-                                if (ViewBag.HostelId != null && ViewBag.HostelId == hostel.HostelId)
-                                {
-                                    <option value="@hostel.HostelId" selected>@hostel.Name</option>
-                                }
-                                else
-                                {
-                                    <option value="@hostel.HostelId">@hostel.Name</option>
-                                }
-                            }
+                            <option value="@hostel.HostelId" selected="@(ViewBag.HostelId == hostel.HostelId)">
+                                @hostel.Name
+                            </option>
                         }
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select name="verificationStatus" class="form-select">
-                        <option value="">All Verification</option>
-                        @if (ViewBag.VerificationStatus == true)
+                    <select name="courseFilter" class="form-select">
+                        <option value="">All Courses</option>
+                        @foreach (var course in ViewBag.Courses ?? new List<string>())
                         {
-                            <option value="true" selected>Verified</option>
-                        }
-                        else
-                        {
-                            <option value="true">Verified</option>
-                        }
-                        
-                        @if (ViewBag.VerificationStatus == false)
-                        {
-                            <option value="false" selected>Not Verified</option>
-                        }
-                        else
-                        {
-                            <option value="false">Not Verified</option>
+                            <option value="@course" selected="@(ViewBag.CourseFilter == course)">
+                                @course
+                            </option>
                         }
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select name="approvalStatus" class="form-select">
-                        <option value="">All Status</option>
-                        @if (ViewBag.ApprovalStatus == true)
+                    <select name="yearFilter" class="form-select">
+                        <option value="">All Years</option>
+                        @for (int i = 1; i <= 5; i++)
                         {
-                            <option value="true" selected>Approved</option>
+                            <option value="@i" selected="@(ViewBag.YearFilter == i.ToString())">
+                                Year @i
+                            </option>
                         }
-                        else
-                        {
-                            <option value="true">Approved</option>
-                        }
-                        
-                        @if (ViewBag.ApprovalStatus == false)
-                        {
-                            <option value="false" selected>Pending</option>
-                        }
-                        else
-                        {
-                            <option value="false">Pending</option>
-                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="statusFilter" class="form-select">
+                        <option value="">All Statuses</option>
+                        <option value="verified" selected="@(ViewBag.StatusFilter == "verified")">Verified</option>
+                        <option value="unverified" selected="@(ViewBag.StatusFilter == "unverified")">Unverified</option>
+                        <option value="assigned" selected="@(ViewBag.StatusFilter == "assigned")">Assigned</option>
+                        <option value="unassigned" selected="@(ViewBag.StatusFilter == "unassigned")">Unassigned</option>
                     </select>
                 </div>
                 <div class="col-md-1">
-                    <a asp-action="Index" class="btn btn-outline-secondary w-100">
-                        <i class="fas fa-redo"></i>
-                    </a>
+                    <div class="d-flex gap-1">
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-redo"></i>
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
-    @if (Model != null && Model.Any())
-    {
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+    <!-- Student Table -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 50px;">Photo</th>
+                            <th style="width: 120px;">Student ID</th>
+                            <th>Name</th>
+                            <th style="width: 150px;">Course/Year</th>
+                            <th style="width: 150px;">Contact</th>
+                            <th style="width: 200px;">Hostel/Room</th>
+                            <th style="width: 120px;">Status</th>
+                            <th style="width: 150px;" class="no-print">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
                             <tr>
-                                <th>Photo</th>
-                                <th>Student ID</th>
-                                <th>Name</th>
-                                <th>Hostel / Room</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var student in Model)
-                            {
-                                <tr>
-                                    <td>
+                                <td>
+                                    <div class="avatar avatar-md">
                                         @if (!string.IsNullOrEmpty(student.ProfilePicture))
                                         {
-                                            <img src="@student.ProfilePicture" alt="Student" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                            <img src="@student.ProfilePicture" alt="@student.FirstName" 
+                                                 class="rounded-circle" style="width: 40px; height: 40px;">
                                         }
                                         else
                                         {
-                                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-user text-white"></i>
+                                            <div class="avatar-text bg-@(student.IsVerified ? "primary" : "secondary")">
+                                                @student.FirstName.Substring(0, 1)@student.LastName.Substring(0, 1)
                                             </div>
                                         }
-                                    </td>
-                                    <td>@student.StudentId</td>
-                                    <td>@student.FirstName @student.LastName</td>
-                                    <td>
-                                        @if (student.CurrentHostel != null)
-                                        {
-                                            @student.CurrentHostel.Name <span class="text-muted">/ Room @student.CurrentRoomNumber</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-muted">Not Assigned</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-info-circle"></i> Details
-                                            </a>
-                                            @if (User.IsInRole("Admin"))
-                                            {
-                                                <button type="button" class="btn btn-sm btn-outline-danger" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#deleteStudentModal" 
-                                                        data-student-id="@student.Id"
-                                                        data-student-name="@student.FirstName @student.LastName">
-                                                    <i class="fas fa-trash"></i> Delete
-                                                </button>
-                                            }
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>@student.StudentId</strong>
+                                    @if (student.IsVerified)
+                                    {
+                                        <span class="badge bg-success ms-1" title="Verified">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    @student.FirstName @student.LastName
+                                    @if (!string.IsNullOrEmpty(student.Nationality))
+                                    {
+                                        <span class="badge bg-info ms-1">@student.Nationality</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div>@(student.Course ?? "Not specified")</div>
+                                    <small class="text-muted">Year @(student.Year ?? "N/A")</small>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(student.PhoneNumber))
+                                    {
+                                        <div><i class="fas fa-phone me-2"></i>@student.PhoneNumber</div>
+                                    }
+                                    <div class="text-truncate" style="max-width: 150px;">
+                                        <i class="fas fa-envelope me-2"></i>@student.Email
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (student.CurrentHostel != null)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-building me-2 text-muted"></i>
+                                            <div>
+                                                <div>@student.CurrentHostel.Name</div>
+                                                @if (!string.IsNullOrEmpty(student.CurrentRoomNumber))
+                                                {
+                                                    <small class="text-muted">Room @student.CurrentRoomNumber</small>
+                                                }
+                                            </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Not Assigned</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (student.IsVerified)
+                                    {
+                                        <span class="badge bg-success">Verified</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Pending</span>
+                                    }
+                                </td>
+                                <td class="no-print">
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-action="Details" asp-route-id="@student.Id" 
+                                           class="btn btn-outline-primary" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@student.Id" 
+                                           class="btn btn-outline-secondary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <button type="button" class="btn btn-outline-danger" 
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                    data-id="@student.Id" public string FullName =>
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    @if (!Model.Any())
+    {
+        <div class="card shadow-sm mt-4">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+                <h4>No Students Found</h4>
+                <p class="text-muted">There are currently no students matching your criteria</p>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary mt-3">
+                        <i class="fas fa-user-plus me-2"></i>Register First Student
+                    </a>
+                }
             </div>
         </div>
     }
-    else
+
+    <!-- Pagination -->
+    @if (ViewBag.TotalPages > 1)
     {
-        <div class="alert alert-info">
-            <i class="fas fa-info-circle me-2"></i> No students found. 
-            @if (User.IsInRole("Admin"))
-            {
-                <a asp-controller="Account" asp-action="Register" class="alert-link">Register a new student</a>
-            }
-        </div>
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="1">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+                
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                    </li>
+                }
+                
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@ViewBag.TotalPages">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     }
 </div>
 
-<!-- Delete Student Modal -->
-<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteStudentModalLabel">Delete Student</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <strong id="studentNameToDelete"></strong>?</p>
-                <p class="text-danger">This action cannot be undone. All associated data will be permanently removed.</p>
+                <p>Are you sure you want to delete <strong id="deleteStudentName"></strong>?</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    This will permanently delete all student records including bookings and payments.
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteStudentForm" asp-action="Delete" method="post">
-                    <input type="hidden" id="studentIdToDelete" name="id" />
+                <form id="deleteForm" method="post">
+                    <input type="hidden" id="deleteStudentId" name="id" />
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">Delete Student</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-2"></i>Delete
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Analytics Modal -->
+<div class="modal fade" id="analyticsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Student Analytics</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6>Hostel Distribution</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="hostelChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6>Course Distribution</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="courseChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6>Year Distribution</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="yearChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6>Status Overview</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="statusChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">
+                    <i class="fas fa-download me-2"></i>Export Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Print Styles -->
+<style>
+    @@media print {
+        .no-print { display: none !important; }
+        body { font-size: 11pt; background: white !important; }
+        .container-fluid { padding: 0 !important; max-width: 100% !important; }
+        .card { border: none !important; box-shadow: none !important; }
+        .table { border-collapse: collapse; }
+        .table th, .table td { border: 1px solid #ddd !important; }
+        .table thead th { background-color: #f8f9fa !important; }
+        .avatar-text { color: white !important; }
+    }
+</style>
+
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            // Setup for delete modal
-            $('#deleteStudentModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                var studentId = button.data('student-id');
-                var studentName = button.data('student-name');
-                
-                $('#studentIdToDelete').val(studentId);
-                $('#studentNameToDelete').text(studentName);
+        // Delete Modal Handler
+        $('#deleteModal').on('show.bs.modal', function(event) {
+            const button = $(event.relatedTarget);
+            const id = button.data('id');
+            const name = button.data('name');
+            
+            $('#deleteStudentId').val(id);
+            $('#deleteStudentName').text(name);
+            $('#deleteForm').attr('action', '/Students/Delete/' + id);
+        });
+
+        // Print Functionality
+        function printStudentList() {
+            window.print();
+        }
+
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample chart initialization (replace with actual data)
+            const ctx1 = document.getElementById('hostelChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hostel A', 'Hostel B', 'Hostel C', 'Unassigned'],
+                    datasets: [{
+                        data: [120, 80, 60, 40],
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e']
+                    }]
+                }
             });
+
+            // Initialize other charts similarly...
         });
     </script>
 }

@@ -32,13 +32,6 @@ namespace HostelMS.Models
             // Add any other model configurations or seed data here
         }
         
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            
-            // Configure warnings - suppress or log the pending model changes warning
-            optionsBuilder.ConfigureWarnings(warnings => 
-                warnings.Log(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
-        }
+        // Remove the OnConfiguring method entirely - it's causing the error
     }
 }

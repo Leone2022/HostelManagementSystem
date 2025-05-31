@@ -1,0 +1,271 @@
+@model IEnumerable<HostelMS.Models.Hostel>
+@{
+    ViewData["Title"] = "Hostel Occupancy Report";
+    var totalCapacity = Model.Sum(h => h.Rooms.Sum(r => r.Capacity));
+    var totalOccupancy = Model.Sum(h => h.Rooms.Sum(r => r.CurrentOccupancy));
+    var overallOccupancyRate = totalCapacity > 0 ? (double)totalOccupancy / totalCapacity * 100 : 0;
+    var activeHostels = Model.Count(h => h.IsActive);
+    var maleHostels = Model.Count(h => h.Gender == Gender.Male);
+    var femaleHostels = Model.Count(h => h.Gender == Gender.Female);
+    var institutionManaged = Model.Count(h => h.ManagementType == ManagementType.InstitutionManaged);
+    var privatelyManaged = Model.Count(h => h.ManagementType == ManagementType.PrivatelyManaged);
+}
+
+<div class="container-fluid mt-4">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1><i class="fas fa-chart-bar me-2 text-primary"></i>Hostel Occupancy Report</h1>
+            <p class="text-muted mb-0">Real-time occupancy analytics and capacity management</p>
+        </div>
+        <div class="btn-group">
+            <a asp-action="GenerateOccupancyPDF" target="_blank" class="btn btn-info">
+                <i class="fas fa-file-pdf me-2"></i> Download PDF
+            </a>
+            <a asp-action="ExportOccupancyCSV" class="btn btn-success">
+                <i class="fas fa-file-csv me-2"></i> Export CSV
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Back to Hostels
+            </a>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-3">
+                            <i class="fas fa-building fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold text-primary">@Model.Count()</h3>
+                    <p class="text-muted mb-2">Total Hostels</p>
+                    <small class="text-success">@activeHostels Active</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <div class="rounded-circle bg-success bg-opacity-10 p-3">
+                            <i class="fas fa-bed fa-2x text-success"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold text-success">@totalCapacity.ToString("N0")</h3>
+                    <p class="text-muted mb-2">Total Capacity</p>
+                    <small class="text-info">@Model.Sum(r => r.Rooms.Count) Rooms</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <div class="rounded-circle bg-info bg-opacity-10 p-3">
+                            <i class="fas fa-users fa-2x text-info"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold text-info">@totalOccupancy.ToString("N0")</h3>
+                    <p class="text-muted mb-2">Current Occupancy</p>
+                    <small class="text-warning">@((totalCapacity - totalOccupancy).ToString("N0")) Available</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+                            <i class="fas fa-chart-pie fa-2x text-warning"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold text-warning">@overallOccupancyRate.ToString("F1")%</h3>
+                    <p class="text-muted mb-2">Occupancy Rate</p>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar @(overallOccupancyRate < 70 ? "bg-success" : overallOccupancyRate < 90 ? "bg-warning" : "bg-danger")" 
+                             style="width: @overallOccupancyRate%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0"><i class="fas fa-venus-mars me-2"></i>Gender Distribution</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h4 class="text-primary">@maleHostels</h4>
+                            <p class="text-muted mb-0">Male Hostels</p>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="text-danger">@femaleHostels</h4>
+                            <p class="text-muted mb-0">Female Hostels</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0"><i class="fas fa-cogs me-2"></i>Management Distribution</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h4 class="text-primary">@institutionManaged</h4>
+                            <p class="text-muted mb-0">Institution</p>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="text-info">@privatelyManaged</h4>
+                            <p class="text-muted mb-0">Private</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Hostel Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-gradient" style="background: linear-gradient(45deg, #007bff, #6610f2);">
+            <h5 class="mb-0 text-white">
+                <i class="fas fa-list-alt me-2"></i>Detailed Hostel Analysis
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0">Code</th>
+                            <th class="border-0">Hostel Name</th>
+                            <th class="border-0">Location</th>
+                            <th class="border-0">Gender</th>
+                            <th class="border-0">Management</th>
+                            <th class="border-0 text-center">Capacity</th>
+                            <th class="border-0 text-center">Occupied</th>
+                            <th class="border-0 text-center">Available</th>
+                            <th class="border-0 text-center">Occupancy Rate</th>
+                            <th class="border-0 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var hostel in Model.OrderBy(h => h.Name))
+                        {
+                            var capacity = hostel.Rooms.Sum(r => r.Capacity);
+                            var occupancy = hostel.Rooms.Sum(r => r.CurrentOccupancy);
+                            var occupancyRate = capacity > 0 ? (double)occupancy / capacity * 100 : 0;
+                            var available = capacity - occupancy;
+                            
+                            <tr>
+                                <td class="align-middle">
+                                    <span class="badge bg-secondary fs-6">@hostel.HostelCode</span>
+                                </td>
+                                <td class="align-middle">
+                                    <strong>@hostel.Name</strong>
+                                    <br><small class="text-muted">@hostel.Rooms.Count rooms</small>
+                                </td>
+                                <td class="align-middle">@hostel.Location</td>
+                                <td class="align-middle">
+                                    <span class="badge @(hostel.Gender == Gender.Male ? "bg-primary" : "bg-danger")">
+                                        @hostel.Gender
+                                    </span>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge @(hostel.ManagementType == ManagementType.InstitutionManaged ? "bg-primary" : "bg-info")">
+                                        @(hostel.ManagementType == ManagementType.InstitutionManaged ? "Institution" : "Private")
+                                    </span>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <h6 class="mb-0 text-success">@capacity</h6>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <h6 class="mb-0 text-primary">@occupancy</h6>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <h6 class="mb-0 text-warning">@available</h6>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <div class="mb-2">
+                                        <strong class="@(occupancyRate < 70 ? "text-success" : occupancyRate < 90 ? "text-warning" : "text-danger")">
+                                            @occupancyRate.ToString("F1")%
+                                        </strong>
+                                    </div>
+                                    <div class="progress" style="height: 6px; width: 80px; margin: 0 auto;">
+                                        <div class="progress-bar @(occupancyRate < 70 ? "bg-success" : occupancyRate < 90 ? "bg-warning" : "bg-danger")"
+                                             style="width: @occupancyRate%"></div>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <span class="badge @(hostel.IsActive ? "bg-success" : "bg-danger") fs-6">
+                                        @(hostel.IsActive ? "Active" : "Inactive")
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Footer -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center">
+                    <p class="mb-2"><strong>Report Generated:</strong> @DateTime.Now.ToString("dddd, MMMM dd, yyyy 'at' hh:mm tt")</p>
+                    <p class="mb-0 text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        This report shows real-time occupancy data for all hostels in the system.
+                        Use this information for capacity planning and resource allocation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.bg-gradient {
+    background: linear-gradient(45deg, #007bff, #6610f2) !important;
+}
+
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.progress {
+    border-radius: 10px;
+}
+
+.progress-bar {
+    border-radius: 10px;
+}
+
+@@media print {
+    .btn-group, .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+}
+</style>

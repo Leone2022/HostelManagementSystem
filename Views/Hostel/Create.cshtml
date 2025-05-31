@@ -5,7 +5,7 @@
 
 <div class="container-fluid mt-4">
     <div class="row">
-        <div class="col-md-8 mx-auto">
+        <div class="col-md-10 mx-auto">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Create New Hostel</h5>
@@ -26,8 +26,22 @@
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
+                                <label asp-for="HostelCode" class="form-label"></label>
+                                <input asp-for="HostelCode" class="form-control" placeholder="e.g., BUH001" />
+                                <span asp-validation-for="HostelCode" class="text-danger"></span>
+                                <div class="form-text">Leave blank for auto-generation</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Address" class="form-label"></label>
+                                <input asp-for="Address" class="form-control" placeholder="Enter full address" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
                                 <label asp-for="Location" class="form-label"></label>
-                                <input asp-for="Location" class="form-control" placeholder="Enter location" />
+                                <input asp-for="Location" class="form-control" placeholder="Enter location/area" />
                                 <span asp-validation-for="Location" class="text-danger"></span>
                             </div>
                         </div>
@@ -44,7 +58,7 @@
                                 <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="ManagementType" class="form-label">Management Type</label>
+                                <label asp-for="ManagementType" class="form-label"></label>
                                 <select asp-for="ManagementType" class="form-select">
                                     <option value="0">Institution-Managed</option>
                                     <option value="1">Privately-Managed</option>
@@ -59,23 +73,137 @@
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
-                        <!-- Capacity & Details -->
-                        <h6 class="border-bottom pb-2 mb-3 mt-4">Capacity & Details</h6>
+                        <!-- Pricing Information -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-money-bill-wave me-2"></i>Pricing Information</h6>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Set price ranges for different room types. These will be displayed to students browsing hostels.
+                        </div>
+                        
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="Capacity" class="form-label"></label>
-                                <input asp-for="Capacity" class="form-control" type="number" min="1" placeholder="Enter total capacity" />
-                                <span asp-validation-for="Capacity" class="text-danger"></span>
-                                <div class="form-text">This is the target capacity. Actual capacity will be determined by rooms.</div>
+                                <label class="form-label">
+                                    <i class="fas fa-bed me-1"></i>Single Room Price (UGX/Semester)
+                                </label>
+                                <input name="SingleRoomPrice" type="number" class="form-control" 
+                                       placeholder="e.g., 800000" min="0" step="1000" />
+                                <div class="form-text">Leave blank if not available</div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="DistanceFromCampus" class="form-label"></label>
-                                <input asp-for="DistanceFromCampus" class="form-control" type="number" step="0.1" min="0" placeholder="Enter distance in km" />
-                                <span asp-validation-for="DistanceFromCampus" class="text-danger"></span>
+                                <label class="form-label">
+                                    <i class="fas fa-bed me-1"></i>Double Room Price (UGX/Semester)
+                                </label>
+                                <input name="DoubleRoomPrice" type="number" class="form-control" 
+                                       placeholder="e.g., 500000" min="0" step="1000" />
+                                <div class="form-text">Leave blank if not available</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-bed me-1"></i>Triple Room Price (UGX/Semester)
+                                </label>
+                                <input name="TripleRoomPrice" type="number" class="form-control" 
+                                       placeholder="e.g., 350000" min="0" step="1000" />
+                                <div class="form-text">Leave blank if not available</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-bed me-1"></i>Dormitory Price (UGX/Semester)
+                                </label>
+                                <input name="DormitoryPrice" type="number" class="form-control" 
+                                       placeholder="e.g., 250000" min="0" step="1000" />
+                                <div class="form-text">Leave blank if not available</div>
+                            </div>
+                        </div>
+
+                        <!-- Room Types Available -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4"><i class="fas fa-door-open me-2"></i>Available Room Types</h6>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="AvailableRoomTypes" value="Single" id="singleRoom">
+                                    <label class="form-check-label" for="singleRoom">
+                                        <i class="fas fa-bed me-1"></i> Single Rooms
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="AvailableRoomTypes" value="Double" id="doubleRoom">
+                                    <label class="form-check-label" for="doubleRoom">
+                                        <i class="fas fa-bed me-1"></i> Double Rooms
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="AvailableRoomTypes" value="Triple" id="tripleRoom">
+                                    <label class="form-check-label" for="tripleRoom">
+                                        <i class="fas fa-bed me-1"></i> Triple Rooms
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="AvailableRoomTypes" value="Dormitory" id="dormitory">
+                                    <label class="form-check-label" for="dormitory">
+                                        <i class="fas fa-bed me-1"></i> Dormitory
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Contact Information -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Contact Information</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ContactInfo" class="form-label"></label>
+                                <textarea asp-for="ContactInfo" class="form-control" rows="2" placeholder="Phone, email, emergency contacts"></textarea>
+                                <span asp-validation-for="ContactInfo" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="EmergencyContact" class="form-label"></label>
+                                <input asp-for="EmergencyContact" class="form-control" placeholder="Emergency contact details" />
+                                <span asp-validation-for="EmergencyContact" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Capacity & Room Information -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Capacity & Room Information</h6>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="TotalCapacity" class="form-label"></label>
+                                <input asp-for="TotalCapacity" class="form-control" type="number" min="1" placeholder="Total capacity" />
+                                <span asp-validation-for="TotalCapacity" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="NumberOfRooms" class="form-label"></label>
+                                <input asp-for="NumberOfRooms" class="form-control" type="number" min="1" placeholder="Number of rooms" />
+                                <span asp-validation-for="NumberOfRooms" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Capacity" class="form-label"></label>
+                                <input asp-for="Capacity" class="form-control" type="number" min="1" placeholder="Capacity" />
+                                <span asp-validation-for="Capacity" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CurrentOccupancy" class="form-label"></label>
+                                <input asp-for="CurrentOccupancy" class="form-control" type="number" min="0" value="0" />
+                                <span asp-validation-for="CurrentOccupancy" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DistanceFromCampus" class="form-label"></label>
+                                <input asp-for="DistanceFromCampus" class="form-control" type="number" step="0.1" min="0" placeholder="Distance in km" />
+                                <span asp-validation-for="DistanceFromCampus" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Warden Information -->
                         <h6 class="border-bottom pb-2 mb-3 mt-4">Warden Information</h6>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -90,75 +218,18 @@
                             </div>
                         </div>
 
-                        <!-- Status & Media -->
-                        <h6 class="border-bottom pb-2 mb-3 mt-4">Status & Media</h6>
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
-                                <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                        <!-- Facilities & Rules -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Facilities & Rules</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Facilities" class="form-label"></label>
+                                <textarea asp-for="Facilities" class="form-control" rows="3" placeholder="Available facilities"></textarea>
+                                <span asp-validation-for="Facilities" class="text-danger"></span>
                             </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label asp-for="ImageFile" class="form-label">Main Hostel Image</label>
-                            <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" id="mainImageUpload" />
-                            <span asp-validation-for="ImageFile" class="text-danger"></span>
-                            <div class="form-text">Upload an image (max 10MB, recommended: 800x600px)</div>
-                            <div class="mt-2" id="imagePreviewContainer" style="display:none">
-                                <img id="imagePreview" class="img-thumbnail" style="max-height:200px"/>
-                            </div>
-                        </div>
-                        
-                        <!-- YouTube Video -->
-                        <div class="mb-4">
-                            <label asp-for="YouTubeVideoId" class="form-label">YouTube Video ID</label>
-                            <div class="input-group">
-                                <span class="input-group-text">youtube.com/watch?v=</span>
-                                <input asp-for="YouTubeVideoId" class="form-control" 
-                                       placeholder="e.g., dQw4w9WgXcQ" 
-                                       pattern="[A-Za-z0-9_-]{11}"
-                                       title="11-character YouTube video ID"/>
-                            </div>
-                            <span asp-validation-for="YouTubeVideoId" class="text-danger"></span>
-                            <div class="form-text">Enter just the video ID (11 characters after v=)</div>
-                        </div>
-
-                        <!-- Interior Images Section -->
-                        <div class="mb-4">
-                            <label class="form-label">Interior Images (optional, max 10MB each)</label>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="mb-2">
-                                        <label class="form-label small">Room Interior</label>
-                                        <div class="custom-file">
-                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
-                                            <label class="custom-file-label">Choose file</label>
-                                        </div>
-                                    </div>
-                                    <div class="mb-2">
-                                        <label class="form-label small">Dormitory Room</label>
-                                        <div class="custom-file">
-                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
-                                            <label class="custom-file-label">Choose file</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-2">
-                                        <label class="form-label small">Bathroom</label>
-                                        <div class="custom-file">
-                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
-                                            <label class="custom-file-label">Choose file</label>
-                                        </div>
-                                    </div>
-                                    <div class="mb-2">
-                                        <label class="form-label small">Lounge Area</label>
-                                        <div class="custom-file">
-                                            <input name="InteriorImages" type="file" class="custom-file-input" accept="image/*">
-                                            <label class="custom-file-label">Choose file</label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Rules" class="form-label"></label>
+                                <textarea asp-for="Rules" class="form-control" rows="3" placeholder="Rules and regulations"></textarea>
+                                <span asp-validation-for="Rules" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -212,6 +283,111 @@
                             </button>
                         </div>
 
+                        <!-- Quick Room Setup -->
+                        <div class="card bg-light border-0 mb-4">
+                            <div class="card-body">
+                                <h6 class="mb-3"><i class="fas fa-magic me-2"></i>Quick Room Setup (Optional)</h6>
+                                <p class="text-muted small mb-3">Create initial rooms for this hostel automatically.</p>
+                                
+                                <div class="form-check mb-3">
+                                    <input asp-for="EnableQuickSetup" class="form-check-input" type="checkbox" id="enableQuickSetup">
+                                    <label asp-for="EnableQuickSetup" class="form-check-label" for="enableQuickSetup">
+                                        Enable quick room setup
+                                    </label>
+                                </div>
+
+                                <div id="quickSetupSection" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label asp-for="FloorCount" class="form-label"></label>
+                                            <input asp-for="FloorCount" class="form-control" type="number" min="1" max="20" value="1">
+                                            <span asp-validation-for="FloorCount" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label asp-for="RoomsPerFloor" class="form-label"></label>
+                                            <input asp-for="RoomsPerFloor" class="form-control" type="number" min="1" max="50" value="10">
+                                            <span asp-validation-for="RoomsPerFloor" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label asp-for="DefaultRoomType" class="form-label"></label>
+                                            <select asp-for="DefaultRoomType" class="form-select">
+                                                <option value="0">Single</option>
+                                                <option value="1" selected>Double</option>
+                                                <option value="2">Triple</option>
+                                                <option value="3">Dormitory</option>
+                                            </select>
+                                            <span asp-validation-for="DefaultRoomType" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label asp-for="DefaultCapacity" class="form-label"></label>
+                                            <input asp-for="DefaultCapacity" class="form-control" type="number" min="1" max="6" value="2">
+                                            <span asp-validation-for="DefaultCapacity" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status & Media -->
+                        <h6 class="border-bottom pb-2 mb-3 mt-4">Status & Media</h6>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+                                <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ImageFile" class="form-label">Main Hostel Image</label>
+                            <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" id="mainImageUpload" />
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            <div class="form-text">Upload an image (max 10MB, recommended: 800x600px)</div>
+                            <div class="mt-2" id="imagePreviewContainer" style="display:none">
+                                <img id="imagePreview" class="img-thumbnail" style="max-height:200px"/>
+                            </div>
+                        </div>
+                        
+                        <!-- YouTube Video -->
+                        <div class="mb-4">
+                            <label asp-for="YouTubeVideoId" class="form-label">YouTube Video ID</label>
+                            <div class="input-group">
+                                <span class="input-group-text">youtube.com/watch?v=</span>
+                                <input asp-for="YouTubeVideoId" class="form-control" 
+                                       placeholder="e.g., dQw4w9WgXcQ" 
+                                       pattern="[A-Za-z0-9_-]{11}"
+                                       title="11-character YouTube video ID"/>
+                            </div>
+                            <span asp-validation-for="YouTubeVideoId" class="text-danger"></span>
+                            <div class="form-text">Enter just the video ID (11 characters after v=)</div>
+                        </div>
+
+                        <!-- Interior Images Section -->
+                        <div class="mb-4">
+                            <label class="form-label">Interior Images (optional, max 10MB each)</label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label small">Room Interior</label>
+                                        <input name="InteriorImages" type="file" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small">Dormitory Room</label>
+                                        <input name="InteriorImages" type="file" class="form-control" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label small">Bathroom</label>
+                                        <input name="InteriorImages" type="file" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small">Lounge Area</label>
+                                        <input name="InteriorImages" type="file" class="form-control" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-outline-secondary">
                                 <i class="fas fa-arrow-left me-2"></i> Back to List
@@ -244,10 +420,103 @@
                 }
             });
 
-            // Show selected filenames
-            $('.custom-file-input').change(function() {
-                const fileName = $(this).val().split('\\').pop();
-                $(this).next('.custom-file-label').html(fileName || 'Choose file');
+            // Quick setup toggle
+            $('#enableQuickSetup').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#quickSetupSection').slideDown();
+                } else {
+                    $('#quickSetupSection').slideUp();
+                }
+            });
+
+            // Auto-calculate based on quick setup
+            $('#enableQuickSetup, input[name="FloorCount"], input[name="RoomsPerFloor"]').change(function() {
+                if ($('#enableQuickSetup').is(':checked')) {
+                    const floors = parseInt($('input[name="FloorCount"]').val()) || 1;
+                    const roomsPerFloor = parseInt($('input[name="RoomsPerFloor"]').val()) || 10;
+                    const totalRooms = floors * roomsPerFloor;
+                    
+                    $('input[name="NumberOfRooms"]').val(totalRooms);
+                }
+            });
+
+            // Auto-sync room types with pricing
+            $('input[name="AvailableRoomTypes"]').change(function() {
+                const roomType = $(this).val();
+                const isChecked = $(this).is(':checked');
+                
+                // Optional: Show/hide corresponding price field
+                const priceField = $(`input[name="${roomType}RoomPrice"]`);
+                if (isChecked) {
+                    priceField.closest('.col-md-6').removeClass('d-none');
+                } else {
+                    priceField.closest('.col-md-6').addClass('d-none');
+                    priceField.val('');
+                }
+            });
+
+            // Pricing validation - at least one price should be set
+            $('#hostelForm').submit(function(e) {
+                const prices = [
+                    $('input[name="SingleRoomPrice"]').val(),
+                    $('input[name="DoubleRoomPrice"]').val(), 
+                    $('input[name="TripleRoomPrice"]').val(),
+                    $('input[name="DormitoryPrice"]').val()
+                ];
+                
+                const hasAnyPrice = prices.some(price => price && parseFloat(price) > 0);
+                
+                if (!hasAnyPrice) {
+                    alert('Please set at least one room type price.');
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Validate that checked room types have prices
+                let validationError = false;
+                $('input[name="AvailableRoomTypes"]:checked').each(function() {
+                    const roomType = $(this).val();
+                    const priceValue = $(`input[name="${roomType}RoomPrice"]`).val();
+                    
+                    if (!priceValue || parseFloat(priceValue) <= 0) {
+                        alert(`Please set a price for ${roomType} rooms since it's marked as available.`);
+                        validationError = true;
+                        return false;
+                    }
+                });
+
+                if (validationError) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Continue with other validations...
+                const maxSize = 10 * 1024 * 1024; // 10MB
+                let isValid = true;
+
+                // Validate main image
+                const mainImage = $('#mainImageUpload')[0].files[0];
+                if (mainImage && mainImage.size > maxSize) {
+                    alert('Main image must be under 10MB');
+                    isValid = false;
+                }
+
+                // Validate interior images
+                $('input[name="InteriorImages"]').each(function() {
+                    const file = this.files[0];
+                    if (file && file.size > maxSize) {
+                        alert(`"${file.name}" exceeds 10MB limit`);
+                        isValid = false;
+                        return false;
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                } else {
+                    // Disable button to prevent double submission
+                    $('#submitButton').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Creating Hostel...');
+                }
             });
 
             // Amenity row functionality
@@ -271,36 +540,6 @@
             
             $("#amenities-container").on("click", ".remove-amenity", function() {
                 $(this).closest(".amenity-row").remove();
-            });
-
-            // File size validation (10MB limit)
-            $('#hostelForm').submit(function(e) {
-                const maxSize = 10 * 1024 * 1024; // 10MB
-                let isValid = true;
-
-                // Validate main image
-                const mainImage = $('#mainImageUpload')[0].files[0];
-                if (mainImage && mainImage.size > maxSize) {
-                    alert('Main image must be under 10MB');
-                    isValid = false;
-                }
-
-                // Validate interior images
-                $('input[name="InteriorImages"]').each(function() {
-                    const file = this.files[0];
-                    if (file && file.size > maxSize) {
-                        alert(`"${file.name}" exceeds 10MB limit`);
-                        isValid = false;
-                        return false; // Break loop
-                    }
-                });
-
-                if (!isValid) {
-                    e.preventDefault();
-                } else {
-                    // Disable button to prevent double submission
-                    $('#submitButton').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Saving...');
-                }
             });
         });
     </script>

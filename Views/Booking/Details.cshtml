@@ -7,6 +7,7 @@
     var isStaff = isAdmin || isWarden;
     
     var payment = ViewBag.Payment as HostelMS.Models.Payment;
+    var courseDisplayName = ViewBag.CourseDisplayName as string;
 }
 
 <div class="container-fluid mt-4">
@@ -19,22 +20,22 @@
                         
                         @switch (Model.Status)
                         {
-                            case BookingStatus.Pending:
+                            case HostelMS.Models.BookingStatus.Pending:
                                 <span class="badge bg-warning text-dark p-2">Pending</span>
                                 break;
-                            case BookingStatus.Approved:
+                            case HostelMS.Models.BookingStatus.Approved:
                                 <span class="badge bg-success p-2">Approved</span>
                                 break;
-                            case BookingStatus.Rejected:
+                            case HostelMS.Models.BookingStatus.Rejected:
                                 <span class="badge bg-danger p-2">Rejected</span>
                                 break;
-                            case BookingStatus.CheckedIn:
+                            case HostelMS.Models.BookingStatus.CheckedIn:
                                 <span class="badge bg-primary p-2">Checked In</span>
                                 break;
-                            case BookingStatus.CheckedOut:
+                            case HostelMS.Models.BookingStatus.CheckedOut:
                                 <span class="badge bg-secondary p-2">Checked Out</span>
                                 break;
-                            case BookingStatus.Cancelled:
+                            case HostelMS.Models.BookingStatus.Cancelled:
                                 <span class="badge bg-dark p-2">Cancelled</span>
                                 break;
                         }
@@ -73,28 +74,41 @@
                                         <dd class="col-sm-8">
                                             @switch (Model.Status)
                                             {
-                                                case BookingStatus.Pending:
+                                                case HostelMS.Models.BookingStatus.Pending:
                                                     <span class="badge bg-warning text-dark">Pending</span>
                                                     break;
-                                                case BookingStatus.Approved:
+                                                case HostelMS.Models.BookingStatus.Approved:
                                                     <span class="badge bg-success">Approved</span>
                                                     break;
-                                                case BookingStatus.Rejected:
+                                                case HostelMS.Models.BookingStatus.Rejected:
                                                     <span class="badge bg-danger">Rejected</span>
                                                     break;
-                                                case BookingStatus.CheckedIn:
+                                                case HostelMS.Models.BookingStatus.CheckedIn:
                                                     <span class="badge bg-primary">Checked In</span>
                                                     break;
-                                                case BookingStatus.CheckedOut:
+                                                case HostelMS.Models.BookingStatus.CheckedOut:
                                                     <span class="badge bg-secondary">Checked Out</span>
                                                     break;
-                                                case BookingStatus.Cancelled:
+                                                case HostelMS.Models.BookingStatus.Cancelled:
                                                     <span class="badge bg-dark">Cancelled</span>
                                                     break;
                                             }
                                         </dd>
                                         
-                                        @if (Model.Status == BookingStatus.Approved && !string.IsNullOrEmpty(Model.ApprovedBy))
+                                        <!-- Course Information Display -->
+                                        @if (!string.IsNullOrEmpty(courseDisplayName))
+                                        {
+                                            <dt class="col-sm-4">Course:</dt>
+                                            <dd class="col-sm-8">
+                                                <span class="badge bg-info text-white">@courseDisplayName</span>
+                                                @if (!string.IsNullOrEmpty(Model.Course) && Model.IsCourseRestricted())
+                                                {
+                                                    <span class="badge bg-warning text-dark ms-1">⚠️ Restricted</span>
+                                                }
+                                            </dd>
+                                        }
+                                        
+                                        @if (Model.Status == HostelMS.Models.BookingStatus.Approved && !string.IsNullOrEmpty(Model.ApprovedBy))
                                         {
                                             <dt class="col-sm-4">Approved By:</dt>
                                             <dd class="col-sm-8">@Model.ApprovedBy</dd>
@@ -103,7 +117,7 @@
                                             <dd class="col-sm-8">@(Model.ApprovalDate?.ToString("dd MMM yyyy HH:mm") ?? "")</dd>
                                         }
                                         
-                                        @if (Model.Status == BookingStatus.Rejected && !string.IsNullOrEmpty(Model.RejectionReason))
+                                        @if (Model.Status == HostelMS.Models.BookingStatus.Rejected && !string.IsNullOrEmpty(Model.RejectionReason))
                                         {
                                             <dt class="col-sm-4">Reason:</dt>
                                             <dd class="col-sm-8">@Model.RejectionReason</dd>
@@ -121,6 +135,16 @@
                             }
                         </div>
                     </div>
+                    
+                    <!-- Course Restriction Alert (if applicable) -->
+                    @if (!string.IsNullOrEmpty(Model.Course) && Model.IsCourseRestricted())
+                    {
+                        <div class="alert alert-warning mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Course Restriction Notice:</strong> This booking is for a restricted course (@courseDisplayName). 
+                            Students in this course are typically required to stay in school premises and should visit the Office of the Dean of Students for room assignments.
+                        </div>
+                    }
                     
                     <!-- Hostel & Room Card -->
                     <div class="card shadow-sm mb-4">
@@ -203,6 +227,12 @@
                                         <p class="mb-0 text-muted">Student ID: @Model.Student.StudentId</p>
                                         <p class="mb-0 text-muted">Course: @Model.Student.Course</p>
                                         <p class="mb-0 text-muted">Year: @Model.Student.Year</p>
+                                        
+                                        <!-- Show booking course if different from student profile course -->
+                                        @if (!string.IsNullOrEmpty(courseDisplayName) && courseDisplayName != Model.Student.Course)
+                                        {
+                                            <p class="mb-0 text-muted"><strong>Booking Course:</strong> @courseDisplayName</p>
+                                        }
                                     </div>
                                     <div class="col-md-5">
                                         <p class="mb-0 text-muted"><i class="fas fa-phone me-2"></i>@Model.Student.PhoneNumber</p>
@@ -314,7 +344,9 @@
                         </div>
                     </div>
                     
-                    <!-- Action Buttons -->
+                    <!-- ===================================================================== -->
+                    <!-- FIXED ACTION BUTTONS WITH DOWNLOAD RECEIPT BUTTON -->
+                    <!-- ===================================================================== -->
                     <div class="d-flex justify-content-between mt-4">
                         @if (isStaff)
                         {
@@ -323,14 +355,20 @@
                             </a>
                             
                             <div>
-                                @if (Model.Status == BookingStatus.Pending)
+                                <!-- 🎉 DOWNLOAD RECEIPT BUTTON FOR STAFF -->
+                                <a asp-action="DownloadReceipt" asp-route-id="@Model.BookingId" 
+                                   class="btn btn-info me-2" target="_blank">
+                                    <i class="fas fa-download me-2"></i> Download Receipt
+                                </a>
+                                
+                                @if (Model.Status == HostelMS.Models.BookingStatus.Pending)
                                 {
                                     <a asp-action="ProcessBooking" asp-route-id="@Model.BookingId" class="btn btn-success me-2">
                                         <i class="fas fa-clipboard-check me-2"></i> Process Booking
                                     </a>
                                 }
                                 
-                                @if (Model.Status == BookingStatus.Approved && Model.Status != BookingStatus.CheckedIn)
+                                @if (Model.Status == HostelMS.Models.BookingStatus.Approved && Model.Status != HostelMS.Models.BookingStatus.CheckedIn)
                                 {
                                     <form asp-action="CheckIn" asp-route-id="@Model.BookingId" method="post" class="d-inline">
                                         <button type="submit" class="btn btn-primary me-2" 
@@ -340,7 +378,7 @@
                                     </form>
                                 }
                                 
-                                @if (Model.Status == BookingStatus.CheckedIn)
+                                @if (Model.Status == HostelMS.Models.BookingStatus.CheckedIn)
                                 {
                                     <form asp-action="CheckOut" asp-route-id="@Model.BookingId" method="post" class="d-inline">
                                         <button type="submit" class="btn btn-secondary me-2" 
@@ -350,7 +388,7 @@
                                     </form>
                                 }
                                 
-                                @if (Model.Status == BookingStatus.Pending || Model.Status == BookingStatus.Approved)
+                                @if (Model.Status == HostelMS.Models.BookingStatus.Pending || Model.Status == HostelMS.Models.BookingStatus.Approved)
                                 {
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
                                         <i class="fas fa-times me-2"></i> Cancel Booking
@@ -364,12 +402,20 @@
                                 <i class="fas fa-arrow-left me-2"></i> Back to My Bookings
                             </a>
                             
-                            @if (Model.Status == BookingStatus.Pending)
-                            {
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
-                                    <i class="fas fa-times me-2"></i> Cancel Booking
-                                </button>
-                            }
+                            <div>
+                                <!-- 🎉 DOWNLOAD RECEIPT BUTTON FOR STUDENTS -->
+                                <a asp-action="DownloadReceipt" asp-route-id="@Model.BookingId" 
+                                   class="btn btn-info me-2" target="_blank">
+                                    <i class="fas fa-download me-2"></i> Download Receipt
+                                </a>
+                                
+                                @if (Model.Status == HostelMS.Models.BookingStatus.Pending)
+                                {
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                        <i class="fas fa-times me-2"></i> Cancel Booking
+                                    </button>
+                                }
+                            </div>
                         }
                     </div>
                 </div>
@@ -379,7 +425,7 @@
 </div>
 
 <!-- Cancel Modal -->
-@if (Model.Status == BookingStatus.Pending || Model.Status == BookingStatus.Approved)
+@if (Model.Status == HostelMS.Models.BookingStatus.Pending || Model.Status == HostelMS.Models.BookingStatus.Approved)
 {
     <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -395,6 +441,10 @@
                         <li><strong>Hostel:</strong> @Model.Room?.Hostel?.Name</li>
                         <li><strong>Room:</strong> @Model.Room?.RoomNumber</li>
                         <li><strong>Check-in Date:</strong> @Model.CheckInDate.ToString("dd MMM yyyy")</li>
+                        @if (!string.IsNullOrEmpty(courseDisplayName))
+                        {
+                            <li><strong>Course:</strong> @courseDisplayName</li>
+                        }
                     </ul>
                     <p class="text-danger">This action cannot be undone!</p>
                 </div>

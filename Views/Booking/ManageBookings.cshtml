@@ -5,7 +5,17 @@
 }
 
 <div class="container-fluid mt-4">
-    <h1 class="mb-4">Manage Hostel Bookings</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Manage Hostel Bookings</h1>
+        <div>
+            <a asp-action="CourseStatistics" class="btn btn-info me-2">
+                <i class="fas fa-chart-bar me-1"></i> Course Statistics
+            </a>
+            <a asp-action="BulkApprove" class="btn btn-warning">
+                <i class="fas fa-tasks me-1"></i> Bulk Approve
+            </a>
+        </div>
+    </div>
 
     <!-- Status Tabs -->
     <div class="card shadow-sm mb-4">
@@ -67,23 +77,49 @@
             <form asp-action="ManageBookings" method="get" class="row g-3">
                 <input type="hidden" name="status" value="@currentStatus" />
                 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-search"></i></span>
                         <input type="text" name="searchString" value="@ViewBag.CurrentFilter" class="form-control" 
-                               placeholder="Search by student name, ID, or room number" />
+                               placeholder="Search by student, ID, room, or course" />
                     </div>
                 </div>
                 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <select name="hostelId" class="form-select">
                         <option value="">All Hostels</option>
-                        @foreach (var hostel in ViewBag.Hostels)
+                        @if (ViewBag.Hostels != null)
                         {
-                            <option value="@hostel.HostelId" 
-                                   selected="@(ViewBag.SelectedHostel == hostel.HostelId)">
-                                @hostel.Name
-                            </option>
+                            @foreach (var hostel in ViewBag.Hostels)
+                            {
+                                <option value="@hostel.HostelId" 
+                                       selected="@(ViewBag.SelectedHostel == hostel.HostelId)">
+                                    @hostel.Name
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+                
+                <div class="col-md-2">
+                    <select name="courseFilter" class="form-select">
+                        <option value="">All Courses</option>
+                        @if (ViewBag.Courses != null)
+                        {
+                            @foreach (string courseCode in ViewBag.Courses)
+                            {
+                                var tempBooking = new HostelMS.Models.Booking { Course = courseCode };
+                                var courseName = tempBooking.GetCourseDisplayName();
+                                var isRestricted = tempBooking.IsCourseRestricted();
+                                <option value="@courseCode" 
+                                       selected="@(ViewBag.CourseFilter == courseCode)">
+                                    @courseName
+                                    @if (isRestricted)
+                                    {
+                                        <text> ⚠️</text>
+                                    }
+                                </option>
+                            }
                         }
                     </select>
                 </div>
@@ -121,6 +157,7 @@
                             <tr>
                                 <th>Booking ID</th>
                                 <th>Student</th>
+                                <th>Course</th>
                                 <th>Hostel & Room</th>
                                 <th>Dates</th>
                                 <th>Amount (UGX)</th>
@@ -131,6 +168,9 @@
                         <tbody>
                             @foreach (var booking in Model)
                             {
+                                var courseName = booking.GetCourseDisplayName();
+                                var isRestricted = booking.IsCourseRestricted();
+                                
                                 <tr>
                                     <td>
                                         <span class="fw-bold">#@booking.BookingId</span>
@@ -153,13 +193,38 @@
                                                 }
                                                 <div>
                                                     <div class="fw-bold">@booking.Student.FirstName @booking.Student.LastName</div>
-                                                    <div class="small text-muted">@booking.Student.StudentId</div>
+                                                    <div class="small text-muted">@(booking.Student.StudentId ?? "No ID")</div>
                                                 </div>
                                             </div>
                                         }
                                         else
                                         {
                                             <span class="text-muted">Unknown</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(booking.Course))
+                                        {                                            
+                                            <div class="small">
+                                                <span class="badge @(isRestricted ? "bg-warning text-dark" : "bg-info text-white")">
+                                                    @if (courseName.Length > 30)
+                                                    {
+                                                        @(courseName.Substring(0, 30) + "...")
+                                                    }
+                                                    else
+                                                    {
+                                                        @courseName
+                                                    }
+                                                    @if (isRestricted)
+                                                    {
+                                                        <text> ⚠️</text>
+                                                    }
+                                                </span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">Not specified</span>
                                         }
                                     </td>
                                     <td>
@@ -183,22 +248,22 @@
                                     <td>
                                         @switch (booking.Status)
                                         {
-                                            case BookingStatus.Pending:
+                                            case HostelMS.Models.BookingStatus.Pending:
                                                 <span class="badge bg-warning text-dark">Pending</span>
                                                 break;
-                                            case BookingStatus.Approved:
+                                            case HostelMS.Models.BookingStatus.Approved:
                                                 <span class="badge bg-success">Approved</span>
                                                 break;
-                                            case BookingStatus.Rejected:
+                                            case HostelMS.Models.BookingStatus.Rejected:
                                                 <span class="badge bg-danger">Rejected</span>
                                                 break;
-                                            case BookingStatus.CheckedIn:
+                                            case HostelMS.Models.BookingStatus.CheckedIn:
                                                 <span class="badge bg-primary">Checked In</span>
                                                 break;
-                                            case BookingStatus.CheckedOut:
+                                            case HostelMS.Models.BookingStatus.CheckedOut:
                                                 <span class="badge bg-secondary">Checked Out</span>
                                                 break;
-                                            case BookingStatus.Cancelled:
+                                            case HostelMS.Models.BookingStatus.Cancelled:
                                                 <span class="badge bg-dark">Cancelled</span>
                                                 break;
                                         }
@@ -209,25 +274,31 @@
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             
-                                            @if (booking.Status == BookingStatus.Pending)
+                                            @if (booking.Status == HostelMS.Models.BookingStatus.Pending)
                                             {
                                                 <a asp-action="ProcessBooking" asp-route-id="@booking.BookingId" class="btn btn-sm btn-outline-success">
                                                     <i class="fas fa-check"></i>
                                                 </a>
                                             }
                                             
-                                            @if (booking.Status == BookingStatus.Approved && booking.Status != BookingStatus.CheckedIn)
+                                            @if (booking.Status == HostelMS.Models.BookingStatus.Approved && booking.Status != HostelMS.Models.BookingStatus.CheckedIn)
                                             {
-                                                <a asp-action="CheckIn" asp-route-id="@booking.BookingId" class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-sign-in-alt"></i>
-                                                </a>
+                                                <form asp-action="CheckIn" asp-route-id="@booking.BookingId" method="post" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary" 
+                                                            onclick="return confirm('Check in this student?');">
+                                                        <i class="fas fa-sign-in-alt"></i>
+                                                    </button>
+                                                </form>
                                             }
                                             
-                                            @if (booking.Status == BookingStatus.CheckedIn)
+                                            @if (booking.Status == HostelMS.Models.BookingStatus.CheckedIn)
                                             {
-                                                <a asp-action="CheckOut" asp-route-id="@booking.BookingId" class="btn btn-sm btn-outline-secondary">
-                                                    <i class="fas fa-sign-out-alt"></i>
-                                                </a>
+                                                <form asp-action="CheckOut" asp-route-id="@booking.BookingId" method="post" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary" 
+                                                            onclick="return confirm('Check out this student?');">
+                                                        <i class="fas fa-sign-out-alt"></i>
+                                                    </button>
+                                                </form>
                                             }
                                         </div>
                                     </td>
@@ -235,6 +306,37 @@
                             }
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Stats Card -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col">
+                                <h5 class="text-primary">@Model.Count()</h5>
+                                <small class="text-muted">Total @currentStatus</small>
+                            </div>
+                            @{
+                                var restrictedCount = Model.Count(b => b.IsCourseRestricted());
+                            }
+                            <div class="col">
+                                <h5 class="text-warning">@restrictedCount</h5>
+                                <small class="text-muted">Restricted Courses</small>
+                            </div>
+                            <div class="col">
+                                <h5 class="text-success">@Model.Count(b => !string.IsNullOrEmpty(b.Course))</h5>
+                                <small class="text-muted">With Course Info</small>
+                            </div>
+                            <div class="col">
+                                <h5 class="text-secondary">@Model.Count(b => string.IsNullOrEmpty(b.Course))</h5>
+                                <small class="text-muted">No Course Info</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

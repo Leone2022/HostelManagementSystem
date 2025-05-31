@@ -178,7 +178,6 @@
         </div>
     </div>
     
-    <!-- Hostels Tabs Section -->
     <div class="mb-5">
         <ul class="nav nav-tabs mb-4" id="hostelsTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -196,12 +195,12 @@
         </ul>
         
         <div class="tab-content" id="hostelsTabsContent">
-            <!-- Institution-Managed Hostels Tab -->
             <div class="tab-pane fade show active" id="institution-hostels" role="tabpanel" aria-labelledby="institution-tab">
                 <div class="row g-4">
-                    @if (ViewBag.InstitutionHostels != null && ViewBag.InstitutionHostels.Count > 0)
+                    @* Cast ViewBag.InstitutionHostels to a strongly-typed list *@
+                    @if (ViewBag.InstitutionHostels is List<HostelMS.Models.Hostel> institutionHostels && institutionHostels.Count > 0)
                     {
-                        foreach (var hostel in ViewBag.InstitutionHostels)
+                        foreach (var hostel in institutionHostels)
                         {
                             <div class="col-lg-4 col-md-6">
                                 <div class="card h-100 border-0 shadow-sm hostel-card">
@@ -233,6 +232,49 @@
                                         </div>
                                         
                                         <div class="hostel-features mb-3">
+                                            @if (hostel.MinPrice.HasValue && hostel.MaxPrice.HasValue)
+                                            {
+                                                <span class="badge bg-success text-white me-2 mb-2">
+                                                    <i class="fas fa-money-bill-wave me-1"></i>
+                                                    @if (hostel.MinPrice == hostel.MaxPrice)
+                                                    {
+                                                        <span>UGX @hostel.MinPrice.Value.ToString("N0")/sem</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>UGX @hostel.MinPrice.Value.ToString("N0") - @hostel.MaxPrice.Value.ToString("N0")/sem</span>
+                                                    }
+                                                </span>
+                                            }
+                                            else if (hostel.MinPrice.HasValue)
+                                            {
+                                                <span class="badge bg-success text-white me-2 mb-2">
+                                                    <i class="fas fa-money-bill-wave me-1"></i>
+                                                    From UGX @hostel.MinPrice.Value.ToString("N0")/sem
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary text-white me-2 mb-2">
+                                                    <i class="fas fa-money-bill-wave me-1"></i> Price TBD
+                                                </span>
+                                            }
+                                            
+                                            @if (!string.IsNullOrEmpty(hostel.AvailableRoomTypes))
+                                            {
+                                                var roomTypes = hostel.AvailableRoomTypes.Split(',');
+                                                foreach (var roomType in roomTypes.Take(2))
+                                                {
+                                                    <span class="badge bg-info text-white me-2 mb-2">
+                                                        <i class="fas fa-bed me-1"></i> @roomType.Trim()
+                                                    </span>
+                                                }
+                                                @if (roomTypes.Length > 2)
+                                                {
+                                                    <span class="badge bg-secondary text-white me-2 mb-2">+@(roomTypes.Length - 2) more</span>
+                                                }
+                                            }
+                                            
                                             <span class="badge bg-light text-dark me-2 mb-2">
                                                 @if (hostel.Name == "Clifford Mensahs Hall" || hostel.Name == "Bensdorp Hall")
                                                 {
@@ -243,12 +285,21 @@
                                                     <i class="fas fa-bed me-1 text-primary"></i> <span>Comfortable</span>
                                                 }
                                             </span>
+                                            
                                             <span class="badge bg-light text-dark me-2 mb-2">
                                                 <i class="fas fa-couch me-1 text-primary"></i> Common Areas
                                             </span>
+                                            
                                             <span class="badge bg-light text-dark me-2 mb-2">
                                                 <i class="fas fa-shield-alt me-1 text-primary"></i> 24/7 Security
                                             </span>
+                                            
+                                            @if (hostel.DistanceFromCampus > 0)
+                                            {
+                                                <span class="badge bg-warning text-dark me-2 mb-2">
+                                                    <i class="fas fa-map-marker-alt me-1"></i> @hostel.DistanceFromCampus km from campus
+                                                </span>
+                                            }
                                         </div>
                                     </div>
                                     <div class="card-footer bg-white border-0 pb-3">
@@ -271,12 +322,12 @@
                 </div>
             </div>
             
-            <!-- Privately-Managed Hostels Tab -->
             <div class="tab-pane fade" id="private-hostels" role="tabpanel" aria-labelledby="private-tab">
                 <div class="row g-4">
-                    @if (ViewBag.PrivateHostels != null && ViewBag.PrivateHostels.Count > 0)
+                    @* Cast ViewBag.PrivateHostels to a strongly-typed list *@
+                    @if (ViewBag.PrivateHostels is List<HostelMS.Models.Hostel> privateHostels && privateHostels.Count > 0)
                     {
-                        foreach (var hostel in ViewBag.PrivateHostels)
+                        foreach (var hostel in privateHostels)
                         {
                             <div class="col-lg-4 col-md-6">
                                 <div class="card h-100 border-0 shadow-sm hostel-card">
@@ -308,6 +359,49 @@
                                         </div>
                                         
                                         <div class="hostel-features mb-3">
+                                            @if (hostel.MinPrice.HasValue && hostel.MaxPrice.HasValue)
+                                            {
+                                                <span class="badge bg-success text-white me-2 mb-2">
+                                                    <i class="fas fa-money-bill-wave me-1"></i>
+                                                    @if (hostel.MinPrice == hostel.MaxPrice)
+                                                    {
+                                                        <span>UGX @hostel.MinPrice.Value.ToString("N0")/sem</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>UGX @hostel.MinPrice.Value.ToString("N0") - @hostel.MaxPrice.Value.ToString("N0")/sem</span>
+                                                    }
+                                                </span>
+                                            }
+                                            else if (hostel.MinPrice.HasValue)
+                                            {
+                                                <span class="badge bg-success text-white me-2 mb-2">
+                                                    <i class="fas fa-money-bill-wave me-1"></i>
+                                                    From UGX @hostel.MinPrice.Value.ToString("N0")/sem
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary text-white me-2 mb-2">
+                                                    <i class="fas fa-money-bill-wave me-1"></i> Price TBD
+                                                </span>
+                                            }
+                                            
+                                            @if (!string.IsNullOrEmpty(hostel.AvailableRoomTypes))
+                                            {
+                                                var roomTypes = hostel.AvailableRoomTypes.Split(',');
+                                                foreach (var roomType in roomTypes.Take(2))
+                                                {
+                                                    <span class="badge bg-info text-white me-2 mb-2">
+                                                        <i class="fas fa-bed me-1"></i> @roomType.Trim()
+                                                    </span>
+                                                }
+                                                @if (roomTypes.Length > 2)
+                                                {
+                                                    <span class="badge bg-secondary text-white me-2 mb-2">+@(roomTypes.Length - 2) more</span>
+                                                }
+                                            }
+                                            
                                             <span class="badge bg-light text-dark me-2 mb-2">
                                                 @if (hostel.Name == "Clifford Mensahs Hall" || hostel.Name == "Bensdorp Hall")
                                                 {
@@ -318,12 +412,21 @@
                                                     <i class="fas fa-bed me-1 text-primary"></i> <span>Comfortable</span>
                                                 }
                                             </span>
+                                            
                                             <span class="badge bg-light text-dark me-2 mb-2">
                                                 <i class="fas fa-couch me-1 text-primary"></i> Common Areas
                                             </span>
+                                            
                                             <span class="badge bg-light text-dark me-2 mb-2">
                                                 <i class="fas fa-shield-alt me-1 text-primary"></i> 24/7 Security
                                             </span>
+                                            
+                                            @if (hostel.DistanceFromCampus > 0)
+                                            {
+                                                <span class="badge bg-warning text-dark me-2 mb-2">
+                                                    <i class="fas fa-map-marker-alt me-1"></i> @hostel.DistanceFromCampus km from campus
+                                                </span>
+                                            }
                                         </div>
                                     </div>
                                     <div class="card-footer bg-white border-0 pb-3">
@@ -348,7 +451,6 @@
         </div>
     </div>
 </div>
-
 <!-- FAQ Section -->
 <div class="container mb-5">
     <div class="row mb-4">

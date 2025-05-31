@@ -11,7 +11,7 @@
                     <h5 class="mb-0"><i class="fas fa-bookmark me-2"></i> Book a Room in @Model.HostelName</h5>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" id="bookingForm">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         
                         <input type="hidden" asp-for="HostelId" />
@@ -23,101 +23,238 @@
                             Please complete the booking form below. Your booking will be reviewed by the hostel management team.
                         </div>
                         
-                        <!-- Room Selection Card -->
+                        <!-- Course Selection Card -->
                         <div class="card shadow-sm mb-4">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="fas fa-door-open me-2"></i> Room Selection</h6>
+                                <h6 class="mb-0"><i class="fas fa-graduation-cap me-2"></i> Academic Information</h6>
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label asp-for="RoomId" class="form-label fw-bold">Select a Room</label>
-                                    <select asp-for="RoomId" asp-items="Model.AvailableRooms" class="form-select">
-                                        <option value="">-- Select a Room --</option>
+                                    <label asp-for="CourseSelection" class="form-label fw-bold">Select Your Course *</label>
+                                    <select asp-for="CourseSelection" class="form-select" id="CourseSelection">
+                                        <option value="">-- Select Your Course --</option>
+                                        
+                                        <!-- Undergraduate Degree Programs -->
+                                        <optgroup label="School of Business">
+                                            <option value="BBA_Accounting">Bachelor of Business Administration in Accounting</option>
+                                            <option value="BBA_Finance">Bachelor of Business Administration in Finance</option>
+                                            <option value="BBA_Insurance">Bachelor of Business Administration in Insurance</option>
+                                            <option value="BBA_Marketing">Bachelor of Business Administration in Marketing</option>
+                                            <option value="BBA_HRM">Bachelor of Business Administration in Human Resource Management</option>
+                                            <option value="BBA_Economics">Bachelor of Business Administration in Economics</option>
+                                            <option value="BBA_Entrepreneurship">Bachelor of Business Administration in Entrepreneurship</option>
+                                            <option value="BBA_Management">Bachelor of Business Administration in Management</option>
+                                            <option value="BBA_Secretarial">Bachelor of Business Administration in Secretarial Studies & Office Management</option>
+                                            <option value="BBA_BIS">Bachelor of Business Administration in Business Information Systems</option>
+                                            <option value="BBA_Trade">Bachelor of Business Administration in International Trade</option>
+                                        </optgroup>
+                                        
+                                        <optgroup label="School of Computing and Informatics">
+                                            <option value="BSc_Networks">Bachelor of Science in Computer Networks and System Administration</option>
+                                            <option value="BSc_Software">Bachelor of Science in Software Engineering and Application Development</option>
+                                        </optgroup>
+                                        
+                                        <optgroup label="School of Social Sciences">
+                                            <option value="BA_Development">Bachelor of Arts in Development Studies</option>
+                                            <option value="BPA_Management">Bachelor of Public Administration and Management</option>
+                                            <option value="BA_SocialWork">Bachelor of Arts in Social Work and Social Administration</option>
+                                            <option value="BSc_Counseling">Bachelor of Science in Counseling and Psychology</option>
+                                            <option value="BSA_Sociology">Bachelor of Social Administration and Sociology</option>
+                                        </optgroup>
+                                        
+                                        <optgroup label="School of Education">
+                                            <option value="BA_Education">Bachelor of Arts with Education</option>
+                                            <option value="BSc_Education">Bachelor of Science with Education</option>
+                                        </optgroup>
+                                        
+                                        <optgroup label="School of Theology">
+                                            <option value="B_Theology">Bachelor of Theology</option>
+                                            <option value="BA_Religious">Bachelor of Arts in Religious Studies with Chaplaincy</option>
+                                            <option value="B_Development_Ministry">Bachelor of Development Ministry</option>
+                                            <option value="B_Evangelism">Bachelor of Evangelism and Church Growth</option>
+                                            <option value="B_Biblical_Counseling">Bachelor of Biblical Counseling</option>
+                                        </optgroup>
+                                        
+                                        <optgroup label="School of Health Sciences">
+                                            <option value="BSc_Nursing" data-restricted="true">⚠️ Bachelor of Nursing Science (RESTRICTED)</option>
+                                            <option value="BSc_Food">Bachelor of Science in Food Technology and Human Nutrition</option>
+                                        </optgroup>
+                                        
+                                        <optgroup label="School of Agricultural and Environmental Sciences">
+                                            <option value="BSc_Agriculture">Bachelor of Science in Agriculture</option>
+                                            <option value="BSc_Agribusiness">Bachelor of Science in Agribusiness Innovation and Management</option>
+                                            <option value="BSc_Environmental">Bachelor of Science in Environmental Science</option>
+                                            <option value="BSc_Statistics">Bachelor of Science in Statistics</option>
+                                            <option value="BSc_Biochemistry">Bachelor of Science in Biochemistry</option>
+                                        </optgroup>
+                                        
+                                        <!-- Postgraduate Programs -->
+                                        <optgroup label="Master's Programs">
+                                            <option value="MBA">Master of Business Administration</option>
+                                            <option value="MA_Education">Master of Arts in Education Management</option>
+                                            <option value="MA_Development">Master of Arts in Development Studies</option>
+                                            <option value="MA_English">Master of Arts in English Literature</option>
+                                            <option value="MSc_Counseling">Master of Science in Counseling Psychology</option>
+                                            <option value="MPH">Master of Public Health</option>
+                                            <option value="MSc_IS">Master of Science in Information Systems</option>
+                                            <option value="MSc_Software_Masters">Master of Science in Software Engineering and Application Development</option>
+                                            <option value="MSc_Security">Master of Science in Network Security</option>
+                                            <option value="MSc_Rural">Master of Science in Rural Development</option>
+                                            <option value="M_LocalGov">Master in Local Government Management</option>
+                                            <option value="MIT_Management">Master of Information Technology and Management</option>
+                                            <option value="MSc_Palliative">Master of Science in Palliative Care</option>
+                                            <option value="MIS">Master of Information Science</option>
+                                        </optgroup>
+                                        
+                                        <optgroup label="Doctoral Programs">
+                                            <option value="PhD_DevEducation">Doctor of Philosophy in Developmental Education</option>
+                                            <option value="PhD_Rural">Doctor of Philosophy in Rural Development</option>
+                                            <option value="PhD_Communication">Doctor of Philosophy in Developmental Communication</option>
+                                            <option value="PhD_EducationMgmt">PhD in Educational Management</option>
+                                            <option value="PhD_Environmental">PhD in Environmental Management</option>
+                                        </optgroup>
+                                        
+                                        <!-- Diploma Programs -->
+                                        <optgroup label="Diploma Programs">
+                                            <option value="Dip_BA_Accounting">Diploma in Business Administration in Accounting</option>
+                                            <option value="Dip_Secretarial">Diploma in Secretarial Studies & Office Management</option>
+                                            <option value="Dip_Development">Diploma in Development Studies</option>
+                                            <option value="Dip_Education">Diploma in Education</option>
+                                            <option value="Dip_Nursing" data-restricted="true">⚠️ Diploma in Nursing (RESTRICTED)</option>
+                                            <option value="Dip_Food">Diploma in Food Science & Processing Technology</option>
+                                            <option value="Dip_Biomedical">Diploma in Biomedical Engineering & Technology</option>
+                                            <option value="Dip_Lab">Diploma in Science Laboratory Technology</option>
+                                            <option value="Dip_Forensics">Diploma in Computer Forensics</option>
+                                            <option value="Dip_SocialWork">Diploma in Social Work and Social Administration</option>
+                                            <option value="Dip_Counseling">Diploma in Counseling</option>
+                                        </optgroup>
+                                        
+                                        <!-- Certificate Programs (ALL RESTRICTED) -->
+                                        <optgroup label="Certificate Programs (ALL RESTRICTED)">
+                                            <option value="Cert_IT" data-restricted="true">⚠️ Certificate in Information Technology (RESTRICTED)</option>
+                                            <option value="Cert_Nursing" data-restricted="true">⚠️ Certificate in Nursing Program (RESTRICTED)</option>
+                                            <option value="Cert_Childhood" data-restricted="true">⚠️ Certificate in Early Childhood Education (RESTRICTED)</option>
+                                            <option value="Cert_Networks" data-restricted="true">⚠️ Certificate in Small Business Computer Networks (RESTRICTED)</option>
+                                            <option value="Cert_Office" data-restricted="true">⚠️ Certificate in Office Automation and Data Management (RESTRICTED)</option>
+                                            <option value="Cert_Repair" data-restricted="true">⚠️ Certificate in Computer Repair and Maintenance (RESTRICTED)</option>
+                                        </optgroup>
+                                        
+                                        <!-- Bridging Courses (ALL RESTRICTED) -->
+                                        <optgroup label="Bridging Courses (ALL RESTRICTED)">
+                                            <option value="HEC_Sciences" data-restricted="true">⚠️ Higher Education Certificate (Biological and Physical Sciences) (RESTRICTED)</option>
+                                        </optgroup>
                                     </select>
-                                    <span asp-validation-for="RoomId" class="text-danger"></span>
-                                    <div class="form-text">Choose from available rooms in the hostel</div>
+                                    <span asp-validation-for="CourseSelection" class="text-danger"></span>
+                                    <div class="form-text">Select the course you are currently enrolled in. Courses marked with ⚠️ require campus housing.</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Dates Card -->
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i> Booking Period</h6>
+                        <!-- Course Restriction Alert (Hidden by default) -->
+                        <div id="courseRestrictionAlert" class="alert alert-warning mb-4" style="display: none;">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Unfortunately, you cannot book accommodation through this system.</strong><br>
+                            Under this course, you are required to stay in the school premises. Please visit the <strong>Office of the Dean of Students</strong> to be assigned a room.
+                        </div>
+                        
+                        <!-- Main Booking Form (Will be hidden for restricted courses) -->
+                        <div id="mainBookingForm">
+                            <!-- Room Selection Card -->
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="fas fa-door-open me-2"></i> Room Selection</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label asp-for="RoomId" class="form-label fw-bold">Select a Room *</label>
+                                        <select asp-for="RoomId" asp-items="Model.AvailableRooms" class="form-select">
+                                            <option value="">-- Select a Room --</option>
+                                        </select>
+                                        <span asp-validation-for="RoomId" class="text-danger"></span>
+                                        <div class="form-text">Choose from available rooms in the hostel</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label asp-for="CheckInDate" class="form-label fw-bold">Check-in Date</label>
-                                            <input asp-for="CheckInDate" class="form-control" />
-                                            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                            
+                            <!-- Dates Card -->
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i> Booking Period</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label asp-for="CheckInDate" class="form-label fw-bold">Check-in Date *</label>
+                                                <input asp-for="CheckInDate" class="form-control" type="date" />
+                                                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label asp-for="CheckOutDate" class="form-label fw-bold">Check-out Date *</label>
+                                                <input asp-for="CheckOutDate" class="form-control" type="date" />
+                                                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label asp-for="CheckOutDate" class="form-label fw-bold">Check-out Date</label>
-                                            <input asp-for="CheckOutDate" class="form-control" />
-                                            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                    <div class="mb-3">
+                                        <label asp-for="Comments" class="form-label fw-bold">Additional Comments</label>
+                                        <textarea asp-for="Comments" class="form-control" rows="3" 
+                                           placeholder="Any special requests or information you want to include with your booking?"></textarea>
+                                        <span asp-validation-for="Comments" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Card -->
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i> Payment Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label asp-for="Amount" class="form-label fw-bold">Payment Amount (UGX) *</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">UGX</span>
+                                            <input asp-for="Amount" class="form-control" type="number" step="1000" min="0" />
                                         </div>
+                                        <span asp-validation-for="Amount" class="text-danger"></span>
+                                        <div class="form-text">Enter the amount you paid in Ugandan Shillings (minimum 50% of room price)</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label asp-for="PaymentMethod" class="form-label fw-bold">Payment Method *</label>
+                                        <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<HostelMS.Models.PaymentMethod>()">
+                                            <option value="">-- Select Payment Method --</option>
+                                        </select>
+                                        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label asp-for="TransactionReference" class="form-label fw-bold">Transaction Reference/ID *</label>
+                                        <input asp-for="TransactionReference" class="form-control" placeholder="e.g., TXN123456789" />
+                                        <span asp-validation-for="TransactionReference" class="text-danger"></span>
+                                        <div class="form-text">Enter the transaction reference from your payment receipt</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label asp-for="PaymentProof" class="form-label fw-bold">Upload Proof of Payment *</label>
+                                        <input asp-for="PaymentProof" class="form-control" type="file" accept="image/*,.pdf" />
+                                        <span asp-validation-for="PaymentProof" class="text-danger"></span>
+                                        <div class="form-text">Upload a screenshot or photo of your payment receipt (JPEG, PNG, or PDF)</div>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label asp-for="Comments" class="form-label fw-bold">Additional Comments</label>
-                                    <textarea asp-for="Comments" class="form-control" rows="3" 
-                                       placeholder="Any special requests or information you want to include with your booking?"></textarea>
-                                    <span asp-validation-for="Comments" class="text-danger"></span>
-                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Payment Card -->
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i> Payment Information</h6>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <a asp-action="Index" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Hostels
+                                </a>
+                                <button type="submit" class="btn btn-primary" id="submitButton">
+                                    <i class="fas fa-paper-plane me-2"></i> Submit Booking
+                                </button>
                             </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <label asp-for="Amount" class="form-label fw-bold">Payment Amount (UGX)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">UGX</span>
-                                        <input asp-for="Amount" class="form-control" type="number" step="1000" min="0" />
-                                    </div>
-                                    <span asp-validation-for="Amount" class="text-danger"></span>
-                                    <div class="form-text">Enter the amount you paid in Ugandan Shillings</div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label asp-for="PaymentMethod" class="form-label fw-bold">Payment Method</label>
-                                    <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<HostelMS.Models.PaymentMethod>()">
-                                        <option value="">-- Select Payment Method --</option>
-                                    </select>
-                                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label asp-for="TransactionReference" class="form-label fw-bold">Transaction Reference/ID</label>
-                                    <input asp-for="TransactionReference" class="form-control" />
-                                    <span asp-validation-for="TransactionReference" class="text-danger"></span>
-                                    <div class="form-text">Enter the transaction reference from your payment receipt</div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label asp-for="PaymentProof" class="form-label fw-bold">Upload Proof of Payment</label>
-                                    <input asp-for="PaymentProof" class="form-control" type="file" accept="image/*,.pdf" />
-                                    <span asp-validation-for="PaymentProof" class="text-danger"></span>
-                                    <div class="form-text">Upload a screenshot or photo of your payment receipt (JPEG, PNG, or PDF)</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex justify-content-between mt-4">
-                            <a asp-action="Index" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-2"></i> Back to Hostels
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane me-2"></i> Submit Booking
-                            </button>
                         </div>
                     </form>
                 </div>
@@ -147,6 +284,55 @@
             
             // Trigger change to set initial state
             $('#CheckInDate').trigger('change');
+            
+            // Handle course selection and restrictions
+            $('#CourseSelection').change(function() {
+                var selectedOption = $(this).find('option:selected');
+                var isRestricted = selectedOption.data('restricted') === true;
+                
+                if (isRestricted) {
+                    // Show restriction alert
+                    $('#courseRestrictionAlert').show();
+                    // Hide main booking form
+                    $('#mainBookingForm').hide();
+                    // Disable form submission
+                    $('#submitButton').prop('disabled', true);
+                } else if ($(this).val() !== '') {
+                    // Hide restriction alert
+                    $('#courseRestrictionAlert').hide();
+                    // Show main booking form
+                    $('#mainBookingForm').show();
+                    // Enable form submission
+                    $('#submitButton').prop('disabled', false);
+                } else {
+                    // No course selected
+                    $('#courseRestrictionAlert').hide();
+                    $('#mainBookingForm').show();
+                    $('#submitButton').prop('disabled', false);
+                }
+            });
+            
+            // Prevent form submission for restricted courses
+            $('#bookingForm').submit(function(e) {
+                var selectedOption = $('#CourseSelection').find('option:selected');
+                var isRestricted = selectedOption.data('restricted') === true;
+                
+                if (isRestricted) {
+                    e.preventDefault();
+                    alert('You cannot submit a booking for this course. Please visit the Office of the Dean of Students.');
+                    return false;
+                }
+                
+                // Additional validation
+                if ($('#CourseSelection').val() === '') {
+                    e.preventDefault();
+                    alert('Please select your course before submitting.');
+                    return false;
+                }
+            });
+            
+            // Auto-focus on course selection
+            $('#CourseSelection').focus();
         });
     </script>
 }
